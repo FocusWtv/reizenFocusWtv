@@ -163,7 +163,7 @@ const HomePage = () => {
               />
             </a>
             <div class="px-5 pb-5">
-              <h2 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+              <h2 class="text-xl font-bold tracking-tight text-white">
                 Reis naar Zuid-Afrika: dinsdag 23 september
               </h2>
             </div>
@@ -177,7 +177,7 @@ const HomePage = () => {
               />
             </a>
             <div class="px-5 pb-5">
-              <h2 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+              <h2 class="text-xl font-bold tracking-tight text-white">
                 Cruise op de Mekong: woensdag 8 oktober
               </h2>
             </div>
@@ -191,7 +191,7 @@ const HomePage = () => {
               />
             </a>
             <div class="px-5 pb-5">
-              <h2 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+              <h2 class="text-xl font-bold tracking-tight text-white">
                 Reis Zuid-Finland: woensdag 3 december
               </h2>
             </div>

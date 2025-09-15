@@ -21,27 +21,45 @@ import VideoDetailPage from "./pages/VideoDetailPage";
 
 const App = () => {
    const [lenis, setLenis] = useState(null);
-
+  
   useEffect(() => {
-    const lenisInstance = new Lenis();
+    const lenisInstance = new Lenis({
+      // Add these options for better Chrome/Edge compatibility
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    });
 
-    function raf(time) {
-      lenisInstance.raf(time);
-      requestAnimationFrame(raf);
-    }
+    // CRITICAL: Integrate Lenis with GSAP ScrollTrigger
+    lenisInstance.on('scroll', (e) => {
+      ScrollTrigger.update();
+    });
 
-    requestAnimationFrame(raf);
+    // Use GSAP ticker instead of requestAnimationFrame for better sync
+    gsap.ticker.add((time) => {
+      lenisInstance.raf(time * 1000);
+    });
+
+    // Disable lag smoothing for better performance
+    gsap.ticker.lagSmoothing(0);
+
     setLenis(lenisInstance);
 
     return () => {
+      gsap.ticker.remove();
       lenisInstance.destroy();
       setLenis(null);
     };
   }, []);
 
-  useGSAP(() => {
+   useGSAP(() => {
     const elements = gsap.utils.toArray(".reveal-up");
-
     elements.forEach((element) => {
       gsap.to(element, {
         scrollTrigger: {
@@ -49,6 +67,9 @@ const App = () => {
           start: "-200 bottom",
           end: "bottom 80%",
           scrub: true,
+          // Add these for better Lenis integration
+          refreshPriority: -1,
+          invalidateOnRefresh: true,
         },
         y: 0,
         opacity: 1,
@@ -56,7 +77,7 @@ const App = () => {
         ease: "power2.out",
       });
     });
-  });
+  }, [lenis]); // Add lenis as dependency
 
   return (
     <BrowserRouter>
