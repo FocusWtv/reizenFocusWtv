@@ -4,7 +4,7 @@ import egypte from "../assets/egypte/egypte.jpg";
 import egypte5 from "../assets/egypte/egypte-15_2024-12-03-153712_qdof.jpg";
 import Egypte3 from "../assets/egypte/Egypte-3.jpg";
 import egypte13 from "../assets/egypte/egypte-13.jpg";
-import egypte14 from "../assets/egypte/egypte-14.jpg";
+import egypte14 from "../assets/egypte/Egypte-14.jpg";
 import egypte15 from "../assets/egypte/egypte-15.jpg";
 import egypte16 from "../assets/egypte/egypte-16.png";
 import egypte17 from "../assets/egypte/egypte-17.jpg";
