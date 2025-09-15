@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Force Inter font to override Bootstrap - but allow weight variations */
+body,
+.btn,
+.form-control,
+.nav,
+.navbar,
+.card,
+.modal,
+.dropdown-menu {
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+/* Set default body weight (without !important so Tailwind can override) */
+body {
+  font-weight: 200;
+}
+
+[id] {
+  scroll-margin-top: 650px; /* Default for small screens */
+}
+
+/* Medium screens and up */
+@media (min-width: 768px) {
+  [id] {
+    scroll-margin-top: 580px;
+  }
+}
+
+/* Large screens and up */
+@media (min-width: 1024px) {
+  [id] {
+    scroll-margin-top: 140px;
+  }
+}
+
+/* Override specific Bootstrap font weights */
+.btn {
+  font-weight: 400 !important; /* Normal weight for buttons */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+/* Ensure Tailwind font utilities work */
+.font-thin { font-weight: 100 !important; }
+.font-extralight { font-weight: 200 !important; }
+.font-light { font-weight: 300 !important; }
+.font-normal { font-weight: 400 !important; }
+.font-medium { font-weight: 500 !important; }
+.font-semibold { font-weight: 600 !important; }
+.font-bold { font-weight: 700 !important; }
+.font-extrabold { font-weight: 800 !important; }
+.font-black { font-weight: 900 !important; }
