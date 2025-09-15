@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,7 +9,6 @@ import ScrollToTop from "./components/ScrollToTop";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 import "./index.css";
-import { useEffect } from "react";
 import HomePage from "./pages/HomePage";
 import Egypte from "./pages/Egypte";
 import ZwarteWoud from "./pages/ZwarteWoud";
@@ -20,11 +19,21 @@ import ZuidFinland from "./pages/ZuidFinland";
 import VideoDetailPage from "./pages/VideoDetailPage";
 
 const App = () => {
-   const [lenis, setLenis] = useState(null);
-  
+  const [lenis, setLenis] = useState(null);
+  const [useNativeScroll, setUseNativeScroll] = useState(false);
+
+  // Browser detection
+  const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+  const isEdge = /Edg/.test(navigator.userAgent);
+
   useEffect(() => {
+    if (isChrome || isEdge) {
+      setUseNativeScroll(true);
+      return; // Use native scrolling for Chrome/Edge
+    }
+
+    // Initialize Lenis only for Firefox and other browsers
     const lenisInstance = new Lenis({
-      // Add these options for better Chrome/Edge compatibility
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       direction: 'vertical',
@@ -36,19 +45,15 @@ const App = () => {
       infinite: false,
     });
 
-    // CRITICAL: Integrate Lenis with GSAP ScrollTrigger
     lenisInstance.on('scroll', (e) => {
       ScrollTrigger.update();
     });
 
-    // Use GSAP ticker instead of requestAnimationFrame for better sync
     gsap.ticker.add((time) => {
       lenisInstance.raf(time * 1000);
     });
 
-    // Disable lag smoothing for better performance
     gsap.ticker.lagSmoothing(0);
-
     setLenis(lenisInstance);
 
     return () => {
@@ -56,9 +61,9 @@ const App = () => {
       lenisInstance.destroy();
       setLenis(null);
     };
-  }, []);
+  }, [isChrome, isEdge]);
 
-   useGSAP(() => {
+  useGSAP(() => {
     const elements = gsap.utils.toArray(".reveal-up");
     elements.forEach((element) => {
       gsap.to(element, {
@@ -67,7 +72,6 @@ const App = () => {
           start: "-200 bottom",
           end: "bottom 80%",
           scrub: true,
-          // Add these for better Lenis integration
           refreshPriority: -1,
           invalidateOnRefresh: true,
         },
@@ -77,7 +81,7 @@ const App = () => {
         ease: "power2.out",
       });
     });
-  }, [lenis]); // Add lenis as dependency
+  }, [lenis, useNativeScroll]);
 
   return (
     <BrowserRouter>
