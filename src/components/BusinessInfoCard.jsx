@@ -31,7 +31,7 @@ const BusinessInfoCard = ({
             <img
               src={images[0]}
               alt={`${name} main`}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-fit"
             />
           </div>
         </div>

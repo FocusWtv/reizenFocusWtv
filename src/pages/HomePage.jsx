@@ -42,14 +42,14 @@ const cardsData = [
         image={image2}
         title="Kerst in de Elzas & het Zwarte Woud"
         text="14 tot 17 december 2025"
-        status="volzet"
+        status="open"
       />
     ),
     back: (
       <CardBack
         text="We gaan naar de mooiste kerstmarkt van Duitsland - in Freiburg! Klik op de knop voor meer info!"
         link="/zwarte-woud"
-        status="volzet"
+        status="open"
       />
     ),
   },
@@ -59,14 +59,14 @@ const cardsData = [
         image={image3}
         title="Nieuwsjaarscruise Zuid-Italië"
         text="26 december tot 2 januari 2026"
-        status="beperkt"
+        status="open"
       />
     ),
     back: (
       <CardBack
         text="We maken opnieuw een Nieuwjaarscruize richting Zuid-Italië! Klik op de knop voor meer info!"
         link="/zuiditalie"
-        status="beperkt"
+        status="open"
       />
     ),
   },

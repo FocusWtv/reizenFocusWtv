@@ -111,29 +111,6 @@ const ZuidFinland = () => {
               17 - 24 juni 2026
             </p>
           </div>
-          {/* brochure Button */}
-          <a
-            href="/assets/brochures/Brochure-Zuid-Finland-2026.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 bg-white hover:bg-[#4ab0e1] text-black font-semibold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200 flex items-center gap-2"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            Bekijk de brochure
-          </a>
           {/** status label */}
           <div className="mt-3 bg-green-500 text-white underline font-semibold py-3 px-6 rounded-lg border-4 shadow-lg flex items-center gap-2">
             Beschikbaar
@@ -265,7 +242,7 @@ const ZuidFinland = () => {
               class="group mt-10 relative inline-block text-sm font-medium text-[#162b58] focus:ring-3 focus:outline-hidden"
               href="https://focus-wtv.be/reizen/finland-2026-infoavond"
             >
-              <span class="absolute inset-0 rounded-lg translate-x-0.5 translate-y-0.5 bg-[#162b58] transition-transform group-hover:translate-x-0 group-hover:translate-y-0"></span>
+              <span class="absolute inset-0 rounded-lg translate-x-2 translate-y-2 bg-[#162b58] transition-transform group-hover:translate-x-0 group-hover:translate-y-0"></span>
               <span class="relative text-2xl text-white block border border-current rounded-lg bg-[#162b58] px-8 py-3">
                 Interesse? Schrijf je <b>HIER</b> in voor deze infoavond.
               </span>
@@ -887,18 +864,51 @@ const ZuidFinland = () => {
 
         {/** Reservatie en contact info*/}
         <div className="mx-8 mt-10 lg:mx-32" id="reservatie">
-          <h2 className="text-3xl text-[#162b58] font-bold mb-4">Reservatie</h2>
-          <p className="text-lg text-[#162b58]">
-            Heb je vragen? Wil je graag deze reis boeken? Hiervoor kan je
-            terecht bij de mensen van Nordic.
-          </p>
+          <h2 className="text-3xl text-[#162b58] font-bold mb-4">Reservatie & Brochure</h2>
+          <div className="mt-3 flex justify-center hover:scale-105 transition-all duration-300">
           <a
             href="/assets/brochures/Inschrijvingsformulier-Focus-TV-Finland-2026.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 bg-white hover:bg-[#4ab0e1] text-[#162b58] font-semibold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200 flex items-center gap-2"
+            className="mt-3 bg-gradient-to-r from-cyan-300 to-blue-300 text-[#162b58] font-semibold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200 flex items-center gap-2"
           >
-           Wens je jezelf in te schrijven? Dan kan je het inschrijfformulier via deze link afdrukken, invullen, inscannen en mailen als bijlage naar het e-mailadres focuswtv@nordic.be. 
+            Wens je jezelf in te schrijven? Dan kan je het inschrijfformulier
+            via deze link afdrukken, invullen, inscannen en mailen als bijlage
+            naar het e-mailadres focuswtv@nordic.be.
+          </a>
+          </div>
+          <p className="text-lg text-[#162b58] mt-4">
+            Meer info nodig? Dan mag je Nordic steeds bellen via{" "}
+            <b>+32 52 55 52 54</b>. Dit is het algemeen nummer van Nordic. Kies
+            in het keuzemenu het nummer <b>54</b>. Dit is het algemeen nummer
+            van Nordic. Kies in het keuzemenu voor <b>‘optie Finland’</b> , dan
+            kom je meteen bij het juiste team terecht. Klik op de knop{" "}
+            <b>mailen</b> om een email te sturen naar focuswtv@nordic.be
+          </p>
+        </div>
+        <div className="mt-3 flex justify-center">
+          {/* brochure Button */}
+          <a
+            href="/assets/brochures/Brochure-Zuid-Finland-2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#162b58] hover:!bg-[#4ab0e1] text-white font-bold py-3 px-6 rounded-xl shadow-xl duration-200 flex items-center gap-2"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Bekijk de brochure
           </a>
         </div>
         <div className="mx-8 mt-10 lg:mx-32">

@@ -108,32 +108,9 @@ const ZwarteWoud = () => {
               VAN 14 NOVEMBER TOT 17 DECEMBER 2025
             </p>
           </div>
-          {/* brochure Button */}
-          <a
-            href="/assets/brochures/Kerstreis-info.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 bg-white hover:bg-[#4ab0e1] text-black font-semibold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200 flex items-center gap-2"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            Bekijk de brochure
-          </a>
           {/** status label */}
-          <div className="mt-3 bg-red-500 text-white animate-pulse underline font-semibold py-3 px-6 rounded-lg border border-red-500 border-3 shadow-lg flex items-center gap-2">
-            Volzet
+          <div className="mt-3 bg-green-500 text-white underline font-semibold py-3 px-6 rounded-lg border border-green-500 border-3 shadow-lg flex items-center gap-2">
+            Beschikbaar
           </div>
         </div>
       </div>
@@ -218,16 +195,16 @@ const ZwarteWoud = () => {
         </h2>
         <div className="text-center text-[#162b58] mt-2 mx-8 lg:mx-32">
           <p className="text-lg">
-            Van <b>14 tot en met 17 december</b> gaan we vanuit Rijsel met de TGV naar
-            het hart van de Elzas, naar Straatsburg. We genieten van de stad, en
-            z’n kerstmarkt – het is de oudste trouwens van Frankrijk. Van
-            hieruit maken we een cruise op de Rijn, en we verkennen verder het
-            Zwarte Woud. We gaan naar de mooiste kerstmarkt van Duitsland – in
-            Freiburg, we nemen je ook mee naar het Ecomusée d'Alsace – een soort
-            Bokrijk van de streek, helemaal in de kerstsfeer op dat moment. We
-            gaan ook naar Colmar – de oude stad en de verlichte straten zijn
-            hier echt prachtig… Na een laatste blik op Straatsburg keren we
-            terug naar huis. We reizen met de MS Europe. Het wordt een
+            Van <b>14 tot en met 17 december</b> gaan we vanuit Rijsel met de
+            TGV naar het hart van de Elzas, naar Straatsburg. We genieten van de
+            stad, en z’n kerstmarkt – het is de oudste trouwens van Frankrijk.
+            Van hieruit maken we een cruise op de Rijn, en we verkennen verder
+            het Zwarte Woud. We gaan naar de mooiste kerstmarkt van Duitsland –
+            in Freiburg, we nemen je ook mee naar het Ecomusée d'Alsace – een
+            soort Bokrijk van de streek, helemaal in de kerstsfeer op dat
+            moment. We gaan ook naar Colmar – de oude stad en de verlichte
+            straten zijn hier echt prachtig… Na een laatste blik op Straatsburg
+            keren we terug naar huis. We reizen met de MS Europe. Het wordt een
             vierdaagse reis om helemaal in de sfeer te komen, wat mooie dingen
             te zien, om wat originele cadeautjes te vinden, en om samen te
             genieten.
@@ -733,11 +710,42 @@ const ZwarteWoud = () => {
 
         {/** Reservatie en contact info*/}
         <div className="mx-8 mt-10 lg:mx-32" id="reservatie">
-          <h2 className="text-3xl text-[#162b58] font-bold mb-4">Reservatie</h2>
+          <h2 className="text-3xl text-[#162b58] font-bold mb-4">
+            Reservatie & Brochure
+          </h2>
           <p className="text-lg text-[#162b58]">
             Heb je vragen? Wil je graag deze reis boeken? Hiervoor kan je
-            terecht bij Claudio & Cidjy van CroisiEurope.
+            terecht bij Claudio & Cidjy van CroisiEurope. <br />
+            Je kunt hen elke weekdag bereiken van 9u30 tot 17u30 op het nummer{" "}
+            <b>0465/025993</b>. Mocht de lijn bezet zijn, dan kun je ook steeds
+            terecht op <b>02/514.21.49</b>
           </p>
+          {/* brochure Button */}
+          <div className="mt-3 flex justify-center">
+            {/* brochure Button */}
+            <a
+              href="/assets/brochures/Kerstreis-info.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#162b58] hover:!bg-[#4ab0e1] text-white font-bold py-3 px-6 rounded-xl shadow-xl duration-200 flex items-center gap-2"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              Bekijk de brochure
+            </a>
+          </div>
         </div>
         <div className="mx-8 mt-10 lg:mx-32">
           <div className="p-4">
@@ -747,8 +755,8 @@ const ZwarteWoud = () => {
               address="Ravensteinstraat 56, 1000 Brussel"
               phone="02/514.21.49"
               hours="Ma-Vrij: 9:30-17:30"
-              website="https://www.croisieurope.be/"
-              email="bruxelles@croisieurope.com"
+              website="https://www.croisieurope.be/nl/cruises/kerstmarkten-alsace-klassiek"
+              email="FocusWTV@croisieurope.com"
               images={[logo]}
               className="mb-4"
             />

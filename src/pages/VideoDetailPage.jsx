@@ -36,16 +36,13 @@ const VideoDetailPage = () => {
           {video.title}
         </h1>
         <p className="text-lg text-[#162b58] mt-2 text-center">{video.date}</p>
-        <div
-          className="relative w-full max-w-6xl mx-auto"
-          style={{ paddingBottom: "56.25%", height: 0 }}
-        >
+        <div className="relative w-full max-w-6xl mx-auto rounded-xl shadow-xl overflow-hidden aspect-video">
           <iframe
             src={video.src}
             className="absolute inset-0 w-full h-full"
             allow="autoplay; fullscreen"
             title={video.title}
-          ></iframe>
+          />
         </div>
         <p className="text-lg text-[#162b58] mt-6 max-w-4xl mx-auto">
           {video.description}

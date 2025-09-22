@@ -115,29 +115,6 @@ const ZuidAfrika = () => {
             </h1>
             <div className="w-16 h-px bg-gray-800 mx-auto mb-2"></div>
           </div>
-          {/* brochure Button */}
-          <a
-            href="/assets/brochures/Brochure-RONDREIS-ZUIDELIJK-AFRIKA.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 bg-white hover:bg-[#4ab0e1] text-black font-semibold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200 flex items-center gap-2"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            Bekijk de brochure
-          </a>
           {/** status label */}
           <div className="mt-3 bg-green-500 text-white underline font-semibold py-3 px-6 rounded-lg border-4 shadow-lg flex items-center gap-2">
             Beschikbaar
@@ -256,19 +233,21 @@ const ZuidAfrika = () => {
               Botswana – wat bekend staat om z’n rijke en afwisselende
               landschappen aan het water, en om de dieren uiteraard. Niets zo
               bijzonder als dieren in hun natuurlijke omgeving te zien. Het doet
-              je op een heel andere manier kijken naar de natuur. <br /><br /> We nemen een
-              privévliegtuig en volgen verder de Zambezi-rivier richting
-              Zimbabwe. Een vlucht – op deze hoogte – geeft je een schitterend
-              beeld van de regio, en de krachtige rivier die zich hierdoor een
-              weg baant. We varen enkele dagen met ons schip op het Karibameer.
-              Met een lengte van 290 km is dit één van de grootste door de mens
-              gemaakte stuwmeren ter wereld. We krijgen uiteraard ook de dam te
-              zien, en we komen erachter van waar al die ‘versteende bomen’ in
-              het meer komen. Het is ontzettend mooi hier, en stil. Soms zie je
-              meer nijlpaarden dan mensen. Een rust die je dicht bij de dieren
-              brengt. <br /><br />We verkennen in Zimbabwe ook het Matusadona National Park
-              en we verbazen ons – net als ontdekkingsreiziger David Livingstone
-              – over de kracht, de omvang en de schoonheid van de Victoria
+              je op een heel andere manier kijken naar de natuur. <br />
+              <br /> We nemen een privévliegtuig en volgen verder de
+              Zambezi-rivier richting Zimbabwe. Een vlucht – op deze hoogte –
+              geeft je een schitterend beeld van de regio, en de krachtige
+              rivier die zich hierdoor een weg baant. We varen enkele dagen met
+              ons schip op het Karibameer. Met een lengte van 290 km is dit één
+              van de grootste door de mens gemaakte stuwmeren ter wereld. We
+              krijgen uiteraard ook de dam te zien, en we komen erachter van
+              waar al die ‘versteende bomen’ in het meer komen. Het is
+              ontzettend mooi hier, en stil. Soms zie je meer nijlpaarden dan
+              mensen. Een rust die je dicht bij de dieren brengt. <br />
+              <br />
+              We verkennen in Zimbabwe ook het Matusadona National Park en we
+              verbazen ons – net als ontdekkingsreiziger David Livingstone –
+              over de kracht, de omvang en de schoonheid van de Victoria
               Watervallen.
             </p>
           </div>
@@ -288,7 +267,7 @@ const ZuidAfrika = () => {
               class="group mt-10 relative inline-block text-sm font-medium text-[#162b58] focus:ring-3 focus:outline-hidden"
               href="https://focus-wtv.be/reizen/afrikareis-infoavond"
             >
-              <span class="absolute inset-0 rounded-lg translate-x-0.5 translate-y-0.5 bg-[#162b58] transition-transform group-hover:translate-x-0 group-hover:translate-y-0"></span>
+              <span class="absolute inset-0 rounded-lg translate-x-2 translate-y-2 bg-[#162b58] transition-transform group-hover:translate-x-0 group-hover:translate-y-0"></span>
               <span class="relative text-2xl text-white block border border-current rounded-lg bg-[#162b58] px-8 py-3">
                 Interesse? Schrijf je <b>HIER</b> in voor deze infoavond.
               </span>
@@ -846,12 +825,19 @@ const ZuidAfrika = () => {
           </h2>
           <ul className="list-disc pl-6 text-lg text-[#162b58] space-y-2 text-left">
             <li>Annuleringsverzekering / bagageverzekering</li>
-            <li>Zimbabwaans visum (30 $US tot op heden, ter plaatse regelen in $US)</li>
             <li>
-              Optionele excursie (helikoptervlucht)
+              Zimbabwaans visum (30 $US tot op heden, ter plaatse regelen in
+              $US)
             </li>
-            <li>Ae toeristenbelasting in Botswana (30 US$ ter plaatse regelen in $US)</li>
-            <li>De fooien voor het personeel van het schip en van de lodge (indien gewenst)</li>
+            <li>Optionele excursie (helikoptervlucht)</li>
+            <li>
+              Ae toeristenbelasting in Botswana (30 US$ ter plaatse regelen in
+              $US)
+            </li>
+            <li>
+              De fooien voor het personeel van het schip en van de lodge (indien
+              gewenst)
+            </li>
             <li>Het Namibische visum €100 per persoon</li>
             <li>Persoonlijke uitgaven.</li>
           </ul>
@@ -866,11 +852,15 @@ const ZuidAfrika = () => {
             <li>
               Dit schip werd speciaal gecharterd voor de kijkers van Focus & WTV
             </li>
+            <li>We reizen ter plaatse met privévliegtuigen.</li>
             <li>
-              We reizen ter plaatse met privévliegtuigen.
+              De enorme kleinschaligheid van deze reis, en de keuze voor heel
+              wat plaatsen waar nog weinig andere reizigers komen.
             </li>
-            <li>De enorme kleinschaligheid van deze reis, en de keuze voor heel wat plaatsen waar nog weinig andere reizigers komen.</li>
-            <li>Het is een pakketreis: vluchten, transfers, enkele excursies, en vol pension inbegrepen!</li>
+            <li>
+              Het is een pakketreis: vluchten, transfers, enkele excursies, en
+              vol pension inbegrepen!
+            </li>
             <li>Gratis Wifi aan boord</li>
             <li>
               Je wordt begeleid door onze eigen Nederlandstalige reisbegeleider
@@ -888,11 +878,39 @@ const ZuidAfrika = () => {
 
         {/** Reservatie en contact info*/}
         <div className="mx-8 mt-10 lg:mx-32" id="reservatie">
-          <h2 className="text-3xl text-[#162b58] font-bold mb-4">Reservatie</h2>
+          <h2 className="text-3xl text-[#162b58] font-bold mb-4">Reservatie & Brochure</h2>
           <p className="text-lg text-[#162b58]">
             Heb je vragen? Wil je graag deze reis boeken? Hiervoor kan je
-            terecht bij Claudio, Mirte & Cidjy van CroisiEurope.
+            terecht bij Claudio, Mirte & Cidjy van CroisiEurope. <br />
+            Je kunt hen elke weekdag bereiken van 9u30 tot 17u30 op het nummer 
+            <b> 0465/025993</b>. Mocht de lijn bezet zijn, dan kun je ook steeds terecht
+            op <b>02/514.21.49</b>
           </p>
+          <div className="mt-3 flex justify-center">
+            {/* brochure Button */}
+            <a
+              href="/assets/brochures/Brochure-RONDREIS-ZUIDELIJK-AFRIKA.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#162b58] hover:!bg-[#4ab0e1] text-white text-black font-bold py-3 px-6 rounded-xl shadow-xl duration-200 flex items-center gap-2"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              Bekijk de brochure
+            </a>
+          </div>
         </div>
         <div className="mx-8 mt-10 lg:mx-32">
           <div className="p-4">
@@ -902,8 +920,8 @@ const ZuidAfrika = () => {
               address="Ravensteinstraat 56, 1000 Brussel"
               phone="02/514.21.49"
               hours="Ma-Vrij: 9:30-17:30"
-              website="https://www.croisieurope.be/"
-              email="bruxelles@croisieurope.com"
+              website="https://www.croisieurope.be/nl/cruises/zuid-afrika-boord-african-dream-unieke-ervaring-uiteinde-wereld-uitbreiding-het-kaapse-schiereiland-formule-havenhaven-klassiek"
+              email="FocusWTV@croisieurope.com"
               images={[logo]}
               className="mb-4"
             />

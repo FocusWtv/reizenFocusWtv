@@ -78,29 +78,6 @@ const Egypte = () => {
               VAN 29 NOVEMBER TOT 9 DECEMBER 2025
             </p>
           </div>
-          {/* brochure Button */}
-          <a
-            href="/assets/brochures/Brochure-Egypte-2025-FocusWTV-19-11-2025.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 bg-white hover:bg-[#4ab0e1] text-black font-semibold py-3 px-6 rounded-lg shadow-lg transition-colors duration-200 flex items-center gap-2"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            Bekijk de brochure
-          </a>
           {/** status label */}
           <div className="mt-3 bg-red-500 text-white animate-pulse underline font-semibold py-3 px-6 rounded-lg border-4 shadow-lg flex items-center gap-2">
             VOLZET
@@ -204,7 +181,7 @@ const Egypte = () => {
         </div>
 
         {/** Info Avond */}
-       {/*  <div className="text-center mb-8" id="infoavond">
+        {/*  <div className="text-center mb-8" id="infoavond">
           <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8 mb-8">
             Infoavond
           </h2>
@@ -921,10 +898,37 @@ const Egypte = () => {
 
         {/** Reservatie */}
         <div className="mx-8 mt-10 lg:mx-32" id="reservatie">
-          <h2 className="text-3xl text-[#162b58] font-bold mb-4">Reservatie</h2>
+          <h2 className="text-3xl text-[#162b58] font-bold mb-4">
+            Reservatie & Brochure
+          </h2>
           <p className="text-lg text-[#162b58]">
             Contacteer voor reservatie de medewerkers van RIVAGES DU MONDE.
           </p>
+          {/* brochure Button */}
+          <div className="mt-3 flex justify-center">
+          <a
+            href="/assets/brochures/Brochure-Egypte-2025-FocusWTV-19-11-2025.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#162b58] hover:!bg-[#4ab0e1] text-white font-bold py-3 px-6 rounded-xl shadow-xl duration-200 flex items-center gap-2"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Bekijk de brochure
+          </a>
+          </div>
         </div>
 
         {/** Contact info */}
@@ -932,7 +936,7 @@ const Egypte = () => {
           <div className="p-4">
             <BusinessInfoCard />
           </div>
-        </div>        
+        </div>
 
         {/** Back to alle reizen */}
         <div className="mx-8 mt-10 lg:mx-32">
