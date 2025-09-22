@@ -6,7 +6,7 @@ import boot from "../assets/adriatischecruise/Afbeelding1.jpg";
 import ship1 from "../assets/adriatischecruise/Afbeelding3.jpg";
 import ship2 from "../assets/adriatischecruise/Afbeelding4.jpg";
 import ship3 from "../assets/adriatischecruise/Afbeelding5.jpg";
-import ship4 from "../assets/adriatischecruise/Afbeelding6.jpg";
+import ship4 from "../assets/adriatischecruise/Afbeelding6.JPG";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
