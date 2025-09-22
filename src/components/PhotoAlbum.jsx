@@ -1,56 +1,58 @@
 import { ColumnsPhotoAlbum } from "react-photo-album";
 import "react-photo-album/columns.css";
-import egypte from "../assets/egypte/egypte.jpg";
-import egypte5 from "../assets/egypte/egypte-15_2024-12-03-153712_qdof.jpg";
-import Egypte3 from "../assets/egypte/Egypte-3.jpg";
-import egypte13 from "../assets/egypte/egypte-13.jpg";
-import egypte14 from "../assets/egypte/Egypte-14.jpg";
-import egypte15 from "../assets/egypte/egypte-15.jpg";
-import egypte16 from "../assets/egypte/egypte-16.png";
-import egypte17 from "../assets/egypte/egypte-17.jpg";
-import egypte18 from "../assets/egypte/egypte-18.jpg";
-import egypte19 from "../assets/egypte/egypte-19.jpg";
-import egypte20 from "../assets/egypte/egypte-20.jpg";
-import egypte21 from "../assets/egypte/egypte-21.jpg";
-import egypte22 from "../assets/egypte/egypte-22.jpg";
-import egypte23 from "../assets/egypte/egypte-24.jpg";
-import egypte24 from "../assets/egypte/egypte-26.jpg";
-import egypte25 from "../assets/egypte/egypte-26_2024-12-03-154851_gcfo.jpg";
-import egypte26 from "../assets/egypte/egypte-27.jpg";
-import egypte27 from "../assets/egypte/egypte-28.jpg";
-import egypte28 from "../assets/egypte/egypte-29.jpg";
-import egypte29 from "../assets/egypte/egypte-30.jpg";
-import egypte30 from "../assets/egypte/egypte-31.jpg";
-import egypte31 from "../assets/egypte/egypte-32.jpg";
+import adriatischecruise1 from "../assets/adriatischecruise/foto1.jpg";
+import adriatischecruise2 from "../assets/adriatischecruise/foto2.jpg";
+import adriatischecruise3 from "../assets/adriatischecruise/foto3.jpg";
+import adriatischecruise4 from "../assets/adriatischecruise/foto4.jpg";
+import adriatischecruise5 from "../assets/adriatischecruise/foto5.jpeg";
+import adriatischecruise6 from "../assets/adriatischecruise/foto6.jpg";
+import adriatischecruise7 from "../assets/adriatischecruise/foto7.jpg";
+import adriatischecruise8 from "../assets/adriatischecruise/foto8.jpeg";
+import adriatischecruise9 from "../assets/adriatischecruise/foto9.jpeg";
+import adriatischecruise10 from "../assets/adriatischecruise/foto10.jpeg";
+import adriatischecruise11 from "../assets/adriatischecruise/foto11.jpeg";
+import adriatischecruise12 from "../assets/adriatischecruise/foto12.jpeg";
+import adriatischecruise13 from "../assets/adriatischecruise/foto13.jpeg";
+import adriatischecruise14 from "../assets/adriatischecruise/foto14.jpeg";
+import adriatischecruise15 from "../assets/adriatischecruise/foto15.jpeg";
+import adriatischecruise16 from "../assets/adriatischecruise/foto16.jpeg";
+import adriatischecruise17 from "../assets/adriatischecruise/foto17.jpeg";
+import adriatischecruise18 from "../assets/adriatischecruise/foto18.jpeg";
+import adriatischecruise19 from "../assets/adriatischecruise/foto19.jpeg";
+import adriatischecruise20 from "../assets/adriatischecruise/foto20.jpeg";
+import adriatischecruise21 from "../assets/adriatischecruise/foto21.jpeg";
+import adriatischecruise22 from "../assets/adriatischecruise/foto22.jpeg";
+import adriatischecruise23 from "../assets/adriatischecruise/foto23.jpeg";
 
 
 
-const egyptePhotos = [
-  { width: 800, height: 600, src: egypte },
-  { width: 1600, height: 900, src: Egypte3 },
-  { width: 1600, height: 1200, src: egypte13 },
-  { width: 1600, height: 800, src: egypte14 },
-  { width: 1600, height: 1000, src: egypte5 },
-  { width: 800, height: 600, src: egypte16 },
-  { width: 1600, height: 900, src: egypte17 },
-  { width: 1600, height: 1200, src: egypte18 },
-  { width: 1600, height: 800, src: egypte19 },
-  { width: 1600, height: 1000, src: egypte15 },
-  { width: 800, height: 600, src: egypte20 },
-  { width: 1600, height: 900, src: egypte21 },
-  { width: 1600, height: 1200, src: egypte22 },
-  { width: 1600, height: 800, src: egypte23 },
-  { width: 1600, height: 1000, src: egypte24 },
-  { width: 800, height: 600, src: egypte25 },
-  { width: 1600, height: 900, src: egypte26 },
-  { width: 1600, height: 1200, src: egypte27 },
-  { width: 1600, height: 800, src: egypte28 },
-  { width: 1600, height: 1000, src: egypte29 },
-  { width: 800, height: 600, src: egypte30 },
-  { width: 1600, height: 900, src: egypte31 },
+const aPhotos = [
+  { width: 800, height: 600, src: adriatischecruise1 },
+  { width: 1600, height: 900, src: adriatischecruise2 },
+  { width: 1600, height: 1200, src: adriatischecruise3 },
+  { width: 1600, height: 800, src: adriatischecruise4 },
+  { width: 1600, height: 1000, src: adriatischecruise5 },
+  { width: 800, height: 600, src: adriatischecruise6 },
+  { width: 1600, height: 900, src: adriatischecruise7 },
+  { width: 1600, height: 1200, src: adriatischecruise8 },
+  { width: 1600, height: 800, src: adriatischecruise9 },
+  { width: 1600, height: 1000, src: adriatischecruise10 },
+  { width: 800, height: 600, src: adriatischecruise11 },
+  { width: 1600, height: 900, src: adriatischecruise12 },
+  { width: 1600, height: 1200, src: adriatischecruise13 },
+  { width: 1600, height: 800, src: adriatischecruise14 },
+  { width: 1600, height: 1000, src: adriatischecruise15 },
+  { width: 800, height: 600, src: adriatischecruise16 },
+  { width: 1600, height: 900, src: adriatischecruise17 },
+  { width: 1600, height: 1200, src: adriatischecruise18 },
+  { width: 1600, height: 800, src: adriatischecruise19 },
+  { width: 1600, height: 1000, src: adriatischecruise20 },
+  { width: 800, height: 600, src: adriatischecruise21 },
+  { width: 1600, height: 900, src: adriatischecruise22 },
+  { width: 1600, height: 1200, src: adriatischecruise23 },
 ];
 
-export default function PhotoAlbum({ photos = egyptePhotos, padding = 20 }) {
+export default function PhotoAlbum({ photos = aPhotos, padding = 20 }) {
   return (
     <div style={{ padding }}>
       <ColumnsPhotoAlbum

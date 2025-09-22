@@ -116,7 +116,7 @@ const ZwarteWoud = () => {
       </div>
 
       {/** Navigation */}
-      <div className="sticky top-[72px] z-40 bg-[#4ab0e1] shadow-md">
+      <div className="sticky top-[56px] z-40 bg-[#4ab0e1] shadow-md">
         <div className="mx-auto flex justify-center items-center">
           <Navbar
             expand="lg"
@@ -719,6 +719,8 @@ const ZwarteWoud = () => {
             Je kunt hen elke weekdag bereiken van 9u30 tot 17u30 op het nummer{" "}
             <b>0465/025993</b>. Mocht de lijn bezet zijn, dan kun je ook steeds
             terecht op <b>02/514.21.49</b>
+            <br />
+            Je kan hen ook een e-mail versturen naar: <b>FocusWTV@croisieurope.com</b>
           </p>
           {/* brochure Button */}
           <div className="mt-3 flex justify-center">
@@ -747,29 +749,14 @@ const ZwarteWoud = () => {
             </a>
           </div>
         </div>
-        <div className="mx-8 mt-10 lg:mx-32">
-          <div className="p-4">
-            <BusinessInfoCard
-              name="Croisieurope"
-              type="Cruiseorganisator in Brussel"
-              address="Ravensteinstraat 56, 1000 Brussel"
-              phone="02/514.21.49"
-              hours="Ma-Vrij: 9:30-17:30"
-              website="https://www.croisieurope.be/nl/cruises/kerstmarkten-alsace-klassiek"
-              email="FocusWTV@croisieurope.com"
-              images={[logo]}
-              className="mb-4"
-            />
-          </div>
-        </div>
 
         {/** Back to alle reizen */}
         <div className="mx-8 mt-10 lg:mx-32">
           <Link
             to="/"
-            className="inline-block bg-[#162b58] text-white px-6 py-3 rounded-lg hover:bg-[#0d1a3b] transition"
+            className="inline-block bg-white px-6 py-3 rounded-lg transition"
           >
-            Terug naar alle reizen
+            {"<-"}- Terug naar alle reizen
           </Link>
         </div>
       </div>

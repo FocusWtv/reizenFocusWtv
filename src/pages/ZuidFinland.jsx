@@ -119,7 +119,7 @@ const ZuidFinland = () => {
       </div>
 
       {/** Navigation */}
-      <div className="sticky top-[72px] z-40 bg-[#4ab0e1] shadow-md">
+      <div className="sticky top-[56px] z-40 bg-[#4ab0e1] shadow-md">
         <div className="mx-auto flex justify-center items-center">
           <Navbar
             expand="lg"
@@ -594,7 +594,7 @@ const ZuidFinland = () => {
           </div>
 
           <div className="relative">
-            <h2 className="text-xl italic mt-10 font-bold text-[#162b58]">
+            <h2 className="text-xl mt-10 font-bold text-[#162b58]">
               Helsinki - Solo Sokos Hotel Pier 4
             </h2>
             <p className="text-lg text-[#162b58] mt-4">
@@ -623,7 +623,7 @@ const ZuidFinland = () => {
           </div>
 
           <div className="relative">
-            <h2 className="text-xl italic mt-10 font-bold text-[#162b58]">
+            <h2 className="text-xl mt-10 font-bold text-[#162b58]">
               Turku - Original Sokos Wiklund
             </h2>
             <p className="text-lg text-[#162b58] mt-4">
@@ -651,7 +651,7 @@ const ZuidFinland = () => {
           </div>
 
           <div className="relative">
-            <h2 className="text-xl italic mt-10 font-bold text-[#162b58]">
+            <h2 className="text-xl mt-10 font-bold text-[#162b58]">
               Tampere - Original Sokos Ilves
             </h2>
             <p className="text-lg text-[#162b58] mt-4">
@@ -759,7 +759,7 @@ const ZuidFinland = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="p-3 sm:p-4 text-xs text-gray-500 italic border-t border-gray-300">
+                  <div className="p-3 sm:p-4 text-xs text-gray-500 border-t border-gray-300">
                     <p className="mb-2 text-xl font-bold">
                       Optionele activiteit Tampere :
                     </p>
@@ -882,8 +882,8 @@ const ZuidFinland = () => {
             <b>+32 52 55 52 54</b>. Dit is het algemeen nummer van Nordic. Kies
             in het keuzemenu het nummer <b>54</b>. Dit is het algemeen nummer
             van Nordic. Kies in het keuzemenu voor <b>‘optie Finland’</b> , dan
-            kom je meteen bij het juiste team terecht. Klik op de knop{" "}
-            <b>mailen</b> om een email te sturen naar focuswtv@nordic.be
+            kom je meteen bij het juiste team terecht. Je kan ook mailen
+            naar <b>focuswtv@nordic.be</b>
           </p>
         </div>
         <div className="mt-3 flex justify-center">
@@ -911,29 +911,14 @@ const ZuidFinland = () => {
             Bekijk de brochure
           </a>
         </div>
-        <div className="mx-8 mt-10 lg:mx-32">
-          <div className="p-4">
-            <BusinessInfoCard
-              name="Nordic"
-              type="Touroperator"
-              address="Moutstraat 58/bus 202, 9000 Gent"
-              phone="052/55.52.54"
-              hours="Ma-Vrij: 9:00-17:00"
-              website="https://www.nordic.be/bestemmingen/finland/"
-              email="focuswtv@nordic.be"
-              images={[logo]}
-              className="mb-4"
-            />
-          </div>
-        </div>
 
         {/** Back to alle reizen */}
         <div className="mx-8 mt-10 lg:mx-32">
           <Link
             to="/"
-            className="inline-block bg-[#162b58] text-white px-6 py-3 rounded-lg hover:bg-[#0d1a3b] transition"
+            className="inline-block bg-white px-6 py-3 rounded-lg transition"
           >
-            Terug naar alle reizen
+            {"<-"}- Terug naar alle reizen
           </Link>
         </div>
       </div>

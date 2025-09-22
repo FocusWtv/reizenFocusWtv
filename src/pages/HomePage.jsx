@@ -1,6 +1,5 @@
 import React from "react";
 import GlobalNavbar from "../components/GlobalNavbar";
-import Hero from "../components/Hero";
 import TravelCard from "../components/TravelCard";
 
 // Import your new components
@@ -8,7 +7,7 @@ import CardFront from "../components/CardFront";
 import CardBack from "../components/CardBack";
 
 // Import your images
-import image1 from "../assets/egypte/egypte.jpg";
+import image1 from "../assets/adriatischecruise/foto16.jpeg";
 import image2 from "../assets/zwartewoud.jpeg";
 import image3 from "../assets/zuiditalie.jpg";
 import image4 from "../assets/afrika.jpg";
@@ -19,23 +18,6 @@ import { Link } from "react-router-dom";
 import { videos } from "../data/videos";
 
 const cardsData = [
-  {
-    front: (
-      <CardFront
-        image={image1}
-        title="Egyptereis"
-        text=" 29 november tot 9 december 2025"
-        status="volzet"
-      />
-    ),
-    back: (
-      <CardBack
-        text="In november 2025 maken we een onvergetelijke reis naar Egypte! Klik op de knop voor meer info!"
-        link="/egypte"
-        status="volzet"
-      />
-    ),
-  },
   {
     front: (
       <CardFront
@@ -107,6 +89,23 @@ const cardsData = [
   {
     front: (
       <CardFront
+        image={image1}
+        title="ADRIATISCHE KUST CRUISE"
+        text="28 mei 2026 tot 4 juni 2026"
+        status="open"
+      />
+    ),
+    back: (
+      <CardBack
+        text="Eind mei 2026 varen we langs de Adriatische kustlijn van Kroatië en Montenegro. Klik op de knop voor meer info!"
+        link="/adriatische-cruise"
+        status="open"
+      />
+    ),
+  },
+  {
+    front: (
+      <CardFront
         image={image6}
         title="Midzomer Zuid-Finland"
         text="17 tot 24 juni 2026"
@@ -127,10 +126,9 @@ const HomePage = () => {
   return (
     <div>
       <GlobalNavbar />
-      <Hero />
       {/* Onze reizen */}
       <div className="text-center mb-8  mx-8 lg:mx-32">
-        <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8">
+        <h2 className="text-4xl text-[#162b58] font-bold text-center mt-8">
           Onze Reizen
         </h2>
         <p className="text-center text-[#162b58] mt-2 mx-8">
@@ -213,7 +211,7 @@ const HomePage = () => {
             <Link
               to={`/video/${video.id}`}
               key={video.id}
-              className="w-full max-w-sm bg-white border-4 border-orange-500 rounded-xl shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl no-underline"
+              className="w-full max-w-sm bg-white border-4 border-[#4ab0e1] rounded-xl shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl no-underline"
             >
               <h3 className="text-lg font-bold tracking-tight text-[#162b58] p-2">
                 {video.title}

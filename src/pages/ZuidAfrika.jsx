@@ -123,7 +123,7 @@ const ZuidAfrika = () => {
       </div>
 
       {/** Navigation */}
-      <div className="sticky top-[72px] z-40 bg-[#4ab0e1] shadow-md">
+      <div className="sticky top-[56px] z-40 bg-[#4ab0e1] shadow-md">
         <div className="mx-auto flex justify-center items-center">
           <Navbar
             expand="lg"
@@ -653,7 +653,7 @@ const ZuidAfrika = () => {
           </div>
 
           <div className="relative">
-            <h2 className="text-xl italic mt-10 font-bold text-[#162b58]">
+            <h2 className="text-xl mt-10 font-bold text-[#162b58]">
               Kajuiten
             </h2>
             <p className="text-lg text-[#162b58] mt-4">
@@ -666,7 +666,7 @@ const ZuidAfrika = () => {
           </div>
 
           <div className="relative">
-            <h2 className="text-xl italic mt-10 font-bold text-[#162b58]">
+            <h2 className="text-xl mt-10 font-bold text-[#162b58]">
               Faciliteiten aan boord
             </h2>
             <p className="text-lg text-[#162b58] mt-4">
@@ -885,6 +885,8 @@ const ZuidAfrika = () => {
             Je kunt hen elke weekdag bereiken van 9u30 tot 17u30 op het nummer 
             <b> 0465/025993</b>. Mocht de lijn bezet zijn, dan kun je ook steeds terecht
             op <b>02/514.21.49</b>
+            <br />
+            Je mag steeds een mailtje sturen naar <b>reizen@focus-wtv.be</b>
           </p>
           <div className="mt-3 flex justify-center">
             {/* brochure Button */}
@@ -912,29 +914,14 @@ const ZuidAfrika = () => {
             </a>
           </div>
         </div>
-        <div className="mx-8 mt-10 lg:mx-32">
-          <div className="p-4">
-            <BusinessInfoCard
-              name="Croisieurope"
-              type="Cruiseorganisator in Brussel"
-              address="Ravensteinstraat 56, 1000 Brussel"
-              phone="02/514.21.49"
-              hours="Ma-Vrij: 9:30-17:30"
-              website="https://www.croisieurope.be/nl/cruises/zuid-afrika-boord-african-dream-unieke-ervaring-uiteinde-wereld-uitbreiding-het-kaapse-schiereiland-formule-havenhaven-klassiek"
-              email="FocusWTV@croisieurope.com"
-              images={[logo]}
-              className="mb-4"
-            />
-          </div>
-        </div>
 
         {/** Back to alle reizen */}
         <div className="mx-8 mt-10 lg:mx-32">
           <Link
             to="/"
-            className="inline-block bg-[#162b58] text-white px-6 py-3 rounded-lg hover:bg-[#0d1a3b] transition"
+            className="inline-block bg-white px-6 py-3 rounded-lg transition"
           >
-            Terug naar alle reizen
+            {"<-"}- Terug naar alle reizen
           </Link>
         </div>
       </div>

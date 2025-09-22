@@ -10,13 +10,13 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 import "./index.css";
 import HomePage from "./pages/HomePage";
-import Egypte from "./pages/Egypte";
 import ZwarteWoud from "./pages/ZwarteWoud";
 import ZuidItalie from "./pages/ZuidItalie";
 import ZuidAfrika from "./pages/ZuidAfrika";
 import Mekong from "./pages/Mekong";
 import ZuidFinland from "./pages/ZuidFinland";
 import VideoDetailPage from "./pages/VideoDetailPage";
+import AdriatischeCruise from "./pages/AdriatischeCruise";
 
 const App = () => {
   const [lenis, setLenis] = useState(null);
@@ -88,7 +88,7 @@ const App = () => {
       <ScrollToTop lenis={lenis} />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/Egypte" element={<Egypte />} />
+        <Route path="/adriatische-cruise" element={<AdriatischeCruise />} />
         <Route path="/zwarte-woud" element={<ZwarteWoud />} />
         <Route path="/zuiditalie" element={<ZuidItalie />} />
         <Route path="/zuidafrika" element={<ZuidAfrika />} />

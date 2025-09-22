@@ -147,7 +147,7 @@ const Mekong = () => {
       </div>
 
       {/** Navigation */}
-      <div className="sticky top-[72px] z-40 bg-[#4ab0e1] shadow-md">
+      <div className="sticky top-[56px] z-40 bg-[#4ab0e1] shadow-md">
         <div className="mx-auto flex justify-center items-center">
           <Navbar
             expand="lg"
@@ -187,7 +187,7 @@ const Mekong = () => {
                   </Nav.Link>
                   <Nav.Link href="#infoavond" className="mx-2 text-white">
                     Infoavond
-                  </Nav.Link> 
+                  </Nav.Link>
                   <Nav.Link href="#route" className="mx-2 text-white">
                     Route
                   </Nav.Link>
@@ -632,7 +632,7 @@ const Mekong = () => {
           </div>
 
           <div className="relative">
-            <h2 className="text-xl italic mt-10 font-bold text-[#162b58]">
+            <h2 className="text-xl mt-10 font-bold text-[#162b58]">
               Het restaurant
             </h2>
             <p className="text-lg text-[#162b58] mt-4">
@@ -644,7 +644,7 @@ const Mekong = () => {
           </div>
 
           <div className="relative">
-            <h2 className="text-xl italic mt-10 font-bold text-[#162b58]">
+            <h2 className="text-xl mt-10 font-bold text-[#162b58]">
               Het zonnedek
             </h2>
             <p className="text-lg text-[#162b58] mt-4">
@@ -844,9 +844,7 @@ const Mekong = () => {
               inbegrepen (behalve deze van de speciale kaart).{" "}
             </li>
             <li>Een 5-ankercruiseschip, enkel voor Focus & WTV gecharterd. </li>
-            <li>
-              De reis wordt begeleid in het Nederlands
-            </li>
+            <li>De reis wordt begeleid in het Nederlands</li>
             <li>Audiogidsen tijdens de excursies zijn inbegrepen</li>
             <li>Je leert nieuwe mensen kennen uit je buurt</li>
           </ul>
@@ -862,18 +860,26 @@ const Mekong = () => {
 
         {/** Reservatie en contact info*/}
         <div className="mx-8 mt-10 lg:mx-32" id="reservatie">
-          <h2 className="text-3xl text-[#162b58] font-bold mb-4">Reservatie & Brochure</h2>
+          <h2 className="text-3xl text-[#162b58] font-bold mb-4">
+            Reservatie & Brochure
+          </h2>
           <p className="text-lg text-[#162b58]">
             Heb je vragen? Wil je graag deze reis boeken? Hiervoor kan je
-            terecht bij Claudio, Mirte & Cidjy van CroisiEurope.<br />
-            Je kunt hen elke weekdag bereiken
-            van 9u30 tot 17u30 op het nummer <b>0465/025993</b>. Mocht de lijn bezet
-            zijn, dan kun je ook steeds terecht op <b>02/514.21.49</b>
+            terecht bij Claudio, Mirte & Cidjy van CroisiEurope.
+            <br />
+            Je kunt hen elke weekdag bereiken van 9u30 tot 17u30 op het nummer{" "}
+            <b>0465/025993</b>. Mocht de lijn bezet zijn, dan kun je ook steeds
+            terecht op <b>02/514.21.49</b>
+            <br />
+            Je mag ook steeds een e-mail sturen naar <b>
+              reizen@focus-wtv.be
+            </b>{" "}
+            bij vragen of problemen.
           </p>
         </div>
         <div className="mt-3 flex justify-center">
-           {/* brochure Button */}
-           <a
+          {/* brochure Button */}
+          <a
             href="/assets/brochures/Brochure-Mekong-2026.pdf"
             target="_blank"
             rel="noopener noreferrer"
@@ -895,30 +901,15 @@ const Mekong = () => {
             </svg>
             Bekijk de brochure
           </a>
-          </div>
-        <div className="mx-8 mt-10 lg:mx-32">
-          <div className="p-4">
-            <BusinessInfoCard
-              name="Croisieurope"
-              type="Cruiseorganisator in Brussel"
-              address="Ravensteinstraat 56, 1000 Brussel"
-              phone="02/514.21.49"
-              hours="Ma-Vrij: 9:30-17:30"
-              website="https://www.croisieurope.be/nl/bestemming/zuid-oost-azie"
-              email="FocusWTV@croisieurope.com"
-              images={[logo]}
-              className="mb-4"
-            />
-          </div>
         </div>
 
         {/** Back to alle reizen */}
         <div className="mx-8 mt-10 lg:mx-32">
           <Link
             to="/"
-            className="inline-block bg-[#162b58] text-white px-6 py-3 rounded-lg hover:bg-[#0d1a3b] transition"
+            className="inline-block bg-white px-6 py-3 rounded-lg transition"
           >
-            Terug naar alle reizen
+            {"<-"}- Terug naar alle reizen
           </Link>
         </div>
       </div>
