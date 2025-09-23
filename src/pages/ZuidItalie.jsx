@@ -44,40 +44,46 @@ const ZuidItalie = () => {
 
   const suiteData = [
     {
-      name: "Dubbelkajuit - Bovendek",
+      name: "Dubbelkajuit op het 1e dek ",
       color: "bg-orange-400",
-      dubbele: "€2.799 p.p.",
-      individuele: "€2.799 p.p.",
+      prijs: "€2.799 p.p.",
+    },
+        {
+      name: "Singlekajuit op het 1e dek ",
+      color: "bg-orange-400",
+      prijs: "€2.799 p.p.",
     },
     {
-      name: "Dubbelkajuit - Inscheppingsdek",
+      name: "Dubbelkajuit op het 2e dek",
       color: "bg-blue-200",
-      dubbele: "€2.999 p.p.",
-      individuele: "€2.999 p.p.",
+      prijs: "€2.999 p.p.",
+
     },
     {
-      name: "Dubbelkajuit - Hoofddek",
+      name: "Singlekajuit op het 2e dek",
+      color: "bg-blue-200",
+      prijs: "€2.999 p.p.",
+
+    },
+    {
+      name: "Dubbelkajuit op het 3e dek",
       color: "bg-purple-400",
-      dubbele: "€3.199 p.p.",
-      individuele: "-",
+      prijs: "€3.199 p.p.",
     },
     {
-      name: "Singlekajuit - Hoofddek",
+      name: "Singlekajuit op het 3e dek",
+      color: "bg-purple-400",
+      prijs: "€3.899 p.p.",
+    },
+    {
+      name: "Dubbelkajuit op het 4e dek",
       color: "bg-purple-200",
-      dubbele: "-",
-      individuele: "€3.899 p.p.",
+      prijs: "€3.399 p.p. ",
     },
     {
-      name: "Dubbelkajuit - Onderdek",
-      color: "bg-orange-200",
-      dubbele: "€3.399 p.p.",
-      individuele: "-",
-    },
-    {
-      name: "Singlekajuit - Onderdek",
+      name: "Singlekajuit op het 4e dek",
       color: "bg-purple-200",
-      dubbele: "-",
-      individuele: "€4.099 p.p.",
+      prijs: "€4.099 p.p. ",
     },
   ];
 
@@ -241,31 +247,6 @@ const ZuidItalie = () => {
             dagje op het eiland Capri, en genieten van de Baai van Napels.
           </p>
         </div>
-
-        {/** Info Avond */}
-        {/* <div className="text-center mb-8" id="infoavond">
-          <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8 mb-8">
-            Infoavond
-          </h2>
-          <div className="text-center text-[#162b58] mt-2 mx-8 lg:mx-32">
-            <p className="text-lg">
-              Focus & WTV organiseren ook een infoavond waarop je meer te weten
-              komt over onze Nieuwjaarscruise Italië. De infoavond gaat door in
-              het Concertgebouw Brugge op woensdagavond 10 september 2025. We
-              verwelkomen jullie vanaf 18u30. De presentatie gaat van start om
-              19u00.
-            </p>
-            <a
-              class="group mt-10 relative inline-block text-sm font-medium text-[#162b58] focus:ring-3 focus:outline-hidden"
-              href="#"
-            >
-              <span class="absolute inset-0 rounded-lg translate-x-0.5 translate-y-0.5 bg-[#162b58] transition-transform group-hover:translate-x-0 group-hover:translate-y-0"></span>
-              <span class="relative text-2xl text-white block border border-current rounded-lg bg-[#162b58] px-8 py-3">
-                Interesse? Schrijf je <b>HIER</b> in voor deze infoavond.
-              </span>
-            </a>
-          </div>
-        </div> */}
 
         {/* Reis route */}
         <div className="mt-16" id="route">
@@ -654,10 +635,7 @@ const ZuidItalie = () => {
                         <tr className="border-b border-gray-300">
                           <th className="text-left p-3 font-medium text-gray-600 w-1/2"></th>
                           <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Dubbele bezetting
-                          </th>
-                          <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Individuele bezetting
+                            Prijs
                           </th>
                         </tr>
                       </thead>
@@ -670,11 +648,9 @@ const ZuidItalie = () => {
                               {suite.name}
                             </td>
                             <td className="p-3 text-center font-semibold">
-                              {suite.dubbele}
+                              {suite.prijs}
                             </td>
-                            <td className="p-3 text-center font-semibold">
-                              {suite.individuele}
-                            </td>
+                            
                           </tr>
                         ))}
                       </tbody>
@@ -696,18 +672,10 @@ const ZuidItalie = () => {
                         <div className="p-3 space-y-2">
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-600">
-                              Dubbele bezetting:
+                              Prijs:
                             </span>
                             <span className="font-semibold">
-                              {suite.dubbele}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">
-                              Individuele bezetting:
-                            </span>
-                            <span className="font-semibold">
-                              {suite.individuele}
+                              {suite.prijs}
                             </span>
                           </div>
                         </div>

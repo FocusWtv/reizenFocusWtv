@@ -20,50 +20,42 @@ const AdriatischeCruise = () => {
     {
       name: "Dubbelkajuit op het 1e dek ",
       color: "bg-pink-200",
-      dubbele: "€2.199 p.p",
-      individuele: "€2.199",
+      prijs: "€2.199 p.p",
     },
     {
       name: "Singlekajuit op het 1e dek ",
       color: "bg-purple-200",
-      dubbele: "€2.199 p.p",
-      individuele: "€2.199",
+      prijs: "€2.199 p.p",
     },
     {
       name: "Dubbelkajuit op het 2e dek",
       color: "bg-blue-200",
-      dubbele: "€2.399 p.p",
-      individuele: "€2.399",
+      prijs: "€2.399 p.p",
     },
     {
       name: "Singlekajuit op het 2e dek	",
       color: "bg-blue-200",
-      dubbele: "€3.189 p.p",
-      individuele: "€3.189",
+      prijs: "€3.189 p.p",
     },
     {
       name: "Dubbelkajuit op het 3e dek",
       color: "bg-yellow-200",
-      dubbele: "€2.599 p.p",
-      individuele: "€2.599",
+      prijs: "€2.599 p.p",
     },
     {
       name: "Singlekajuit op het 3e dek",
       color: "bg-yellow-200",
-      dubbele: "€3.389 p.p",
-      individuele: "€3.389",
+      prijs: "€3.389 p.p",
     },
     {
       name: "Dubbelkajuit op het 4e dek",
       color: "bg-teal-200",
-      dubbele: "€2.799 p.p",
-      individuele: "€2.799",
+      prijs: "€2.799 p.p",
     },
     {
       name: "Singlekajuit op het 4e dek",
       color: "bg-teal-200",
-      dubbele: "€3.589 p.p",
-      individuele: "€3.589",
+      prijs: "€3.589 p.p",
     },
   ];
 
@@ -211,7 +203,7 @@ const AdriatischeCruise = () => {
         </div>
 
         {/** Info Avond */}
-        {/*  <div className="text-center mb-8" id="infoavond">
+        <div className="text-center mb-8" id="infoavond">
           <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8 mb-8">
             Infoavond
           </h2>
@@ -225,15 +217,15 @@ const AdriatischeCruise = () => {
             </p>
             <a
               class="group mt-10 relative inline-block text-sm font-medium text-[#162b58] focus:ring-3 focus:outline-hidden"
-              href="#"
+              href="https://focus-wtv.be/reizen/adriatische-cruise-infoavond"
             >
-              <span class="absolute inset-0 rounded-lg translate-x-0.5 translate-y-0.5 bg-[#162b58] transition-transform group-hover:translate-x-0 group-hover:translate-y-0"></span>
+              <span class="absolute inset-0 rounded-lg translate-x-2 translate-y-2 bg-[#162b58] transition-transform group-hover:translate-x-0 group-hover:translate-y-0"></span>
               <span class="relative text-2xl text-white block border border-current rounded-lg bg-[#162b58] px-8 py-3">
                 Interesse? Schrijf je <b>HIER</b> in voor deze infoavond.
               </span>
             </a>
           </div>
-        </div> */}
+        </div> 
 
         {/* Reis route */}
         <div className="mt-16" id="route">
@@ -705,10 +697,7 @@ const AdriatischeCruise = () => {
                         <tr className="border-b border-gray-300">
                           <th className="text-left p-3 font-medium text-gray-600 w-1/2"></th>
                           <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Dubbele bezetting
-                          </th>
-                          <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Individuele bezetting
+                            Prijs
                           </th>
                         </tr>
                       </thead>
@@ -721,10 +710,7 @@ const AdriatischeCruise = () => {
                               {suite.name}
                             </td>
                             <td className="p-3 text-center font-semibold">
-                              {suite.dubbele}
-                            </td>
-                            <td className="p-3 text-center font-semibold">
-                              {suite.individuele}
+                              {suite.prijs}
                             </td>
                           </tr>
                         ))}
@@ -747,18 +733,10 @@ const AdriatischeCruise = () => {
                         <div className="p-3 space-y-2">
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-600">
-                              Dubbele bezetting:
+                              Prijs:
                             </span>
                             <span className="font-semibold">
-                              {suite.dubbele}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">
-                              Individuele bezetting:
-                            </span>
-                            <span className="font-semibold">
-                              {suite.individuele}
+                              {suite.prijs}
                             </span>
                           </div>
                         </div>
@@ -865,7 +843,7 @@ const AdriatischeCruise = () => {
 
         {/** Reservatie */}
         <div className="mx-8 mt-10 lg:mx-32" id="reservatie">
-          <h2 className="text-3xl text-[#162b58] font-bold mb-4">Reservatie</h2>
+          <h2 className="text-3xl text-[#162b58] font-bold mb-4">Reservatie & Brochure</h2>
           <p className="text-lg text-[#162b58]">
             Heb je vragen? Wil je graag deze reis boeken? Hiervoor kan je
             terecht bij Claudio, Mirte & Cidjy van CroisiEurope.
@@ -881,9 +859,9 @@ const AdriatischeCruise = () => {
             Problemen? Je mag steeds een mailtje sturen naar <b>reizen@focus-wtv.be</b>
           </p>
           {/* brochure Button */}
-          {/* <div className="mt-3 flex justify-center">
+           <div className="mt-3 flex justify-center">
             <a
-              href="/assets/brochures/Brochure-Egypte-2025-FocusWTV-19-11-2025.pdf"
+              href="/assets/brochures/Brochure-Adriatische-cruise.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-[#162b58] hover:!bg-[#4ab0e1] text-white font-bold py-3 px-6 rounded-xl shadow-xl duration-200 flex items-center gap-2"
@@ -904,7 +882,7 @@ const AdriatischeCruise = () => {
               </svg>
               Bekijk de brochure
             </a>
-          </div> */}
+          </div> 
         </div>
 
         {/** Back to alle reizen */}

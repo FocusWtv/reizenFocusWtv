@@ -28,41 +28,35 @@ const ZwarteWoud = () => {
 
   const suiteData = [
     {
-      name: "Hoofddek",
+      name: "Dubbelkajuit op hoofddek",
       color: "bg-pink-200",
-      dubbele: "€699 p.p.",
-      individuele: "€699 p.p.",
+      prijs: "€699 p.p.",
+    },
+        {
+      name: "Singlekajuit op hoofddek",
+      color: "bg-pink-200",
+      prijs: "€699 p.p.",
     },
     {
-      name: "Tussendek",
+      name: "Dubbelkajuit op tussendek",
       color: "bg-purple-200",
-      dubbele: "€799 p.p.",
-      individuele: "€799 p.p.",
+      prijs: "€799 p.p.",
+    },
+        {
+      name: "Singlekajuit op tussendek",
+      color: "bg-purple-200",
+      prijs: "€1.018 p.p.",
     },
     {
-      name: "Bovendek",
+      name: "Dubbelkajuit op bovendek",
       color: "bg-blue-200",
-      dubbele: "€899 p.p.",
-      individuele: "€1.118 p.p.",
+      prijs: "€899 p.p.",
     },
-    /*     {
-      name: "Presidentiele Suite (36 m²) - Bovendek",
-      color: "bg-yellow-200",
-      dubbele: "4 490",
-      individuele: "-",
+        {
+      name: "Singlekajuit op bovendek",
+      color: "bg-blue-200",
+      prijs: "€1.118 p.p.",
     },
-    {
-      name: "Presidentiele Suite (36 m²) - Panoramadek",
-      color: "bg-yellow-200",
-      dubbele: "4 490",
-      individuele: "-",
-    },
-    {
-      name: "Royal Suite (40 m²) - Bovendek",
-      color: "bg-teal-200",
-      dubbele: "4 790",
-      individuele: "-",
-    }, */
   ];
 
   const zwartewoudPhotos = [
@@ -211,45 +205,12 @@ const ZwarteWoud = () => {
           </p>
         </div>
 
-        {/* {/** Info Avond */}
-        {/* <div className="text-center mb-8" id="infoavond">
-          <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8 mb-8">
-            Infoavond
-          </h2>
-          <div className="text-center text-[#162b58] mt-2 mx-8 lg:mx-32">
-            <p className="text-lg">
-              Focus & WTV organiseren ook een infoavond waarop je meer te weten
-              komt over onze Nieuwjaarscruise Italië. De infoavond gaat door in
-              het Concertgebouw Brugge op woensdagavond 10 september 2025. We
-              verwelkomen jullie vanaf 18u30. De presentatie gaat van start om
-              19u00.
-            </p>
-            <a
-              class="group mt-10 relative inline-block text-sm font-medium text-[#162b58] focus:ring-3 focus:outline-hidden"
-              href="#"
-            >
-              <span class="absolute inset-0 rounded-lg translate-x-0.5 translate-y-0.5 bg-[#162b58] transition-transform group-hover:translate-x-0 group-hover:translate-y-0"></span>
-              <span class="relative text-2xl text-white block border border-current rounded-lg bg-[#162b58] px-8 py-3">
-                Interesse? Schrijf je <b>HIER</b> in voor deze infoavond.
-              </span>
-            </a>
-          </div>
-        </div> */}
-
         {/* Reis route */}
         <div className="mt-16" id="route">
           <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8">
             Reisroute
           </h2>
           <div className="flex items-start gap-4 mx-4 mt-10 lg:mx-16 flex-col lg:flex-row">
-            {/* Image container */}
-            {/* <div className="w-full md:mx-auto lg:w-1/2">
-              <img
-                src={route}
-                alt="Reisroute"
-                className="w-full h-auto rounded-lg"
-              />
-            </div> */}
             {/* Accordion container */}
             <div className="w-full flex flex-col gap-4">
               <div className="w-full text-[#162b58] space-y-4">
@@ -452,46 +413,6 @@ const ZwarteWoud = () => {
             </p>
           </div>
 
-          {/*           <div className="relative">
-            <h2 className="text-xl italic mt-10 font-bold text-[#162b58]">
-              Kajuiten
-            </h2>
-            <p className="text-lg text-[#162b58] mt-4">
-              De M/S Fayan II heeft 70 buitenkajuiten met uitzicht op de oevers
-              van de Nijl. Ze zijn comfortabel en modern ingericht. Alle
-              kajuiten op de Fayan II hebben grote schuiframen, zodat u in alle
-              rust de oevers van de Nijl kunt bewonderen. De Deluxe kajuiten met
-              venster hebben een oppervlakte van 20 m², de Presidentiele Suites
-              (36 m²) en Royal Suite (40m²) hebben een zithoek, een dressing en
-              twee grote schuiframen. De Royal Suite heeft ook een terras en een
-              bubbelbad. Alle kajuiten zijn uitgerust met een badkamer met
-              douche of bad en WC, individuele airconditioning, kluis,
-              flatscreen TV, minibar, telefoon (intern gebruik) en haardroger.
-            </p>
-          </div>
-
-          <div className="relative">
-            <h2 className="text-xl italic mt-10 font-bold text-[#162b58]">
-              Faciliteiten aan boord
-            </h2>
-            <p className="text-lg text-[#162b58] mt-4">
-              De gemeenschappelijke ruimtes bieden een verfijnde, moderne en
-              vriendelijke omgeving. Geniet van een heerlijke cocktail in de
-              chique en gezellige loungebar op het Bovendek, of geniet van het
-              prachtige landschap onder de pergola op het Zonnedek. Het Zonnedek
-              staat in het teken van ontspanning, met dank aan het aangename
-              zwembad (een van de grootste aan boord van een schip op de Nijl)
-              en het goed onderhouden buitenmeubilair. Er is ook een kleine
-              fitnessruimte, een winkeltje, een massageruimte (betalend) en
-              internettoegang in de loungebar (de kwaliteit van de verbinding
-              hangt evenwel af van het gebied waar u doorheen vaart).
-              <br />
-              Het restaurant op het Navigatiedek biedt een verfijnde
-              internationale en Egyptische keuken, met verse seizoenproducten.
-              Mineraalwater, thee en koffie zijn inbegrepen bij de maaltijden.
-            </p>
-          </div> */}
-
           <div className="relative mb-10 lg:mb-16">
             <div className="mb-10">
               <PhotoAlbum photos={shipPhotos} />
@@ -521,12 +442,9 @@ const ZwarteWoud = () => {
                         <tr className="border-b border-gray-300">
                           <th className="text-left p-3 font-medium text-gray-600 w-1/2"></th>
                           <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Dubbele bezetting
+                            Prijs
                           </th>
-                          <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Individuele bezetting
-                          </th>
-                        </tr>
+                          </tr>
                       </thead>
                       <tbody>
                         {suiteData.map((suite, index) => (
@@ -537,10 +455,7 @@ const ZwarteWoud = () => {
                               {suite.name}
                             </td>
                             <td className="p-3 text-center font-semibold">
-                              {suite.dubbele}
-                            </td>
-                            <td className="p-3 text-center font-semibold">
-                              {suite.individuele}
+                              {suite.prijs}
                             </td>
                           </tr>
                         ))}
@@ -563,18 +478,10 @@ const ZwarteWoud = () => {
                         <div className="p-3 space-y-2">
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-600">
-                              Dubbele bezetting:
+                              Prijs
                             </span>
                             <span className="font-semibold">
-                              {suite.dubbele}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">
-                              Individuele bezetting:
-                            </span>
-                            <span className="font-semibold">
-                              {suite.individuele}
+                              {suite.prijs}
                             </span>
                           </div>
                         </div>
@@ -596,13 +503,6 @@ const ZwarteWoud = () => {
                   </div>
                 </div>
               </div>
-              {/* <div className="mt-8 mx-8 lg:mx-32">
-                <img
-                  src={prijs}
-                  alt="afbeelding ship"
-                  className="w-full h-96 lg:h-[500px] object-cover"
-                />
-              </div> */}
             </div>
           </div>
         </div>
@@ -630,11 +530,6 @@ const ZwarteWoud = () => {
             <li>Begeleiding door ons reisteam</li>
             <li>Bijstands-/repatriëringsverzekering</li>
             <li>Haventaksen - De diensten aan de haven</li>
-            {/*             <li>
-              De diensten van een Nederlandstalige Rivages du Monde
-              cruisedirecteur samen met een team van Focus & WTV
-            </li>
-            <li>Een reisfilm van Focus & WTV, gemaakt tijdens deze reis. </li> */}
           </ul>
         </div>
 
@@ -648,11 +543,6 @@ const ZwarteWoud = () => {
             <li>Dranken van de speciale wijnkaart en champagne</li>
             <li>Dranken tijdens transfers</li>
             <li>Annuleringsverzekering/bagageverzekering</li>
-            {/*             <li>Reisverzekeringen</li>
-            <li>
-              Mogelijkheid om in Business Class te vliegen: consulteer ons
-            </li>
-            <li>Facultatieve excursies</li> */}
           </ul>
         </div>
 
@@ -663,27 +553,6 @@ const ZwarteWoud = () => {
             <li>
               Dit schip werd speciaal gecharterd voor de kijkers van Focus & WTV
             </li>
-            {/* <li>
-              Het programma
-              <ul className="list-disc pl-6 text-lg text-[#162b58] space-y-4 text-left">
-                <li>
-                  Verblijf in Caïro tijdens deze reis: Ontdek Caïro en de
-                  piramides van Gizeh.
-                </li>
-                <li>
-                  Een unieke excursie naar de majestueuze tempels van Abu
-                  Simbel.
-                </li>
-                <li>
-                  Een uitgebreid bezoek aan de legendarische tempels van Luxor
-                  en Karnak.
-                </li>
-                <li>
-                  Een rijkgevuld programma inclusief bezoeken aan Edfu, Kom Ombo
-                  en Philae.
-                </li>
-              </ul>
-            </li> */}
             <li>Alles in je eigen taal</li>
             <li>Audiogidsen tijdens de excursies zijn inbegrepen</li>
             <li>Gratis Wifi aan boord</li>

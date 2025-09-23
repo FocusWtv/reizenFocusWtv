@@ -42,14 +42,12 @@ const ZuidFinland = () => {
     {
       name: "Standaard tweepersoonskamer",
       color: "bg-orange-400",
-      dubbele: "€2.599 p.p.",
-      individuele: "€2.599 p.p.",
+      prijs: "€2.599 p.p.",
     },
     {
       name: "Standaard eenpersoonskamer",
       color: "bg-blue-200",
-      dubbele: "€3.085 p.p.",
-      individuele: "€3.085 p.p.",
+      prijs: "€3.085 p.p.",
     },
   ];
 
@@ -699,11 +697,9 @@ const ZuidFinland = () => {
                         <tr className="border-b border-gray-300">
                           <th className="text-left p-3 font-medium text-gray-600 w-1/2"></th>
                           <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Dubbele bezetting
+                            Prijs
                           </th>
-                          <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Individuele bezetting
-                          </th>
+                          
                         </tr>
                       </thead>
                       <tbody>
@@ -715,11 +711,9 @@ const ZuidFinland = () => {
                               {suite.name}
                             </td>
                             <td className="p-3 text-center font-semibold">
-                              {suite.dubbele}
+                              {suite.prijs}
                             </td>
-                            <td className="p-3 text-center font-semibold">
-                              {suite.individuele}
-                            </td>
+                            
                           </tr>
                         ))}
                       </tbody>
@@ -741,18 +735,10 @@ const ZuidFinland = () => {
                         <div className="p-3 space-y-2">
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-600">
-                              Dubbele bezetting:
+                              Prijs:
                             </span>
                             <span className="font-semibold">
-                              {suite.dubbele}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">
-                              Individuele bezetting:
-                            </span>
-                            <span className="font-semibold">
-                              {suite.individuele}
+                              {suite.prijs}
                             </span>
                           </div>
                         </div>

@@ -43,26 +43,22 @@ const ZuidAfrika = () => {
     {
       name: "Dubbelkajuit zonder balkon",
       color: "bg-orange-400",
-      dubbele: "€6.690 p.p.",
-      individuele: "€6.690 p.p.",
+      prijs: "€6.690 p.p.",
     },
     {
       name: "Singlekajuit zonder balkon",
       color: "bg-blue-200",
-      dubbele: "€8.475 p.p.",
-      individuele: "€8.475 p.p.",
+      prijs: "€8.475 p.p.",
     },
     {
       name: "Dubbelkajuit met balkon",
       color: "bg-purple-400",
-      dubbele: "€6.925 p.p.",
-      individuele: "€6.925 p.p.",
+      prijs: "€6.925 p.p.",
     },
     {
       name: "Singlekajuit met balkon",
       color: "bg-purple-200",
-      dubbele: "€8.710 p.p.",
-      individuele: "€8.710 p.p.",
+      prijs: "€8.710 p.p.",
     },
   ];
 
@@ -700,10 +696,7 @@ const ZuidAfrika = () => {
                         <tr className="border-b border-gray-300">
                           <th className="text-left p-3 font-medium text-gray-600 w-1/2"></th>
                           <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Dubbele bezetting
-                          </th>
-                          <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Individuele bezetting
+                            Prijs
                           </th>
                         </tr>
                       </thead>
@@ -716,10 +709,7 @@ const ZuidAfrika = () => {
                               {suite.name}
                             </td>
                             <td className="p-3 text-center font-semibold">
-                              {suite.dubbele}
-                            </td>
-                            <td className="p-3 text-center font-semibold">
-                              {suite.individuele}
+                              {suite.prijs}
                             </td>
                           </tr>
                         ))}
@@ -742,18 +732,10 @@ const ZuidAfrika = () => {
                         <div className="p-3 space-y-2">
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-600">
-                              Dubbele bezetting:
+                              Prijs:
                             </span>
                             <span className="font-semibold">
-                              {suite.dubbele}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">
-                              Individuele bezetting:
-                            </span>
-                            <span className="font-semibold">
-                              {suite.individuele}
+                              {suite.prijs}
                             </span>
                           </div>
                         </div>
@@ -894,7 +876,7 @@ const ZuidAfrika = () => {
               href="/assets/brochures/Brochure-RONDREIS-ZUIDELIJK-AFRIKA.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#162b58] hover:!bg-[#4ab0e1] text-white text-black font-bold py-3 px-6 rounded-xl shadow-xl duration-200 flex items-center gap-2"
+              className="bg-[#162b58] hover:!bg-[#4ab0e1] text-white font-bold py-3 px-6 rounded-xl shadow-xl duration-200 flex items-center gap-2"
             >
               <svg
                 className="w-5 h-5"

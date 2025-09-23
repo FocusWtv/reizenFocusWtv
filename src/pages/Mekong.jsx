@@ -46,40 +46,34 @@ const Mekong = () => {
 
   const suiteData = [
     {
-      name: "Dubbelkajuit - Bovendek",
+      name: "Dubbelkajuit - Hoofddek",
       color: "bg-orange-400",
-      dubbele: "€4.499 p.p.",
-      individuele: "€4.499 p.p.",
+      prijs: "€4.199 p.p.",
+    },
+    {
+      name: "Singlekajuit - Hoofddek",
+      color: "bg-orange-400",
+      prijs: "€5.558 p.p.",
+    },
+    {
+      name: "Dubbelkajuit - Bovendek",
+      color: "bg-blue-200",
+      prijs: "€4.499 p.p.",
     },
     {
       name: "Singlekajuit - Bovendek",
       color: "bg-blue-200",
-      dubbele: "€5.758 p.p.",
-      individuele: "€5.758 p.p.",
-    },
-    {
-      name: "Dubbelkajuit - Hoofddek",
-      color: "bg-purple-400",
-      dubbele: "€4.199 p.p.",
-      individuele: "-",
-    },
-    {
-      name: "Singlekajuit - Hoofddek",
-      color: "bg-purple-200",
-      dubbele: "-",
-      individuele: "€5.558 p.p.",
+      prijs: "€5.758 p.p.",
     },
     {
       name: "Dubbelkajuit bovendek met klein terras*",
-      color: "bg-orange-200",
-      dubbele: "€4.599 p.p.",
-      individuele: "-",
+      color: "bg-purple-400",
+      prijs: "€4.599 p.p.",
     },
     {
       name: "Singlekajuit bovendek met klein terras*",
-      color: "bg-purple-200",
-      dubbele: "-",
-      individuele: "€5.858 p.p.",
+      color: "bg-purple-400",
+      prijs: "€5.858 p.p.",
     },
   ];
 
@@ -683,10 +677,7 @@ const Mekong = () => {
                         <tr className="border-b border-gray-300">
                           <th className="text-left p-3 font-medium text-gray-600 w-1/2"></th>
                           <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Dubbele bezetting
-                          </th>
-                          <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                            Individuele bezetting
+                            Prijs
                           </th>
                         </tr>
                       </thead>
@@ -699,10 +690,7 @@ const Mekong = () => {
                               {suite.name}
                             </td>
                             <td className="p-3 text-center font-semibold">
-                              {suite.dubbele}
-                            </td>
-                            <td className="p-3 text-center font-semibold">
-                              {suite.individuele}
+                              {suite.prijs}
                             </td>
                           </tr>
                         ))}
@@ -725,18 +713,10 @@ const Mekong = () => {
                         <div className="p-3 space-y-2">
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-600">
-                              Dubbele bezetting:
+                              Prijs:
                             </span>
                             <span className="font-semibold">
-                              {suite.dubbele}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">
-                              Individuele bezetting:
-                            </span>
-                            <span className="font-semibold">
-                              {suite.individuele}
+                              {suite.prijs}
                             </span>
                           </div>
                         </div>
