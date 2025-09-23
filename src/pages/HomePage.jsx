@@ -142,7 +142,7 @@ const HomePage = () => {
       </div>
 
       {/* Info avonden */}
-      <div className="mt-12 mx-8 lg:mx-32">
+      <div className="mt-12 mx-4 lg:mx-32">
         <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8">
           Info avonden
         </h2>
@@ -151,7 +151,7 @@ const HomePage = () => {
           reizen!
         </p>
         {/* Info cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-6 p-3 mx-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-items-center gap-6 p-3 mx-8">
           <div class="w-full max-w-sm bg-[#162b58] border border-gray-200 rounded-lg shadow-2xl [perspective:50rem] transition-all duration-300 hover:scale-105 hover:shadow-2xl">
             <a href="https://focus-wtv.be/reizen/afrikareis-infoavond">
               <img
@@ -177,6 +177,20 @@ const HomePage = () => {
             <div class="px-5 pb-5">
               <h2 class="text-xl font-bold tracking-tight text-white">
                 Cruise op de Mekong: woensdag 8 oktober
+              </h2>
+            </div>
+          </div>
+          <div class="w-full max-w-sm bg-[#162b58] border border-gray-200 rounded-lg shadow-2xl [perspective:50rem] transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+            <a href="https://focus-wtv.be/reizen/adriatische-cruise-infoavond">
+              <img
+                className="w-full h-48 border-4 border-[#162b58] rounded-md p-3 object-cover"
+                src={image1}
+                alt="adriatische cruise"
+              />
+            </a>
+            <div class="px-5 pb-5">
+              <h2 class="text-xl font-bold tracking-tight text-white">
+                Adriatische cruise: maandag 20 oktober
               </h2>
             </div>
           </div>
