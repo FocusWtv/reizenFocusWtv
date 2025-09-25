@@ -18,6 +18,15 @@ import ZuidFinland from "./pages/ZuidFinland";
 import VideoDetailPage from "./pages/VideoDetailPage";
 import AdriatischeCruise from "./pages/AdriatischeCruise";
 
+// Admin imports
+import AdminLayout from './admin/components/AdminLayout';
+import AdminDashboard from './admin/pages/AdminDashboard';
+import AdminReizen from './admin/pages/AdminReizen';
+import AdminHomepage from './admin/pages/AdminHomepage';
+import AdminEvents from './admin/pages/AdminEvents';
+import AdminLogin from './admin/pages/AdminLogin';
+import ProtectedRoute from './admin/components/ProtectedRoute';
+
 const App = () => {
   const [lenis, setLenis] = useState(null);
   const [useNativeScroll, setUseNativeScroll] = useState(false);
@@ -87,6 +96,7 @@ const App = () => {
     <BrowserRouter>
       <ScrollToTop lenis={lenis} />
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/adriatische-cruise" element={<AdriatischeCruise />} />
         <Route path="/zwarte-woud" element={<ZwarteWoud />} />
@@ -95,6 +105,21 @@ const App = () => {
         <Route path="/mekong" element={<Mekong />} />
         <Route path="/zuidfinland" element={<ZuidFinland />} />
         <Route path="/video/:id" element={<VideoDetailPage />} />
+
+        {/* Admin login (public) */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        
+        {/* Protected admin routes */}
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        }>
+          <Route index element={<AdminDashboard />} />
+          <Route path="reizen" element={<AdminReizen />} />
+          <Route path="homepage" element={<AdminHomepage />} />
+          <Route path="events" element={<AdminEvents />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

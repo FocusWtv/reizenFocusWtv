@@ -56,3 +56,19 @@ h1, h2, h3, h4, h5, h6 {
 .font-bold { font-weight: 700 !important; }
 .font-extrabold { font-weight: 800 !important; }
 .font-black { font-weight: 900 !important; }
+
+/* Force input fields to have white background in admin area */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+  background-color: white !important;
+  color: #1f2937 !important; /* dark gray text */
+}
+
+/* Ensure placeholders are visible */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important; /* gray-400 */
+}
