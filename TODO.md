@@ -11,6 +11,7 @@
 - [x] ProtectedRoute component voor beveiliging
 - [x] Logout functionaliteit
 - [x] Responsive admin interface
+- [x] Duplicate login components opgeruimd
 
 ### Admin Pagina's - Basis Structuur
 - [x] AdminHomepage - placeholder
@@ -74,21 +75,51 @@
    - [ ] Validation systeem
    - [ ] Data export functionaliteit
 
-### Prioriteit 3 - Optimalisaties
-1. **Beveiliging**
+### Prioriteit 3 - Production Deployment
+1. **Vercel Configuratie voor Admin Routes**
+   - [ ] `vercel.json` toevoegen voor SPA routing support:
+     ```json
+     {
+       "rewrites": [
+         {
+           "source": "/(.*)",
+           "destination": "/index.html"
+         }
+       ]
+     }
+     ```
+   - [ ] Admin routes testen op productie
+   - [ ] Error handling voor productie omgeving
+
+2. **Beveiliging voor Productie**
    - [ ] Vervang hardcoded credentials door echte API
    - [ ] JWT tokens implementeren
    - [ ] Session management verbeteren
+   - [ ] Rate limiting voor login attempts
 
-2. **User Experience**
-   - [ ] Loading states verbeteren
-   - [ ] Error handling uitbreiden
-   - [ ] Success notifications
-
-3. **Performance**
+3. **Performance Optimalisaties**
    - [ ] Lazy loading voor admin components
    - [ ] Image optimization
    - [ ] Caching strategie
+
+## 🚨 BELANGRIJK - PRODUCTIE DEPLOYMENT
+
+**⚠️ Admin panel is nog NIET klaar voor productie:**
+- Admin routes werken lokaal maar niet op Vercel (SPA routing issue)
+- Hardcoded credentials zijn tijdelijk
+- Geen echte data management nog
+- Placeholder functionaliteiten
+
+**🎯 Voor productie deployment:**
+1. Eerst alle admin functionaliteiten afwerken
+2. Dan `vercel.json` toevoegen voor routing
+3. Echte authenticatie implementeren
+4. Testen op staging omgeving
+5. Dan pas live zetten
+
+**🔒 Huidige Login Credentials (development only):**
+- Username: `admin`
+- Password: `focuswtv2025`
 
 ## 🎯 LANGE TERMIJN DOELEN
 
@@ -104,17 +135,7 @@
 - [ ] Analytics dashboard
 - [ ] Email marketing integratie
 
-### Deployment
-- [ ] Production build optimalisatie
-- [ ] CI/CD pipeline
-- [ ] Monitoring & logging
-- [ ] Security audit
-
 ## 📝 NOTITIES
-
-### Huidige Login Credentials
-- Username: `admin`
-- Password: `focuswtv2025`
 
 ### Tech Stack
 - **Frontend**: React + Vite
@@ -125,3 +146,22 @@
 - **Auth**: localStorage (tijdelijk)
 
 ### Bestandsstructuur Admin
+
+
+### Volgende Sprint Focus
+1. **AdminReizen** volledig uitwerken
+2. **Data management** systeem opzetten
+3. **File upload** functionaliteit toevoegen
+4. **Productie deployment** voorbereiden
+
+---
+
+### Volgende Sprint Focus
+1. **AdminReizen** volledig uitwerken
+2. **Data management** systeem opzetten
+3. **File upload** functionaliteit toevoegen
+4. **Productie deployment** voorbereiden
+
+---
+*Laatste update: [25/09/2025]*
+*Status: Admin basis systeem voltooid (development), productie deployment uitgesteld tot admin functionaliteiten compleet zijn*

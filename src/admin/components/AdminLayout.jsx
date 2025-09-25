@@ -1,8 +1,7 @@
-
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom'; // <- Voeg Outlet toe
 
-const AdminLayout = ({ children }) => {
+const AdminLayout = () => { // <- Verwijder children prop
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -13,6 +12,16 @@ const AdminLayout = ({ children }) => {
   };
 
   const navigation = [
+    {
+      name: 'Dashboard',
+      href: '/admin',
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5a2 2 0 012-2h4a2 2 0 012 2v4H8V5z" />
+        </svg>
+      ),
+    },
     {
       name: 'Homepage',
       href: '/admin/homepage',
@@ -37,16 +46,6 @@ const AdminLayout = ({ children }) => {
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-    },
-    {
-      name: 'Dashboard',
-      href: '/admin',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5a2 2 0 012-2h4a2 2 0 012 2v4H8V5z" />
         </svg>
       ),
     },
@@ -147,9 +146,9 @@ const AdminLayout = ({ children }) => {
           </div>
         </header>
 
-        {/* Page content */}
+        {/* Page content - HIER IS DE BELANGRIJKE VERANDERING */}
         <main className="flex-1 overflow-auto p-6">
-          {children}
+          <Outlet /> {/* <- Gebruik Outlet in plaats van children */}
         </main>
       </div>
     </div>
