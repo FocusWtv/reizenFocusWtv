@@ -19,13 +19,13 @@ const CardBack = ({ text, link, status }) => {
         return {
           bg: 'bg-green-500',
           text: 'text-white',
-          label: 'Open'
+          label: 'Beschikbaar'
         };
       default:
         return {
           bg: 'bg-blue-500',
           text: 'text-white',
-          label: 'Open'
+          label: 'Beschikbaar'
         };
     }
   };

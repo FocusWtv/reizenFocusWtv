@@ -12,13 +12,6 @@ dist
 dist-ssr
 *.local
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
 # Firebase credentials (CRITICAL - NEVER COMMIT THESE!)
 firebase-service-account.json
 firebase-adminsdk-*.json
@@ -33,4 +26,13 @@ firebase-adminsdk-*.json
 *.njsproj
 *.sln
 *.sw?
+
+# Local docs (not for repo)
+PRD.md
+TODO.md
+
+# Env files
+.env
+.env.*
+.env.example
 

@@ -1,21 +1,66 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { db } from '../../config/firebase';
+import { collection, getDocs, orderBy, query, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 const AdminReizen = () => {
-  const [reizen] = useState([
-    { id: 1, name: 'Adriatische Cruise', status: 'Active', bookings: 45 },
-    { id: 2, name: 'Zwarte Woud', status: 'Active', bookings: 32 },
-    { id: 3, name: 'Zuid-Italië', status: 'Active', bookings: 28 },
-    { id: 4, name: 'Zuid-Afrika', status: 'Active', bookings: 15 },
-    { id: 5, name: 'Mekong', status: 'Active', bookings: 22 },
-    { id: 6, name: 'Zuid-Finland', status: 'Active', bookings: 18 },
-  ]);
+  const [reizen, setReizen] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [updatingId, setUpdatingId] = useState('');
+  const navigate = useNavigate();
+
+  const loadTrips = async () => {
+    try {
+      const q = query(collection(db, 'trips'), orderBy('createdAt'));
+      const snap = await getDocs(q);
+      const items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      setReizen(items);
+    } catch (_) {
+      setReizen([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadTrips();
+  }, []);
+
+  const togglePublish = async (trip) => {
+    try {
+      setUpdatingId(trip.id);
+      // Optimistische update
+      setReizen(prev => prev.map(r => r.id === trip.id ? { ...r, published: !r.published } : r));
+      await updateDoc(doc(db, 'trips', trip.id), { published: !trip.published });
+    } catch (_) {
+      // bij fout, herladen
+      loadTrips();
+    } finally {
+      setUpdatingId('');
+    }
+  };
+
+  const removeTrip = async (trip) => {
+    const ok = confirm(`Reis "${trip.title || trip.id}" verwijderen?`);
+    if (!ok) return;
+    try {
+      setUpdatingId(trip.id);
+      await deleteDoc(doc(db, 'trips', trip.id));
+      setReizen(prev => prev.filter(r => r.id !== trip.id));
+    } catch (_) {
+      // fallback herladen
+      loadTrips();
+    } finally {
+      setUpdatingId('');
+    }
+  };
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Reizen Management</h1>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-          Add New Reis
+        <button onClick={() => navigate('/admin/reizen/new')} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+          Nieuwe Reis
         </button>
       </div>
 
@@ -24,13 +69,10 @@ const AdminReizen = () => {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Reis Name
+                Reis Naam
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Bookings
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
@@ -38,29 +80,41 @@ const AdminReizen = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {reizen.map((reis) => (
-              <tr key={reis.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {reis.name}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    {reis.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {reis.bookings}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-blue-600 hover:text-blue-900 mr-3">
-                    Edit
-                  </button>
-                  <button className="text-red-600 hover:text-red-900">
-                    Delete
-                  </button>
+            {loading ? (
+              <tr>
+                <td colSpan={3} className="px-6 py-10 text-center text-sm text-gray-500">Laden…</td>
+              </tr>
+            ) : reizen.length === 0 ? (
+              <tr>
+                <td colSpan={3} className="px-6 py-10 text-center text-sm text-gray-500">
+                  Nog geen reizen. Klik op <span className="font-semibold">Nieuwe Reis</span> om te starten.
                 </td>
               </tr>
-            ))}
+            ) : (
+              reizen.map((reis) => (
+                <tr key={reis.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {reis.title || reis.id}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${reis.published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                      {reis.published ? 'Gepubliceerd' : 'Concept'}{reis.status ? ` · ${reis.status}` : ''}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex gap-3">
+                    <button onClick={() => navigate(`/admin/reizen/${reis.slug || reis.id}`)} className="text-blue-600 hover:text-blue-900" disabled={updatingId===reis.id}>
+                      Edit
+                    </button>
+                    <button onClick={() => togglePublish(reis)} className="text-yellow-700 hover:text-yellow-900" disabled={updatingId===reis.id}>
+                      {reis.published ? 'Zet op concept' : 'Publiceer'}
+                    </button>
+                    <button onClick={() => removeTrip(reis)} className="text-red-600 hover:text-red-900" disabled={updatingId===reis.id}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

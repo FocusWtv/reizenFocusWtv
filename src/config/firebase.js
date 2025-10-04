@@ -1,46 +1,32 @@
-const admin = require('firebase-admin');
-require('dotenv').config();
+import { initializeApp, getApps } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
-let serviceAccount;
+let analyticsInstance = null;
 
-if (process.env.NODE_ENV === 'development') {
-  // Local development - use JSON file
-  try {
-    serviceAccount = require('../../firebase-service-account.json');
-  } catch (error) {
-    console.error('Firebase service account file not found');
-  }
-} else {
-  // Production - use environment variables
-  serviceAccount = {
-    type: "service_account",
-    project_id: process.env.FIREBASE_PROJECT_ID,
-    private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
-    private_key: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    client_email: process.env.FIREBASE_CLIENT_EMAIL,
-    client_id: process.env.FIREBASE_CLIENT_ID,
-    auth_uri: "https://accounts.google.com/o/oauth2/auth",
-    token_uri: "https://oauth2.googleapis.com/token",
-    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-    client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL,
-    universe_domain: "googleapis.com"
-  };
-}
-
-// Initialize Firebase Admin
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-  });
-}
-
-const db = admin.firestore();
-const bucket = admin.storage().bucket();
-
-module.exports = {
-  admin,
-  db,
-  bucket
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
+
+const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+
+export async function getAnalyticsIfAvailable() {
+  if (typeof window === 'undefined') return null;
+  if (!import.meta.env.VITE_FIREBASE_MEASUREMENT_ID) return null;
+  if (analyticsInstance) return analyticsInstance;
+  const { getAnalytics } = await import('firebase/analytics');
+  analyticsInstance = getAnalytics(app);
+  return analyticsInstance;
+}
+
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
+export default app;

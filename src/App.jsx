@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
 import { gsap } from "gsap";
@@ -9,39 +9,42 @@ import ScrollToTop from "./components/ScrollToTop";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 import "./index.css";
-import HomePage from "./pages/HomePage";
-import ZwarteWoud from "./pages/ZwarteWoud";
-import ZuidItalie from "./pages/ZuidItalie";
-import ZuidAfrika from "./pages/ZuidAfrika";
-import Mekong from "./pages/Mekong";
-import ZuidFinland from "./pages/ZuidFinland";
-import VideoDetailPage from "./pages/VideoDetailPage";
-import AdriatischeCruise from "./pages/AdriatischeCruise";
+import Home from "./pages/Home";
+import InfoavondDetail from "./pages/InfoavondDetail";
+import ReisDetail from "./pages/ReisDetail";
 
 // Admin imports
 import AdminLayout from './admin/components/AdminLayout';
-import AdminDashboard from './admin/pages/AdminDashboard';
 import AdminReizen from './admin/pages/AdminReizen';
 import AdminHomepage from './admin/pages/AdminHomepage';
 import AdminEvents from './admin/pages/AdminEvents';
 import AdminLogin from './admin/pages/AdminLogin';
+import AdminUsers from './admin/pages/AdminUsers';
 import ProtectedRoute from './admin/components/ProtectedRoute';
+import AdminReisForm from './admin/pages/AdminReisForm';
 
 const App = () => {
   const [lenis, setLenis] = useState(null);
   const [useNativeScroll, setUseNativeScroll] = useState(false);
+  const location = useLocation();
 
   // Browser detection
   const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
   const isEdge = /Edg/.test(navigator.userAgent);
 
   useEffect(() => {
+    // Gebruik native scroll op admin routes (lenis uitschakelen)
+    if (location.pathname.startsWith('/admin')) {
+      setUseNativeScroll(true);
+      return;
+    }
+
     if (isChrome || isEdge) {
       setUseNativeScroll(true);
       return; // Use native scrolling for Chrome/Edge
     }
 
-    // Initialize Lenis only for Firefox and other browsers
+    // Initialize Lenis only for Firefox and other browsers, and niet op /admin
     const lenisInstance = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -70,7 +73,7 @@ const App = () => {
       lenisInstance.destroy();
       setLenis(null);
     };
-  }, [isChrome, isEdge]);
+  }, [isChrome, isEdge, location.pathname]);
 
   useGSAP(() => {
     const elements = gsap.utils.toArray(".reveal-up");
@@ -93,18 +96,13 @@ const App = () => {
   }, [lenis, useNativeScroll]);
 
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop lenis={lenis} />
       <Routes>
         {/* Public routes */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/adriatische-cruise" element={<AdriatischeCruise />} />
-        <Route path="/zwarte-woud" element={<ZwarteWoud />} />
-        <Route path="/zuiditalie" element={<ZuidItalie />} />
-        <Route path="/zuidafrika" element={<ZuidAfrika />} />
-        <Route path="/mekong" element={<Mekong />} />
-        <Route path="/zuidfinland" element={<ZuidFinland />} />
-        <Route path="/video/:id" element={<VideoDetailPage />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/infoavonden/:slug" element={<InfoavondDetail />} />
+        <Route path="/reizen/:slug" element={<ReisDetail />} />
 
         {/* Admin login (public) */}
         <Route path="/admin/login" element={<AdminLogin />} />
@@ -115,13 +113,15 @@ const App = () => {
             <AdminLayout />
           </ProtectedRoute>
         }>
-          <Route index element={<AdminDashboard />} />
           <Route path="reizen" element={<AdminReizen />} />
+          <Route path="reizen/new" element={<AdminReisForm />} />
+          <Route path="reizen/:id" element={<AdminReisForm />} />
           <Route path="homepage" element={<AdminHomepage />} />
           <Route path="events" element={<AdminEvents />} />
+          <Route path="users" element={<AdminUsers />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </>
   );
 };
 

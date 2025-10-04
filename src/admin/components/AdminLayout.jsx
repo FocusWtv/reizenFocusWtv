@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom'; // <- Voeg Outlet toe
 
 const AdminLayout = () => { // <- Verwijder children prop
@@ -6,22 +6,19 @@ const AdminLayout = () => { // <- Verwijder children prop
   const location = useLocation();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    document.body.classList.add('admin-mode');
+    return () => {
+      document.body.classList.remove('admin-mode');
+    };
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     navigate('/admin/login');
   };
 
   const navigation = [
-    {
-      name: 'Dashboard',
-      href: '/admin',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5a2 2 0 012-2h4a2 2 0 012 2v4H8V5z" />
-        </svg>
-      ),
-    },
     {
       name: 'Homepage',
       href: '/admin/homepage',
@@ -49,6 +46,15 @@ const AdminLayout = () => { // <- Verwijder children prop
         </svg>
       ),
     },
+    {
+      name: 'Gebruikers',
+      href: '/admin/users',
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5V4a2 2 0 00-2-2H7a2 2 0 00-2 2v16h5m7 0v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4m10 0H7" />
+        </svg>
+      ),
+    },
   ];
 
   return (
@@ -65,12 +71,12 @@ const AdminLayout = () => { // <- Verwijder children prop
       <div className={`
         fixed lg:static inset-y-0 left-0 z-50 
         w-64 bg-white shadow-lg 
-        transform transition-transform duration-300 ease-in-out
+        transition-transform duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Sidebar header */}
         <div className="flex items-center justify-center h-16 bg-indigo-600 border-b border-indigo-700">
-          <h1 className="text-white text-xl font-bold">Focus WTV Admin</h1>
+          <h1 className="text-white text-xl font-bold">Focus & WTV REIZEN</h1>
         </div>
         
         {/* Navigation */}
@@ -104,7 +110,7 @@ const AdminLayout = () => { // <- Verwijder children prop
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden min-h-0">
         {/* Top navigation */}
         <header className="bg-white shadow-sm border-b border-gray-200 z-30">
           <div className="flex items-center justify-between h-16 px-4">
@@ -147,7 +153,7 @@ const AdminLayout = () => { // <- Verwijder children prop
         </header>
 
         {/* Page content - HIER IS DE BELANGRIJKE VERANDERING */}
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-y-auto min-h-0 p-6">
           <Outlet /> {/* <- Gebruik Outlet in plaats van children */}
         </main>
       </div>
