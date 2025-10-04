@@ -33,7 +33,17 @@ const CardBack = ({ text, link, status }) => {
   const statusStyle = getStatusStyle(status);
 
     const handleLinkClick = (e) => {
+    e.preventDefault(); // Voorkom normale React Router navigatie
     e.stopPropagation();
+    
+    // Check if we're in an iframe
+    if (window.parent !== window) {
+      // We're in an iframe - navigate parent window to the detail page
+      window.parent.location.href = `https://reizen.focus-wtv.be${link}`;
+    } else {
+      // We're not in an iframe - use normal React Router navigation
+      window.location.href = link;
+    }
   };
 
   return (
