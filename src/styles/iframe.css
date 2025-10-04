@@ -1,0 +1,26 @@
+/* CSS specifiek voor iframe gebruik - alleen voor publieke pagina's */
+
+/* Verwijder witruimte voor iframe */
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Verwijder eventuele container margins */
+.container, .main-container {
+  margin: 0;
+  padding: 0 10px; /* Minimale padding */
+  max-width: 100%;
+}
+
+/* Zorg dat alle content de volledige breedte gebruikt */
+* {
+  box-sizing: border-box;
+}
+
+/* Verwijder eventuele body padding van de admin */
+body:not(.admin-body) {
+  padding: 0;
+}

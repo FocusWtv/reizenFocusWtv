@@ -10,6 +10,9 @@ import { Link } from "react-router-dom";
 // Firebase imports
 import { db } from "../config/firebase";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
+import '../styles/iframe.css'; // Alleen voor publieke pagina's
+
+// Rest van uw component
 
 const Home = () => {
   const [dynamicCards, setDynamicCards] = useState([]);

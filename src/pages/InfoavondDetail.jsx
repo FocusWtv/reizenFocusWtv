@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../config/firebase';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
+import '../styles/iframe.css'; // Alleen voor publieke pagina's
+
+// Rest van uw component
 
 const Icon = ({ children }) => (
   <span className="inline-flex items-center justify-center w-5 h-5 rounded bg-[#162b58] text-white text-xs mr-2">{children}</span>

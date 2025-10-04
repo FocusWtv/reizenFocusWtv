@@ -15,6 +15,9 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import PhotoAlbum from "../components/PhotoAlbum";
+import '../styles/iframe.css'; // Alleen voor publieke pagina's
+
+// Rest van uw component
 
 const ReisDetail = () => {
   const { slug } = useParams();
