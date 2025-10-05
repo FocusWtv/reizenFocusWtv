@@ -168,7 +168,7 @@ const InfoavondDetail = () => {
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-2">Contact & reservatie</h2>
           {event.contactText && (
-            <p className="text-gray-800 whitespace-pre-line mb-3">{event.contactText}</p>
+            <div className="text-gray-800 mb-3" dangerouslySetInnerHTML={{ __html: event.contactText }} />
           )}
           {event.contactPhone && (
             <p className="text-gray-800 flex items-start mb-2"><Icon>📞</Icon><span>{event.contactPhoneLabel ? `${event.contactPhoneLabel} ` : ''}{event.contactPhone}</span></p>
