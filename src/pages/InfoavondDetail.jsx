@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../config/firebase';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
-import '../styles/iframe.css'; // Alleen voor publieke pagina's
 
 // Rest van uw component
 
@@ -180,8 +179,8 @@ const InfoavondDetail = () => {
         </div>
       )}
 
-      <div className="mt-10 flex justify-end">
-        <a href="https://www.focus-wtv.be/reizen" className="px-6 py-2 rounded text-white bg-[#162b58] hover:opacity-90">Terug naar reizen</a>
+      <div className="mt-10 flex justify-start">
+        <a href="/" className="px-6 py-2 rounded-full text-white bg-[#162b58] hover:bg-[#4ab0e1]">Terug naar reizen</a>
       </div>
     </div>
   );

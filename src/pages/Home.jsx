@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 // Firebase imports
 import { db } from "../config/firebase";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
-import '../styles/iframe.css'; // Alleen voor publieke pagina's
 
 // Rest van uw component
 
@@ -51,7 +50,7 @@ const Home = () => {
   }, []);
 
   const renderCards = (cards) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-3 p-3 mx-2 lg:mx-32">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-6 p-6 mx-6 lg:mx-32">
       {cards.map((card) => (
         <TravelCard
           key={card.id}
@@ -63,45 +62,21 @@ const Home = () => {
   );
 
   const renderInfoCards = (events) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 p-3 mx-2 lg:mx-32">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 mx-6 lg:mx-32">
       {events.map(ev => (
         <div key={ev.id} className="bg-white rounded-lg shadow-2xl overflow-hidden w-full max-w-sm mb-2">
           {ev.slug ? (
-            <button 
-              onClick={() => {
-                // Check if we're in an iframe
-                if (window.parent !== window) {
-                  // We're in an iframe - navigate parent window to the infoavond page
-                  window.parent.location.href = `https://reizen.focus-wtv.be/infoavonden/${ev.slug}`;
-                } else {
-                  // We're not in an iframe - use normal React Router navigation
-                  window.location.href = `/infoavonden/${ev.slug}`;
-                }
-              }}
-              className="w-full cursor-pointer"
-            >
+            <Link to={`/infoavonden/${ev.slug}`} className="w-full cursor-pointer">
               <img className="w-full h-48 object-cover" src={ev.heroUrl} alt={ev.title} />
-            </button>
+            </Link>
           ) : (
             <img className="w-full h-48 object-cover" src={ev.heroUrl} alt={ev.title} />
           )}
           <div className="p-4">
             {ev.slug ? (
-              <button 
-                onClick={() => {
-                  // Check if we're in an iframe
-                  if (window.parent !== window) {
-                    // We're in an iframe - navigate parent window to the infoavond page
-                    window.parent.location.href = `https://reizen.focus-wtv.be/infoavonden/${ev.slug}`;
-                  } else {
-                    // We're not in an iframe - use normal React Router navigation
-                    window.location.href = `/infoavonden/${ev.slug}`;
-                  }
-                }}
-                className="no-underline text-left cursor-pointer"
-              >
+              <Link to={`/infoavonden/${ev.slug}`} className="no-underline text-left cursor-pointer">
                 <h3 className="text-lg font-semibold mb-1 text-[#162b58] hover:text-[#4ab0e1] transition-colors">{ev.title}</h3>
-              </button>
+              </Link>
             ) : (
               <h3 className="text-lg font-semibold mb-1 text-[#162b58]">{ev.title}</h3>
             )}
@@ -113,16 +88,16 @@ const Home = () => {
   );
 
   return (
-    <div>
+    <div className="bg-white min-h-screen" style={{backgroundColor: 'white'}}>
       {/* Onze reizen: gebruik dit indien nodig voor titel en tekst */}
-      {/* <div className="text-center mb-8  mx-8 lg:mx-32">
-        <h1 className="text-2xl lg:text-4xl text-[#162b58] font-extrabold text-center">
+       <div className="text-center mt-8 mb-8 mx-8 lg:mx-32">
+        <h1 className="text-2xl md:text-3xl lg:text-5xl text-[#162b58] font-extrabold text-center">
           Onze Reizen
         </h1>
-        <p className="text-center text-[#162b58] mt-2 mx-8">
-          Welkom bij Focus & WTV reizen! Klik op een kaart en vind alle info over de reis van uw keuze
+        <p className="text-center text-lg font-semibold text-[#162b58] mt-2 mx-8">
+          Welkom bij <a href="https://focus-wtv.be/reizen" className="text-[#4ab0e1] hover:text-[#162b58] font-semibold underline">Focus & WTV reizen</a>! Klik op een kaart en vind alle info over de reis van uw keuze
         </p>
-      </div> */}
+      </div> 
 
       {loading ? (
         <div className="text-center text-[#162b58]">Laden...</div>
@@ -136,12 +111,12 @@ const Home = () => {
 
       {/* Info avonden */}
       <div className="mt-12 mx-2 lg:mx-16">
-        <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8">
-          Info avonden
+        <h2 className="text-3xl lg:text-5xl text-[#162b58] font-bold text-center mt-8">
+          Infoavonden
         </h2>
-        <p className="text-center text-[#162b58] mt-2 mx-8">
-          Kom naar onze infoavonden om meer te weten te komen over onze
-          reizen!
+        <p className="text-center text-[#162b58] text-md lg:text-lg font-semibold mt-2 mx-8">
+          Kom naar onze infoavonden om meer te weten te komen over de reis van uw keuze!<br/>
+          Daar worden al uw vragen beantwoord en kunnen we u graag inschrijven voor deze reis!
         </p>
         {/* Info cards */}
         {loading ? (
@@ -153,6 +128,19 @@ const Home = () => {
             <div className="text-center text-[#162b58] mx-8 lg:mx-32 py-8">Nog geen infoavonden beschikbaar.</div>
           )
         )}
+        
+        {/* Terug naar officiële site knop */}
+        <div className="text-center mt-8 mb-8">
+          <a 
+            href="https://focus-wtv.be/reizen" 
+            className="inline-flex items-center gap-2 mb-8 bg-[#162b58] hover:bg-[#4ab0e1] text-white font-semibold px-6 py-3 rounded-full shadow-md transition-colors duration-200"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Focus & WTV reizen
+          </a>
+        </div>
       </div> 
     </div>
   );

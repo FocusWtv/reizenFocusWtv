@@ -15,7 +15,6 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import PhotoAlbum from "../components/PhotoAlbum";
-import '../styles/iframe.css'; // Alleen voor publieke pagina's
 
 // Rest van uw component
 
@@ -624,8 +623,8 @@ const ReisDetail = () => {
       {/** Back to alle reizen */}
       <div className="mx-8 mt-10 lg:mx-32">
         <Link
-          to="https://www.focus-wtv.be/reizen"
-          className="mx-auto mb-10 inline-flex items-center justify-center gap-2 bg-[#162b58] hover:!bg-[#4ab0e1] text-white font-semibold px-5 py-2.5 rounded-lg shadow-md duration-200"
+          to="/"
+          className="mx-auto mb-10 inline-flex items-center justify-center gap-2 bg-[#162b58] hover:!bg-[#4ab0e1] text-white font-semibold px-5 py-2.5 rounded-full shadow-md duration-200"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

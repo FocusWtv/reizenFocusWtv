@@ -15,8 +15,9 @@ body,
 }
 
 /* Set default body weight (without !important so Tailwind can override) */
-body {
+html, body {
   font-weight: 200;
+  background-color: white !important;
 }
 
 [id] {
