@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Lenis from "@studio-freight/lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -24,62 +23,7 @@ import ProtectedRoute from './admin/components/ProtectedRoute';
 import AdminReisForm from './admin/pages/AdminReisForm';
 
 const App = () => {
-  const [lenis, setLenis] = useState(null);
-  const [useNativeScroll, setUseNativeScroll] = useState(false);
   const location = useLocation();
-
-  // Browser detection
-  const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-  const isEdge = /Edg/.test(navigator.userAgent);
-
-  useEffect(() => {
-    // Gebruik native scroll op admin routes (lenis uitschakelen)
-    if (location.pathname.startsWith('/admin')) {
-      setUseNativeScroll(true);
-      return;
-    }
-
-    // Gebruik native scroll als we in een iframe zitten (lenis uitschakelen)
-    if (window.parent !== window) {
-      setUseNativeScroll(true);
-      return;
-    }
-
-    if (isChrome || isEdge) {
-      setUseNativeScroll(true);
-      return; // Use native scrolling for Chrome/Edge
-    }
-
-    // Initialize Lenis only for Firefox and other browsers, and niet op /admin
-    const lenisInstance = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      mouseMultiplier: 1,
-      smoothTouch: false,
-      touchMultiplier: 2,
-      infinite: false,
-    });
-
-    lenisInstance.on('scroll', (e) => {
-      ScrollTrigger.update();
-    });
-
-    gsap.ticker.add((time) => {
-      lenisInstance.raf(time * 1000);
-    });
-
-    gsap.ticker.lagSmoothing(0);
-    setLenis(lenisInstance);
-
-    return () => {
-      gsap.ticker.remove();
-      lenisInstance.destroy();
-      setLenis(null);
-    };
-  }, [isChrome, isEdge, location.pathname]);
 
   useGSAP(() => {
     const elements = gsap.utils.toArray(".reveal-up");
@@ -99,11 +43,11 @@ const App = () => {
         ease: "power2.out",
       });
     });
-  }, [lenis, useNativeScroll]);
+  }, []);
 
   return (
     <>
-      <ScrollToTop lenis={lenis} />
+      <ScrollToTop />
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<Home />} />
