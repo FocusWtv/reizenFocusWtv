@@ -39,6 +39,12 @@ const App = () => {
       return;
     }
 
+    // Gebruik native scroll als we in een iframe zitten (lenis uitschakelen)
+    if (window.parent !== window) {
+      setUseNativeScroll(true);
+      return;
+    }
+
     if (isChrome || isEdge) {
       setUseNativeScroll(true);
       return; // Use native scrolling for Chrome/Edge
