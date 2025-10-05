@@ -44,11 +44,11 @@ const CardFront = ({ image, title, text, status }) => {
       )}
 
 
-      <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4 text-white">
+      <div className="absolute bottom-0 left-0 right-0 backdrop-blur-xs bg-black/30 p-4 text-white">
         <h3 className="text-xl font-bold">{title}</h3>
         <p className="font-semibold">{text}</p>
         <div className="mt-2 flex justify-center">
-          <ArrowRightIcon className="h-6 w-6 animate-pulse" />
+          <ArrowRightIcon className="h-12 w-12 animate-pulse" />
         </div>
       </div>
     </div>

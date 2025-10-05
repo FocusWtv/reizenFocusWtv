@@ -624,7 +624,7 @@ const ReisDetail = () => {
       {/** Back to alle reizen */}
       <div className="mx-8 mt-10 lg:mx-32">
         <Link
-          to="/"
+          to="https://www.focus-wtv.be/reizen"
           className="mx-auto mb-10 inline-flex items-center justify-center gap-2 bg-[#162b58] hover:!bg-[#4ab0e1] text-white font-semibold px-5 py-2.5 rounded-lg shadow-md duration-200"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

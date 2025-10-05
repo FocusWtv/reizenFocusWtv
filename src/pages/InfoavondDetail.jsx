@@ -181,7 +181,7 @@ const InfoavondDetail = () => {
       )}
 
       <div className="mt-10 flex justify-end">
-        <a href="/" className="px-6 py-2 rounded text-white bg-[#162b58] hover:opacity-90">Terug naar reizen</a>
+        <a href="https://www.focus-wtv.be/reizen" className="px-6 py-2 rounded text-white bg-[#162b58] hover:opacity-90">Terug naar reizen</a>
       </div>
     </div>
   );

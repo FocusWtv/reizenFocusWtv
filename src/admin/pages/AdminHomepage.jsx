@@ -299,7 +299,7 @@ const AdminHomepage = () => {
 
       <div className="space-y-6">
         {/* Hero Section */}
-        <div className="bg-white p-6 rounded-lg shadow">
+        {/*<div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-bold mb-4">Hero Sectie</h2>
           <div className="space-y-4">
             <div>
@@ -338,7 +338,7 @@ const AdminHomepage = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Reiskaarten CRUD */}
         <div className="bg-white p-6 rounded-lg shadow">
