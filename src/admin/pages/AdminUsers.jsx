@@ -11,6 +11,7 @@ const AdminUsers = () => {
 
       <div className="bg-white p-6 rounded-lg shadow max-w-3xl">
         <h2 className="text-xl font-semibold mb-3">Hoe voeg je een nieuwe admin toe?</h2>
+        <p className="text-gray-700 mb-3 italic">**dit is mijn (Lindsey) spiekbriefje**</p>
         <ol className="list-decimal ml-6 space-y-2 text-gray-700">
           <li>
             Ga naar <span className="font-medium">Firebase Console → Authentication → Users</span> en klik

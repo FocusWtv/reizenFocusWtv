@@ -75,9 +75,9 @@ const AdminLayout = () => { // <- Verwijder children prop
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Sidebar header */}
-        <div className="flex items-center justify-center h-16 bg-indigo-600 border-b border-indigo-700">
+        <Link to="/admin" className="flex items-center justify-center h-16 bg-[#002855] border-b border-indigo-700 hover:bg-[#003366] transition-colors">
           <h1 className="text-white text-xl font-bold">Focus & WTV REIZEN</h1>
-        </div>
+        </Link>
         
         {/* Navigation */}
         <nav className="mt-8 px-4">
@@ -128,20 +128,12 @@ const AdminLayout = () => { // <- Verwijder children prop
               
               {/* Page title */}
               <h2 className="ml-4 text-2xl font-semibold text-gray-900 lg:ml-0">
-                {navigation.find(item => item.href === location.pathname)?.name || 'Admin Panel'}
+                {navigation.find(item => item.href === location.pathname)?.name || 'Admin instructiepagina'}
               </h2>
             </div>
 
             {/* Right side buttons */}
             <div className="flex items-center space-x-4">
-              <a
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-indigo-600 hover:text-indigo-500 font-medium"
-              >
-                Website bekijken
-              </a>
               <button
                 onClick={handleLogout}
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"

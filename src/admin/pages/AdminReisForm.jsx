@@ -233,8 +233,8 @@ const AdminReisForm = () => {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">{isNew ? 'Nieuwe reis' : 'Reis bewerken'}</h1>
         <div className="flex gap-2">
-          <button onClick={() => navigate(-1)} className="px-4 py-2 rounded border">Annuleren</button>
-          <button onClick={handleSave} disabled={saving} className="px-4 py-2 rounded bg-blue-600 text-white disabled:opacity-50">
+          <button onClick={() => navigate(-1)} className="px-4 py-2 rounded-xl border">Annuleren</button>
+          <button onClick={handleSave} disabled={saving} className="px-4 py-2 rounded-xl bg-blue-600 text-white disabled:opacity-50">
             {saving ? 'Opslaan…' : 'Opslaan'}
           </button>
         </div>
@@ -298,6 +298,17 @@ const AdminReisForm = () => {
               infoavondTitle={infoavondTitle}
               setInfoavondTitle={setInfoavondTitle}
             />
+      </div>
+
+      {/* Knoppen onderaan */}
+      <div className="flex items-center justify-between mt-8 pt-6 border-t">
+        <h2 className="text-lg font-semibold text-gray-700">{isNew ? 'Nieuwe reis' : 'Reis bewerken'}</h2>
+        <div className="flex gap-2">
+          <button onClick={() => navigate(-1)} className="px-4 py-2 rounded-xl border">Annuleren</button>
+          <button onClick={handleSave} disabled={saving} className="px-4 py-2 rounded-xl bg-blue-600 text-white disabled:opacity-50">
+            {saving ? 'Opslaan…' : 'Opslaan'}
+          </button>
+        </div>
       </div>
     </div>
   );

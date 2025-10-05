@@ -21,6 +21,7 @@ import AdminLogin from './admin/pages/AdminLogin';
 import AdminUsers from './admin/pages/AdminUsers';
 import ProtectedRoute from './admin/components/ProtectedRoute';
 import AdminReisForm from './admin/pages/AdminReisForm';
+import AdminInstructies from './admin/pages/AdminInstructies';
 
 const App = () => {
   const location = useLocation();
@@ -63,6 +64,7 @@ const App = () => {
             <AdminLayout />
           </ProtectedRoute>
         }>
+          <Route index element={<AdminInstructies />} />
           <Route path="reizen" element={<AdminReizen />} />
           <Route path="reizen/new" element={<AdminReisForm />} />
           <Route path="reizen/:id" element={<AdminReisForm />} />

@@ -39,14 +39,8 @@ async function compressImage(file, maxWidth = 2560, quality = 0.8, outputType = 
 }
 
 const AdminHomepage = () => {
-  const [heroContent, setHeroContent] = useState({
-    title: 'Focus & WTV: Onze Reizen',
-    subtitle: 'Klik op een kaart om meer te weten te komen over de reis van uw keuze!'
-  });
-  
   // Nieuwe state voor backend communicatie
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [stats, setStats] = useState({
     totalTravelCards: 0,
@@ -74,10 +68,6 @@ const AdminHomepage = () => {
       const snap = await getDoc(ref);
       if (snap.exists()) {
         const data = snap.data();
-        if (data?.heroContent) setHeroContent({
-          title: data.heroContent.title || '',
-          subtitle: data.heroContent.subtitle || ''
-        });
       }
     } catch (err) {
       console.error('Error fetching homepage data:', err);
@@ -101,26 +91,6 @@ const AdminHomepage = () => {
 
   const fetchStats = async () => {
     // Voor nu enkel aantal reiskaarten uit fetchCards()
-  };
-
-  const handleSaveHero = async () => {
-    try {
-      setSaving(true);
-      const ref = doc(db, 'homepage', 'content');
-      await setDoc(ref, {
-        heroContent: {
-          title: heroContent.title || '',
-          subtitle: heroContent.subtitle || ''
-        },
-        updatedAt: serverTimestamp()
-      }, { merge: true });
-      alert('Homepage content succesvol opgeslagen!');
-    } catch (err) {
-      console.error('Error saving homepage content:', err);
-      alert('Fout bij opslaan van homepage content');
-    } finally {
-      setSaving(false);
-    }
   };
 
   const startNewCard = () => {
@@ -273,7 +243,7 @@ const AdminHomepage = () => {
         {/* Quick stats */}
         <div className="flex gap-4 text-sm">
           <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
-            {stats.totalTravelCards} Reizen
+            {stats.totalTravelCards} Reiskaarten
           </span>
         </div>
       </div>
@@ -298,87 +268,16 @@ const AdminHomepage = () => {
       )}
 
       <div className="space-y-6">
-        {/* Hero Section */}
-        {/*<div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-bold mb-4">Hero Sectie</h2>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Hoofdtitel
-              </label>
-              <input
-                type="text"
-                value={heroContent.title}
-                onChange={(e) => setHeroContent({...heroContent, title: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Subtitel
-              </label>
-              <textarea
-                value={heroContent.subtitle}
-                onChange={(e) => setHeroContent({...heroContent, subtitle: e.target.value})}
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div className="flex justify-end">
-              <button
-                onClick={handleSaveHero}
-                disabled={saving}
-                className={`px-6 py-2 rounded-lg text-white font-medium ${
-                  saving 
-                    ? 'bg-gray-400 cursor-not-allowed' 
-                    : 'bg-green-600 hover:bg-green-700'
-                }`}
-              >
-                {saving ? 'Opslaan...' : 'Opslaan'}
-              </button>
-            </div>
-          </div>
-        </div> */}
-
         {/* Reiskaarten CRUD */}
         <div className="bg-white p-6 rounded-lg shadow">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Reiskaarten</h2>
-            <button onClick={startNewCard} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Nieuwe kaart</button>
+            <button onClick={startNewCard} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl">Nieuwe reiskaart</button>
           </div>
 
-          {/* Lijst */}
-          <div className="space-y-3 mb-6">
-            {cards.map((c, idx) => (
-              <div key={c.id} className="flex items-center justify-between border rounded p-3">
-                <div className="flex items-center gap-3">
-                  {c.imageUrl ? (
-                    <img src={c.imageUrl} alt="thumb" className="w-16 h-12 object-cover rounded border"/>
-                  ) : (
-                    <div className="w-16 h-12 rounded border bg-gray-200 flex items-center justify-center text-[10px] text-gray-500">geen afbeelding</div>
-                  )}
-                  <div>
-                    <div className="font-medium">{c.title}</div>
-                    <div className="text-xs text-gray-500">/{c.slug} • {c.status} • {c.published ? 'gepubliceerd' : 'concept'}</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => moveOrder(idx, 'up')} className="px-2 py-1 border rounded">↑</button>
-                  <button onClick={() => moveOrder(idx, 'down')} className="px-2 py-1 border rounded">↓</button>
-                  <button onClick={() => togglePublish(c)} className="px-3 py-1 border rounded">{c.published ? 'Depub' : 'Pub'}</button>
-                  <button onClick={() => startEditCard(c)} className="px-3 py-1 border rounded">Bewerk</button>
-                  <button onClick={() => deleteCard(c.id)} className="px-3 py-1 border rounded text-red-600">Verwijder</button>
-                </div>
-              </div>
-            ))}
-            {cards.length === 0 && (
-              <div className="text-sm text-gray-500">Nog geen kaarten...</div>
-            )}
-          </div>
-
-          {/* Form + Preview */}
+          {/* Form + Preview - BOVEN de lijst */}
           {editing && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 border-t pt-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 border-b pb-6">
               {/* Form */}
               <div className="space-y-4">
                 <div>
@@ -430,6 +329,35 @@ const AdminHomepage = () => {
               </div>
             </div>
           )}
+
+          {/* Lijst */}
+          <div className="space-y-3">
+            {cards.map((c, idx) => (
+              <div key={c.id} className="flex items-center justify-between border rounded p-3">
+                <div className="flex items-center gap-3">
+                  {c.imageUrl ? (
+                    <img src={c.imageUrl} alt="thumb" className="w-16 h-12 object-cover rounded border"/>
+                  ) : (
+                    <div className="w-16 h-12 rounded border bg-gray-200 flex items-center justify-center text-[10px] text-gray-500">geen afbeelding</div>
+                  )}
+                  <div>
+                    <div className="font-medium">{c.title}</div>
+                    <div className="text-xs text-gray-500">/{c.slug} • {c.status} • {c.published ? 'gepubliceerd' : 'concept'}</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => moveOrder(idx, 'up')} className="px-2 py-1 border rounded">↑</button>
+                  <button onClick={() => moveOrder(idx, 'down')} className="px-2 py-1 border rounded">↓</button>
+                  <button onClick={() => togglePublish(c)} className="px-3 py-1 border rounded">{c.published ? 'Depub' : 'Pub'}</button>
+                  <button onClick={() => startEditCard(c)} className="px-3 py-1 border rounded">Bewerk</button>
+                  <button onClick={() => deleteCard(c.id)} className="px-3 py-1 border rounded text-red-600">Verwijder</button>
+                </div>
+              </div>
+            ))}
+            {cards.length === 0 && (
+              <div className="text-sm text-gray-500">Nog geen kaarten...</div>
+            )}
+          </div>
         </div>
       </div>
     </div>

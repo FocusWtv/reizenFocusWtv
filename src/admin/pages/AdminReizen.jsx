@@ -59,7 +59,13 @@ const AdminReizen = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Reizen Management</h1>
-        <button onClick={() => navigate('/admin/reizen/new')} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+        {/* Quick stats */}
+        <div className="flex gap-4 text-sm">
+          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+            {reizen.length} Reizen
+          </span>
+        </div>
+        <button onClick={() => navigate('/admin/reizen/new')} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl">
           Nieuwe Reis
         </button>
       </div>
