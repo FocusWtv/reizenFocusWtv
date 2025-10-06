@@ -30,6 +30,7 @@ const ReisDetail = () => {
   const [dateRange, setDateRange] = useState("");
   const [status, setStatus] = useState("");
   const [hasInfoavond, setHasInfoavond] = useState(false);
+  const [actieveFoto, setActieveFoto] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -322,7 +323,7 @@ const ReisDetail = () => {
                                         src={photo} 
                                         alt={`Dag ${idx + 1} foto ${photoIdx + 1}`} 
                                         className="w-56 h-56 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
-                                        onClick={() => window.open(photo)}
+                                        onClick={() => setActieveFoto(photo)}
                                       />
                                     </div>
                                   ))}
@@ -632,6 +633,31 @@ const ReisDetail = () => {
           <span>Terug naar alle reizen</span>
         </Link>
       </div>
+
+      {actieveFoto && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+          onClick={() => setActieveFoto(null)}
+        >
+          <button
+            className="absolute top-4 right-4 text-white text-3xl leading-none px-3 py-1 rounded hover:bg-white/10"
+            onClick={(e) => {
+              e.stopPropagation();
+              setActieveFoto(null);
+            }}
+            aria-label="Sluiten"
+            title="Sluiten"
+          >
+            ×
+          </button>
+          <img
+            src={actieveFoto}
+            alt="Foto"
+            className="max-h-[90vh] max-w-[90vw] object-contain shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </section>
   );
 };
