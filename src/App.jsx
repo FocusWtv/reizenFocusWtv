@@ -4,7 +4,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import ScrollToTop from "./components/ScrollToTop";
-import { Analytics } from '@vercel/analytics/react';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -46,6 +45,13 @@ const App = () => {
       });
     });
   }, []);
+
+  // Trigger een pageview bij routewijzigingen voor SPA-tracking
+  useEffect(() => {
+    if (typeof window !== 'undefined' && typeof window.va === 'function') {
+      window.va('pageview');
+    }
+  }, [location.pathname, location.search]);
 
   return (
     <>
