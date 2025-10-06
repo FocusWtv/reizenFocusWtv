@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../config/firebase';
 import { collection, query, where, getDocs, limit } from 'firebase/firestore';
-import { Analytics } from "@vercel/analytics/react";
 
 // Rest van uw component
 
