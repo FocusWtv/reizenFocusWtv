@@ -322,7 +322,7 @@ const ReisDetail = () => {
                                         src={photo} 
                                         alt={`Dag ${idx + 1} foto ${photoIdx + 1}`} 
                                         className="w-56 h-56 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
-                                        onClick={() => window.open(photo, '_blank')}
+                                        onClick={() => window.open(photo)}
                                       />
                                     </div>
                                   ))}
