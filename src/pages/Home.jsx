@@ -6,6 +6,7 @@ import CardFront from "../components/CardFront";
 import CardBack from "../components/CardBack";
 
 import { Link } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react"
 
 // Firebase imports
 import { db } from "../config/firebase";
