@@ -1,6 +1,7 @@
 import React from 'react';
 import RichText from './RichText';
 import { useState } from 'react';
+import CollapsibleSection from './CollapsibleSection';
 import { cloudinaryUpload } from '../../lib/apiClient';
 
 const ReisSections = ({ 
@@ -118,10 +119,10 @@ const ReisSections = ({
   }
   return (
     <div className="space-y-8">
+      <CollapsibleSection title="Intro sectie">
       {/* Intro sectie */}
-      <div className="space-y-3 border-4 border-gray-400 rounded-md p-4">
-        <h2 className="text-lg font-semibold text-gray-900">Intro sectie</h2>
-        
+      <div className="space-y-3 border-2 border-[#002855] rounded-md p-4">
+        <h2 className="text-lg font-semibold text-gray-900">Intro sectie</h2>        
         {/* Intro titel */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Intro titel (optioneel)</label>
@@ -144,9 +145,11 @@ const ReisSections = ({
           />
         </div>
       </div>
-
+      </CollapsibleSection>
+      
+      <CollapsibleSection title="Infoavond sectie">
       {/* Infoavond sectie */}
-      <div className="space-y-3 border-4 border-gray-400 rounded-md p-4" id="infoavond-section">
+      <div className="space-y-3 border-2 border-[#002855] rounded-md p-4" id="infoavond-section">
         <h2 className="text-lg font-semibold text-gray-900">Infoavond</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
@@ -169,9 +172,11 @@ const ReisSections = ({
           </div>
         </div>
       </div>
-
+      </CollapsibleSection>
+      
+      <CollapsibleSection title="Reisroute sectie">
       {/* Reisroute sectie */}
-      <div className="space-y-3 border-4 border-gray-400 rounded-md p-4" id="route-section">
+      <div className="space-y-3 border-2 border-[#002855] rounded-md p-4" id="route-section">
         <h2 className="text-lg font-semibold text-gray-900">Reisroute</h2>
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">Route afbeelding</label>
@@ -282,9 +287,11 @@ const ReisSections = ({
           ))}
         </div>
       </div>
+      </CollapsibleSection>
 
+      <CollapsibleSection title="Reportage sectie">
       {/* Reportage sectie */}
-      <div className="space-y-3 border-4 border-gray-400 rounded-md p-4" id="reportage-section">
+      <div className="space-y-3 border-2 border-[#002855] rounded-md p-4" id="reportage-section">
         <h2 className="text-lg font-semibold text-gray-900">Reportage</h2>
         <div className="flex items-center justify-between">
           <label className="block text-sm font-medium text-gray-700">Video's</label>
@@ -308,9 +315,11 @@ const ReisSections = ({
           ))}
         </div>
       </div>
+      </CollapsibleSection>
 
+      <CollapsibleSection title="Verblijfsinfo sectie">
       {/* Verblijfsinfo sectie */}
-      <div className="space-y-4 border-4 border-gray-400 rounded-md p-4" id="verblijf-section">
+      <div className="space-y-4 border-2 border-[#002855] rounded-md p-4" id="verblijf-section">
         <h2 className="text-lg font-semibold text-gray-900">Verblijfsinfo</h2>
         {/* Main image */}
         <div className="space-y-2">
@@ -388,9 +397,11 @@ const ReisSections = ({
           ))}
         </div>
       </div>
+      </CollapsibleSection>
 
+      <CollapsibleSection title="Prijzen secties">
       {/* Prijzen sectie */}
-      <div className="space-y-3 border-4 border-gray-400 rounded-md p-4" id="prijzen-section">
+      <div className="space-y-3 border-2 border-[#002855] rounded-md p-4" id="prijzen-section">
         <h2 className="text-lg font-semibold text-gray-900">Prijzen</h2>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -432,15 +443,16 @@ const ReisSections = ({
           </div>
         </div>
       </div>
-
       {/* Prijzen toelichting (optioneel richtext) */}
-      <div className="space-y-3 border-4 border-gray-400 rounded-md p-4">
+      <div className="space-y-3 mt-2 border-2 border-[#002855] rounded-md p-4">
         <label className="block text-sm font-medium text-gray-700">Prijzen toelichting (optioneel)</label>
         <RichText value={pricesNote || ''} onChange={setPricesNote} placeholder="Extra toelichting bij prijzen..." />
       </div>
-
+      </CollapsibleSection>
+      
+      <CollapsibleSection title="Inbegrepen sectie">
       {/* Inbegrepen */}
-      <div className="space-y-3 border-4 border-gray-400 rounded-md p-4" id="inbegrepen-sections">
+      <div className="space-y-3 border-2 border-[#002855] rounded-md p-4" id="inbegrepen-sections">
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-gray-900">Inbegrepen</h2>
           <div className="space-y-2">
@@ -459,9 +471,11 @@ const ReisSections = ({
           </div>
         </div>
       </div>
+      </CollapsibleSection>
 
+      <CollapsibleSection title="Niet inbegrepen sectie">
       {/* Niet inbegrepen */}
-      <div className="space-y-3 border-4 border-gray-400 rounded-md p-4" id="nietinbegrepen-sections">
+      <div className="space-y-3 border-2 border-[#002855] rounded-md p-4" id="nietinbegrepen-sections">
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-gray-900">Niet inbegrepen</h2>
           <div className="space-y-2">
@@ -480,9 +494,11 @@ const ReisSections = ({
           </div>
         </div>
       </div>
+      </CollapsibleSection>
 
+      <CollapsibleSection title="Fotogalerij sectie">
       {/* Fotogallerij */}
-      <div className="space-y-3 border-4 border-gray-400 rounded-md p-4" id="gallery-section">
+      <div className="space-y-3 border-2 border-[#002855] rounded-md p-4" id="gallery-section">
         <h2 className="text-lg font-semibold text-gray-900">Foto's (min. 10, geen maximum)</h2>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -515,9 +531,11 @@ const ReisSections = ({
           <div className="text-sm text-gray-600">Huidig aantal: {(gallery||[]).length} (minimaal 10 aangeraden)</div>
         </div>
       </div>
+      </CollapsibleSection>
 
+      <CollapsibleSection title="Reservatie & contact sectie">
       {/* Reservatie & contact */}
-      <div className="space-y-3 border-4 border-gray-400 rounded-md p-4" id="reservatie-section">
+      <div className="space-y-3 border-2 border-[#002855] rounded-md p-4" id="reservatie-section">
         <h2 className="text-lg font-semibold text-gray-900">Reservatie & contact</h2>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Tekst <br/>
@@ -549,6 +567,7 @@ const ReisSections = ({
           )}
         </div>
       </div>
+      </CollapsibleSection>
     </div>
   );
 };

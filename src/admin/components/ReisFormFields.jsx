@@ -22,7 +22,7 @@ const ReisFormFields = ({
   return (
     <div className="space-y-6">
       {/* Hero afbeelding - EERST */}
-      <div className="space-y-3">
+      <div className="space-y-3 border-4 border-[#a1c8ff] rounded-md p-4">
         <h2 className="text-lg font-semibold text-gray-900">Hero afbeelding</h2>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Koppel aan homepage kaart</label>
@@ -55,7 +55,7 @@ const ReisFormFields = ({
       </div>
 
       {/* Basisvelden - DAARNA */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-4 border-[#a1c8ff] rounded-md p-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Titel (verplicht)</label>
           <input 
