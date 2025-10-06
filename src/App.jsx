@@ -52,7 +52,6 @@ const App = () => {
       <ScrollToTop />
       <Routes>
         {/* Public routes */}
-        <Analytics />
         <Route path="/" element={<Home />} />
         <Route path="/infoavonden/:slug" element={<InfoavondDetail />} />
         <Route path="/reizen/:slug" element={<ReisDetail />} />
