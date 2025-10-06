@@ -92,7 +92,7 @@ const Home = () => {
       {/* Onze reizen: gebruik dit indien nodig voor titel en tekst */}
        <div className="text-center mt-8 mb-8 mx-8 lg:mx-32">
         <h1 className="text-2xl md:text-3xl lg:text-5xl text-[#162b58] font-extrabold text-center">
-          Onze Reizen
+          Geplande reizen
         </h1>
         <p className="text-center text-lg font-semibold text-[#162b58] mt-2 mx-8">
           Welkom bij <a href="https://focus-wtv.be/reizen" className="text-[#4ab0e1] hover:text-[#162b58] font-semibold underline">Focus & WTV reizen</a>! Klik op een kaart en vind alle info over de reis van uw keuze
