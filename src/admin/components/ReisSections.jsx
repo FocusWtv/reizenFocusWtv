@@ -551,11 +551,11 @@ const ReisSections = ({
               const file = e.target.files && e.target.files[0]
               if (!file) return
               try {
-                const { cloudinaryUploadPdf } = await import('../../lib/apiClient')
-                const url = await cloudinaryUploadPdf(file)
+                const { githubUploadPdf } = await import('../../lib/apiClient')
+                const url = await githubUploadPdf(file)
                 setReservationBrochureUrl(url || '')
-              } catch (_) {
-                alert('PDF upload mislukt. Controleer je Cloudinary preset (raw).')
+              } catch (error) {
+                alert('PDF upload mislukt: ' + (error.message || 'Onbekende fout'))
               } finally {
                 e.target.value=''
               }

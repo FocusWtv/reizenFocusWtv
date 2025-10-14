@@ -30,6 +30,7 @@ firebase-adminsdk-*.json
 # Local docs (not for repo)
 PRD.md
 TODO.md
+GITHUB_PDF_SETUP.md
 
 # Env files
 .env
