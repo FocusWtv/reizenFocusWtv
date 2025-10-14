@@ -2,7 +2,7 @@ import React from 'react';
 import RichText from './RichText';
 import { useState } from 'react';
 import CollapsibleSection from './CollapsibleSection';
-import { cloudinaryUpload } from '../../lib/apiClient';
+import { vercelUploadImage } from '../../lib/apiClient';
 
 const ReisSections = ({ 
   introTitle,
@@ -95,7 +95,7 @@ const ReisSections = ({
     if (!file) return
     const next = [...(stayItems || [])]
     try {
-      const url = await cloudinaryUpload(file)
+      const url = await vercelUploadImage(file)
       const photos = Array.isArray(next[idx].photos) ? next[idx].photos : []
       photos.push(url)
       next[idx].photos = photos
@@ -108,7 +108,7 @@ const ReisSections = ({
     if (!fileList || fileList.length === 0) return
     const files = Array.from(fileList)
     try {
-      const urls = await Promise.all(files.map(f => cloudinaryUpload(f)))
+      const urls = await Promise.all(files.map(f => vercelUploadImage(f)))
       const next = [...(stayItems || [])]
       const photos = Array.isArray(next[idx].photos) ? next[idx].photos : []
       next[idx].photos = photos.concat(urls.filter(Boolean))
@@ -189,7 +189,7 @@ const ReisSections = ({
                 if (!file) return
                 try {
                   setUploadingRouteImage(true)
-                  const url = await cloudinaryUpload(file)
+                  const url = await vercelUploadImage(file)
                   setRouteImageUrl(url || '')
                 } catch (_) {
                   alert('Upload mislukt. Probeer opnieuw of kies een andere afbeelding.')
@@ -244,7 +244,7 @@ const ReisSections = ({
                       const files = Array.from(e.target.files || []);
                       if (!files.length) return;
                       try {
-                        const uploadPromises = files.map(file => cloudinaryUpload(file));
+                        const uploadPromises = files.map(file => vercelUploadImage(file));
                         const urls = await Promise.all(uploadPromises);
                         const currentPhotos = d.photos || [];
                         updateRouteDay(idx, 'photos', [...currentPhotos, ...urls]);
@@ -330,7 +330,7 @@ const ReisSections = ({
               if (!file) return
               try {
                 setUploadingStayMain(true)
-                const url = await cloudinaryUpload(file)
+                const url = await vercelUploadImage(file)
                 setStayMainImageUrl(url || '')
               } catch (_) {
                 alert('Upload mislukt')
@@ -507,7 +507,7 @@ const ReisSections = ({
               const files = Array.from(e.target.files || [])
               if (!files.length) return
               try {
-                const urls = await Promise.all(files.map(f => cloudinaryUpload(f)))
+                const urls = await Promise.all(files.map(f => vercelUploadImage(f)))
                 setGallery([...(gallery||[]), ...urls.filter(Boolean).map(u=>({ src: u }))])
               } catch (_) {
                 alert('Upload van één of meerdere foto\'s is mislukt')

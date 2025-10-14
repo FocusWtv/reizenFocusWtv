@@ -206,7 +206,15 @@ const AdminHomepage = () => {
       formData.append('upload_preset', uploadPreset);
       formData.append('folder', `homepage/reizen/${form.slug}`);
 
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+      // Gebruik Vercel Blob in plaats van directe Cloudinary API call
+      const { vercelUploadImage } = await import('../../lib/apiClient');
+      const url = await vercelUploadImage(compressed);
+      setForm(prev => ({ ...prev, imageUrl: url }));
+      setUploadMsg('Afbeelding succesvol geüpload naar Vercel Blob!');
+      return;
+      
+      // Oude Cloudinary code (behouden voor referentie)
+      /*const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -214,9 +222,9 @@ const AdminHomepage = () => {
         const errText = await res.text();
         throw new Error(errText || 'Cloudinary upload mislukt');
       }
-      const data = await res.json();
+      /*const data = await res.json();
       setForm(f => ({ ...f, imageUrl: data.secure_url || data.url || '' }));
-      setUploadMsg('Afbeelding geüpload.');
+      setUploadMsg('Afbeelding geüpload.');*/
     } catch (err) {
       console.error('Upload mislukt:', err);
       alert('Upload mislukt');

@@ -153,7 +153,53 @@ const resizeImage = (file, maxWidth = 1920, maxHeight = 1080, quality = 0.8) => 
 };
 
 /**
- * Cloudinary image upload functie met automatische resize
+ * Vercel Blob image upload functie met verbeterde compressie
+ * Gratis alternatief voor Cloudinary - 1GB opslag, 10GB bandwidth per maand
+ */
+export const vercelUploadImage = async (file) => {
+	const blobReadWriteToken = import.meta.env.VITE_BLOB_READ_WRITE_TOKEN;
+	if (!blobReadWriteToken) {
+		throw new Error('Vercel Blob niet geconfigureerd. Voeg VITE_BLOB_READ_WRITE_TOKEN toe aan je .env.local');
+	}
+
+	// Verbeterde compressie: ALLE foto's comprimeren voor optimale grootte
+	let fileToUpload = file;
+
+	// Comprimeer ALLE foto's (niet alleen grote)
+	console.log(`Originele foto: ${Math.round(file.size / 1024)}KB, comprimeren...`);
+	try {
+		// Verbeterde compressie: kleinere max dimensies en lagere kwaliteit
+		fileToUpload = await resizeImage(file, 1920, 1080, 0.7);
+		console.log(`Gecomprimeerd naar ${Math.round(fileToUpload.size / 1024)}KB (${Math.round((1 - fileToUpload.size / file.size) * 100)}% kleiner)`);
+	} catch (error) {
+		console.error('Compressie error:', error);
+		throw new Error('Afbeelding kon niet worden gecomprimeerd. Probeer een kleinere afbeelding.');
+	}
+
+	// Genereer unieke bestandsnaam
+	const timestamp = Date.now();
+	const fileExtension = file.name.split('.').pop() || 'jpg';
+	const fileName = `images/${timestamp}-${Math.random().toString(36).substring(7)}.${fileExtension}`;
+
+	// Gebruik Vercel Blob SDK voor correcte API calls
+	const { put } = await import('@vercel/blob');
+	
+	try {
+		const blob = await put(fileName, fileToUpload, {
+			access: 'public',
+			token: blobReadWriteToken
+		});
+
+		console.log('Image succesvol geüpload naar Vercel Blob:', blob.url);
+		return blob.url;
+	} catch (error) {
+		console.error('Vercel Blob upload error:', error);
+		throw new Error(error.message || 'Vercel Blob upload mislukt');
+	}
+};
+
+/**
+ * Cloudinary image upload functie met automatische resize (BEHOUDEN voor backwards compatibility)
  */
 export const cloudinaryUpload = async (file) => {
 	const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
