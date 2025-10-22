@@ -192,8 +192,12 @@ const AdminReisForm = () => {
           brochureUrl: reservationBrochureUrl || '',
         },
       };
-      if (infoavondSlug) {
+      // Infoavond sectie - expliciet toevoegen of verwijderen
+      if (infoavondSlug && infoavondSlug.trim()) {
         sectionsPayload.infoavond = { slug: infoavondSlug, title: infoavondTitle || '' };
+      } else {
+        // Expliciet verwijderen als geen infoavond geselecteerd
+        sectionsPayload.infoavond = null;
       }
 
       const payload = {

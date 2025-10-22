@@ -3,6 +3,7 @@ import { db } from '../../config/firebase';
 import { collection, addDoc, serverTimestamp, getDocs, query, orderBy, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import { vercelUploadImage } from '../../lib/apiClient';
 import RichText from '../components/RichText';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 
 const toSlug = (s) => s
   .toLowerCase()
@@ -68,6 +69,7 @@ const AdminEvents = () => {
   const [slugTouched, setSlugTouched] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [checkingExpired, setCheckingExpired] = useState(false);
 
   const handlePickCard = (cardId) => {
     setSelectedCardId(cardId);
@@ -200,6 +202,29 @@ const AdminEvents = () => {
     } catch (_e) {}
   };
 
+  const checkExpiredInfoavonden = async () => {
+    try {
+      setCheckingExpired(true);
+      const functions = getFunctions();
+      const manualCheck = httpsCallable(functions, 'manualCheckExpiredInfoavonden');
+      
+      const result = await manualCheck();
+      console.log('Check result:', result.data);
+      
+      if (result.data.success) {
+        alert(`Controle voltooid!\n\nVerstreken events: ${result.data.expiredEvents}\nBijgewerkte trips: ${result.data.updatedTrips}`);
+        await loadEvents(); // Herlaad de events lijst
+      } else {
+        alert('Er is een fout opgetreden bij de controle.');
+      }
+    } catch (error) {
+      console.error('Error checking expired infoavonden:', error);
+      alert('Fout bij controle: ' + (error.message || error));
+    } finally {
+      setCheckingExpired(false);
+    }
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -209,6 +234,13 @@ const AdminEvents = () => {
           <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
             {events.length} Infoavonden
           </span>
+          <button 
+            onClick={checkExpiredInfoavonden}
+            disabled={checkingExpired}
+            className="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-xl text-sm"
+          >
+            {checkingExpired ? 'Controleren...' : 'Controleer verstreken'}
+          </button>
         </div>
         <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl" onClick={() => { 
           setEditingId(null); 

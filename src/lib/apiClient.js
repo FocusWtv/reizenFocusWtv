@@ -97,29 +97,7 @@ export const githubUploadPdf = async (file) => {
 	return rawUrl;
 };
 
-/**
- * Cloudinary PDF upload functie (DEPRECATED - gebruik githubUploadPdf voor gratis alternatief)
- */
-export const cloudinaryUploadPdf = async (file) => {
-	const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-	const pdfUploadPreset = import.meta.env.VITE_CLOUDINARY_PDF_UPLOAD_PRESET || import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
-	if (!cloudName || !pdfUploadPreset) {
-		throw new Error('Cloudinary niet geconfigureerd');
-	}
-	const formData = new FormData();
-	formData.append('file', file);
-	formData.append('upload_preset', pdfUploadPreset);
-	const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/raw/upload`, { 
-		method: 'POST', 
-		body: formData
-	});
-	const data = await res.json();
-	if (!data.secure_url) {
-		console.error('PDF upload error:', data);
-		throw new Error(data.error?.message || 'PDF upload mislukt - controleer Cloudinary upload preset configuratie voor raw uploads');
-	}
-	return data.secure_url;
-};
+// Cloudinary PDF upload functie was deprecated en is verwijderd.
 
 /**
  * Resize image to fit within max dimensions while maintaining aspect ratio
@@ -197,43 +175,4 @@ export const vercelUploadImage = async (file) => {
 		throw new Error(error.message || 'Vercel Blob upload mislukt');
 	}
 };
-
-/**
- * Cloudinary image upload functie met automatische resize (BEHOUDEN voor backwards compatibility)
- */
-export const cloudinaryUpload = async (file) => {
-	const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-	const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
-	if (!cloudName || !uploadPreset) {
-		throw new Error('Cloudinary niet geconfigureerd');
-	}
-
-	// Check file size (10MB limit)
-	const maxSize = 10 * 1024 * 1024; // 10MB
-	let fileToUpload = file;
-
-	if (file.size > maxSize) {
-		console.log(`Image te groot (${Math.round(file.size / 1024 / 1024)}MB), resizen...`);
-		try {
-			fileToUpload = await resizeImage(file, 1920, 1080, 0.8);
-			console.log(`Geresized naar ${Math.round(fileToUpload.size / 1024 / 1024)}MB`);
-		} catch (error) {
-			console.error('Resize error:', error);
-			throw new Error('Afbeelding kon niet worden verwerkt. Probeer een kleinere afbeelding.');
-		}
-	}
-
-	const formData = new FormData();
-	formData.append('file', fileToUpload);
-	formData.append('upload_preset', uploadPreset);
-	const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, { 
-		method: 'POST', 
-		body: formData
-	});
-	const data = await res.json();
-	if (!data.secure_url) {
-		console.error('Image upload error:', data);
-		throw new Error(data.error?.message || 'Image upload mislukt');
-	}
-	return data.secure_url;
-};
+// Cloudinary image upload functie is verwijderd; nieuwe uploads gaan via Vercel Blob.

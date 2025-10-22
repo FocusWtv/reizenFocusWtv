@@ -11,6 +11,7 @@ import "./index.css";
 import Home from "./pages/Home";
 import InfoavondDetail from "./pages/InfoavondDetail";
 import ReisDetail from "./pages/ReisDetail";
+import Bedankt from "./pages/Bedankt";
 
 // Admin imports
 import AdminLayout from './admin/components/AdminLayout';
@@ -61,6 +62,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/infoavonden/:slug" element={<InfoavondDetail />} />
         <Route path="/reizen/:slug" element={<ReisDetail />} />
+        <Route path="/bedankt" element={<Bedankt />} />
 
         {/* Admin login (public) */}
         <Route path="/admin/login" element={<AdminLogin />} />

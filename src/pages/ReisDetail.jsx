@@ -15,6 +15,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import PhotoAlbum from "../components/PhotoAlbum";
+import { isDatePassed } from "../lib/utils";
 
 // Rest van uw component
 
@@ -31,6 +32,7 @@ const ReisDetail = () => {
   const [status, setStatus] = useState("");
   const [hasInfoavond, setHasInfoavond] = useState(false);
   const [actieveFoto, setActieveFoto] = useState(null);
+  const [infoavondEvent, setInfoavondEvent] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -53,7 +55,42 @@ const ReisDetail = () => {
           setTitle(t?.title || "");
           setDateRange(t?.dateRange || "");
           setStatus(t?.status || "");
-          setHasInfoavond(Boolean(t?.sections?.infoavond));
+          
+          // Infoavond logica - controleer of event bestaat en niet verstreken is
+          if (t?.sections?.infoavond?.slug) {
+            try {
+              // Haal event data op
+              const eventQuery = fq(
+                collection(db, "events"),
+                where("slug", "==", t.sections.infoavond.slug),
+                limit(1)
+              );
+              const eventSnap = await getDocs(eventQuery);
+              
+              if (!eventSnap.empty) {
+                const eventData = eventSnap.docs[0].data();
+                setInfoavondEvent(eventData);
+                
+                // Controleer of datum verstreken is
+                const isExpired = isDatePassed(eventData.dateTime);
+                setHasInfoavond(!isExpired);
+                
+                console.log(`Infoavond "${eventData.title}" - Datum: ${eventData.dateTime}, Verstreken: ${isExpired}`);
+              } else {
+                // Event niet gevonden
+                setHasInfoavond(false);
+                setInfoavondEvent(null);
+                console.warn(`Infoavond event met slug "${t.sections.infoavond.slug}" niet gevonden`);
+              }
+            } catch (error) {
+              console.error("Fout bij ophalen infoavond event:", error);
+              setHasInfoavond(false);
+              setInfoavondEvent(null);
+            }
+          } else {
+            setHasInfoavond(false);
+            setInfoavondEvent(null);
+          }
 
           // Debug: log de brochure URL
           if (t?.sections?.reservatie) {
@@ -61,8 +98,8 @@ const ReisDetail = () => {
               "Brochure URL geladen:",
               t.sections.reservatie.brochureUrl
             );
-            console.log("Reservatie HTML geladen:", t.sections.reservatie.html);
-            console.log("Volledige reservatie object:", t.sections.reservatie);
+            // console.log("Reservatie HTML geladen:", t.sections.reservatie.html);
+            // console.log("Volledige reservatie object:", t.sections.reservatie);
           }
         } else {
           // 2) Fallback: homepage_cards op basis van slug
@@ -79,7 +116,9 @@ const ReisDetail = () => {
             setTitle(data.title || "");
             setDateRange(data.dateRange || data.date || data.text || "");
             setStatus(data.status || "");
-            setHasInfoavond(Boolean(data.hasInfoavond));
+            // Voor homepage_cards fallback geen infoavond ondersteuning
+            setHasInfoavond(false);
+            setInfoavondEvent(null);
           }
         }
       } catch (_e) {}
@@ -116,7 +155,7 @@ const ReisDetail = () => {
           {status && (
             <div
               className={`mt-3 ${
-                status === "volzet" ? "bg-gray-500" : "bg-green-500"
+                status === "volzet" ? "bg-red-500" : "bg-green-500"
               } text-white underline font-semibold py-3 px-6 rounded-lg border-4 shadow-lg flex items-center gap-2`}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -223,14 +262,17 @@ const ReisDetail = () => {
       )}
 
       {/** Info Avond */}
-      {trip?.sections?.infoavond?.slug && (
+      {hasInfoavond && trip?.sections?.infoavond?.slug && infoavondEvent && (
         <div className="text-center mb-8" id="infoavond">
           <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8 mb-8">
             Infoavond
           </h2>
           <div className="text-center text-[#162b58] mt-2 mx-8 lg:mx-32">
-            {trip.sections.infoavond.title && (
-              <p className="text-lg">{trip.sections.infoavond.title}</p>
+            {(trip.sections.infoavond.title || infoavondEvent.title) && (
+              <p className="text-lg">{trip.sections.infoavond.title || infoavondEvent.title}</p>
+            )}
+            {infoavondEvent.dateTime && (
+              <p className="text-md text-gray-600 mb-4">{infoavondEvent.dateTime}</p>
             )}
             <a
               className="group mt-10 relative inline-block text-sm font-medium text-[#162b58] focus:ring-3 focus:outline-hidden"

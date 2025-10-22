@@ -6,8 +6,7 @@ import CardBack from '../../components/CardBack';
 
 const STATUS_OPTIONS = ['open', 'volzet', 'beperkt'];
 
-const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+// Cloudinary upload configuratie niet langer in gebruik; bestaande beelden blijven via URL werken.
 
 // Compress image in-browser (resize + quality) before upload (Cloudinary unsigned limit 10MB)
 async function compressImage(file, maxWidth = 2560, quality = 0.8, outputType = 'image/jpeg') {
@@ -203,7 +202,7 @@ const AdminHomepage = () => {
 
       const formData = new FormData();
       formData.append('file', compressed, `${form.slug}.jpg`);
-      formData.append('upload_preset', uploadPreset);
+      // Cloudinary upload preset niet meer nodig
       formData.append('folder', `homepage/reizen/${form.slug}`);
 
       // Gebruik Vercel Blob in plaats van directe Cloudinary API call
@@ -214,7 +213,8 @@ const AdminHomepage = () => {
       return;
       
       // Oude Cloudinary code (behouden voor referentie)
-      /*const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+      /* Cloudinary upload code verwijderd (Vercel Blob wordt gebruikt)
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
         method: 'POST',
         body: formData,
       });
