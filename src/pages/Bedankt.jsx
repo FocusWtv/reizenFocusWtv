@@ -33,7 +33,7 @@ export default function Bedankt() {
           We hebben je gegevens goed ontvangen. Je krijgt zo dadelijk een
           bevestiging per e-mail met alle details. <br/>
           Check je spam folder als je deze niet terug vindt. <br/>
-          Je kunt de bevestigingsmail niet beantwoorden dus bij dringende vragen die je niet terug vindt op de reis pagina kun je contact opnemen met: <br/>
+          Bij dringende vragen die je niet terug vindt op de reis pagina kun je contact opnemen met: <br/>
           <a href="mailto:cruise@focus-wtv.be" className="text-blue-600 hover:text-blue-700">cruise@focus-wtv.be</a>
         </p>
         <div className="mb-6">
