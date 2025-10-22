@@ -175,7 +175,7 @@ const InfoavondDetail = () => {
             </label>
             <div className="relative">
               <input
-                name="Personen"
+                name="Aantal personen"
                 type="number"
                 min="1"
                 max="8"
@@ -217,7 +217,7 @@ const InfoavondDetail = () => {
               Eventuele vragen/opmerkingen indien u deze niet terug vindt op de reis pagina
             </label>
             <textarea
-              name="opmerkingen"
+              name="Vragen of opmerkingen"
               rows={4}
               className="w-full px-3 py-2 border-4 rounded"
             />
