@@ -40,8 +40,10 @@ const Home = () => {
         const events = snapEvents.docs.map(d => ({ id: d.id, ...d.data() }))
           .filter(e => e.published === true);
         setDynamicEvents(events);
-      } catch (_e) {
-        // fallbacks disabled per request
+      } catch (e) {
+        console.error("Error loading data from Firebase:", e);
+        setDynamicCards([]);
+        setDynamicEvents([]);
       } finally {
         setLoading(false);
       }

@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functie: check of user ingelogd is
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Voor trips - publiek lezen, ingelogde users schrijven
+    match /trips/{tripId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    // Voor homepage_cards - publiek lezen, ingelogde users schrijven
+    match /homepage_cards/{cardId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    // Voor events - publiek lezen, ingelogde users schrijven
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    // Catch-all voor andere collecties
+    match /{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

@@ -234,13 +234,6 @@ const AdminEvents = () => {
           <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
             {events.length} Infoavonden
           </span>
-          <button 
-            onClick={checkExpiredInfoavonden}
-            disabled={checkingExpired}
-            className="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-xl text-sm"
-          >
-            {checkingExpired ? 'Controleren...' : 'Controleer verstreken'}
-          </button>
         </div>
         <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl" onClick={() => { 
           setEditingId(null); 
