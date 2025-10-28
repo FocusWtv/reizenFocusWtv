@@ -18,6 +18,7 @@ const InfoavondDetail = () => {
   const [error, setError] = useState("");
 
   const [sent, setSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Bepaal juiste redirect voor FormSubmit afhankelijk van omgeving
   const nextRedirectBase = import.meta.env.PROD
@@ -58,6 +59,9 @@ const InfoavondDetail = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
+      if (isSubmitting) return; // Prevent double submission
+      setIsSubmitting(true);
+      
       const form = e.currentTarget;
 
       // Honeypot check
@@ -99,11 +103,14 @@ const InfoavondDetail = () => {
         );
         if (res && (res.ok || (res.status >= 200 && res.status < 400))) {
           sessionStorage.setItem("formVerzonden", "true");
+          setIsSubmitting(false);
           window.location.href = nextRedirectUrl;
           return;
         }
         // anders door naar fallback
-      } catch (_err) {}
+      } catch (_err) {
+        setIsSubmitting(false);
+      }
 
       // 2) Fallback: Web3Forms (alleen als key gezet is)
       if (web3formsKey) {
@@ -125,10 +132,13 @@ const InfoavondDetail = () => {
           });
           if (res2 && res2.ok) {
             sessionStorage.setItem("formVerzonden", "true");
+            setIsSubmitting(false);
             window.location.href = nextRedirectUrl;
             return;
           }
-        } catch (_err2) {}
+        } catch (_err2) {
+          setIsSubmitting(false);
+        }
       }
 
       // 3) Laatste redmiddel: open mailto met prefilled body en redirect
@@ -148,9 +158,12 @@ const InfoavondDetail = () => {
       // direct ook naar bedankt-pagina voor een consistente UX
       setTimeout(() => {
         sessionStorage.setItem("formVerzonden", "true");
+        setIsSubmitting(false);
         window.location.href = nextRedirectUrl;
       }, 300);
-    } catch (_e) {}
+    } catch (_e) {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -371,9 +384,21 @@ const InfoavondDetail = () => {
             )}
             <button
               type="submit"
-              className="px-6 py-2 rounded text-white bg-green-600 hover:bg-green-700"
+              disabled={isSubmitting}
+              className={`px-6 py-2 rounded text-white ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'}`}
+              aria-busy={isSubmitting}
             >
-              Inschrijven
+              {isSubmitting ? (
+                <span className="inline-flex items-center gap-2">
+                  <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                  </svg>
+                  Verzenden...
+                </span>
+              ) : (
+                'Inschrijven'
+              )}
             </button>
           </div>
         </form>
