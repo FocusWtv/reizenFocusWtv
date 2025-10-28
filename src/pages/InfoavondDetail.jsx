@@ -26,8 +26,132 @@ const InfoavondDetail = () => {
   const nextRedirectUrl = `${nextRedirectBase}?fs=1`;
 
   // FormSubmit action zonder querystring; redirect gebeurt via hidden _next veld
-  const formSubmitTo = import.meta.env.VITE_FORMSUBMIT_TO || "cruise@focus-wtv.be";
-  const formActionUrl = `https://formsubmit.co/${encodeURIComponent(formSubmitTo)}`;
+  const formSubmitTo =
+    import.meta.env.VITE_FORMSUBMIT_TO || "cruise@focus-wtv.be";
+  const formActionUrl = `https://formsubmit.co/${encodeURIComponent(
+    formSubmitTo
+  )}`;
+
+  // Fallback provider (optioneel): Web3Forms access key via env
+  const web3formsKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "";
+
+  // Helper: fetch met timeout
+  const postWithTimeout = async (url, body, timeoutMs = 8000) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body,
+        signal: controller.signal,
+      });
+      clearTimeout(id);
+      return res;
+    } catch (err) {
+      clearTimeout(id);
+      throw err;
+    }
+  };
+
+  // Submit handler met fallback-keten: FormSubmit -> Web3Forms -> mailto
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const form = e.currentTarget;
+
+      // Honeypot check
+      const honey = form.querySelector('input[name="_honey"]');
+      if (honey && honey.value) {
+        return; // stil negeren
+      }
+
+      const valueOf = (name) =>
+        (form.querySelector(`[name="${name}"]`)?.value || "").toString();
+
+      const naam = valueOf("Naam");
+      const voornaam = valueOf("Voornaam");
+      const email = valueOf("email");
+      const telefoon = valueOf("Telefoonnummer");
+      const personen = valueOf("Aantal personen") || valueOf("Personen");
+      const opmerkingen =
+        valueOf("Vragen of opmerkingen") || valueOf("opmerkingen");
+      const infoavondTitel = event?.title || slug;
+
+      // 1) Probeer FormSubmit (server-side redirect kan falen; we forceren client redirect op success)
+      try {
+        const params = new URLSearchParams();
+        params.set("_subject", `Inschrijving infoavond: ${infoavondTitel}`);
+        params.set("_template", "table");
+        params.set("_captcha", "false");
+        params.set("Infoavond", infoavondTitel);
+        params.set("Naam", naam);
+        params.set("Voornaam", voornaam);
+        params.set("email", email);
+        params.set("Telefoonnummer", telefoon);
+        params.set("Aantal personen", personen || "1");
+        params.set("Vragen of opmerkingen", opmerkingen);
+
+        const res = await postWithTimeout(
+          formActionUrl,
+          params.toString(),
+          8000
+        );
+        if (res && (res.ok || (res.status >= 200 && res.status < 400))) {
+          sessionStorage.setItem("formVerzonden", "true");
+          window.location.href = nextRedirectUrl;
+          return;
+        }
+        // anders door naar fallback
+      } catch (_err) {}
+
+      // 2) Fallback: Web3Forms (alleen als key gezet is)
+      if (web3formsKey) {
+        try {
+          const fd = new FormData();
+          fd.set("access_key", web3formsKey);
+          fd.set("subject", `Inschrijving infoavond: ${infoavondTitel}`);
+          fd.set("Infoavond", infoavondTitel);
+          fd.set("Naam", naam);
+          fd.set("Voornaam", voornaam);
+          fd.set("email", email);
+          fd.set("Telefoonnummer", telefoon);
+          fd.set("Aantal personen", personen || "1");
+          fd.set("Vragen of opmerkingen", opmerkingen);
+
+          const res2 = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: fd,
+          });
+          if (res2 && res2.ok) {
+            sessionStorage.setItem("formVerzonden", "true");
+            window.location.href = nextRedirectUrl;
+            return;
+          }
+        } catch (_err2) {}
+      }
+
+      // 3) Laatste redmiddel: open mailto met prefilled body en redirect
+      const lijnen = [
+        `Infoavond: ${infoavondTitel}`,
+        `Naam: ${naam}`,
+        `Voornaam: ${voornaam}`,
+        `Email: ${email}`,
+        `Telefoonnummer: ${telefoon}`,
+        `Aantal personen: ${personen || "1"}`,
+        `Vragen/opmerkingen: ${opmerkingen}`,
+      ];
+      const mailto = `mailto:${formSubmitTo}?subject=${encodeURIComponent(
+        `Inschrijving infoavond: ${infoavondTitel}`
+      )}&body=${encodeURIComponent(lijnen.join("\n"))}`;
+      window.location.href = mailto;
+      // direct ook naar bedankt-pagina voor een consistente UX
+      setTimeout(() => {
+        sessionStorage.setItem("formVerzonden", "true");
+        window.location.href = nextRedirectUrl;
+      }, 300);
+    } catch (_e) {}
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -110,13 +234,16 @@ const InfoavondDetail = () => {
       <div className="bg-white p-6 rounded border-2 shadow-2xl">
         <h2 className="text-xl font-semibold mb-4">Inschrijven</h2>
         <form
-          action={formActionUrl}
           method="POST"
-          onSubmit={() => sessionStorage.setItem("formVerzonden", "true")}
+          onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
           {/* FormSubmit hidden fields */}
-          <input type="hidden" name="_subject" value={`Inschrijving infoavond: ${event?.title || slug}`} />
+          <input
+            type="hidden"
+            name="_subject"
+            value={`Inschrijving infoavond: ${event?.title || slug}`}
+          />
           <input type="hidden" name="_next" value={nextRedirectUrl} />
           <input type="hidden" name="_template" value="table" />
           <input type="hidden" name="_captcha" value="false" />
@@ -214,7 +341,8 @@ const InfoavondDetail = () => {
           </div>
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Eventuele vragen/opmerkingen indien u deze niet terug vindt op de reis pagina
+              Eventuele vragen/opmerkingen indien u deze niet terug vindt op de
+              reis pagina
             </label>
             <textarea
               name="Vragen of opmerkingen"
@@ -237,7 +365,8 @@ const InfoavondDetail = () => {
           <div className="md:col-span-2 flex justify-end gap-2">
             {sent && (
               <span className="text-green-600 text-sm self-center">
-                Je inschrijving werd verstuurd. Je ontvangt zodadelijk een bevestiging per e-mail.
+                Je inschrijving werd verstuurd. Je ontvangt zodadelijk een
+                bevestiging per e-mail.
               </span>
             )}
             <button
