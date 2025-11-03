@@ -140,30 +140,71 @@ export const vercelUploadImage = async (file) => {
 		throw new Error('Vercel Blob niet geconfigureerd. Voeg VITE_BLOB_READ_WRITE_TOKEN toe aan je .env.local');
 	}
 
-	// Verbeterde compressie: ALLE foto's comprimeren voor optimale grootte
-	let fileToUpload = file;
+	// Zorg dat het inkomende bestand een naam heeft
+	const originalName = (file && file.name) ? file.name : 'upload.jpg';
 
-	// Comprimeer ALLE foto's (niet alleen grote)
-	console.log(`Originele foto: ${Math.round(file.size / 1024)}KB, comprimeren...`);
+	// Log bronbestand
+	console.log(`Originele foto: ${Math.round((file?.size || 0) / 1024)}KB, comprimeren...`);
+
+	// Stap 1: begin met redelijke dimensies en kwaliteit
+	let workingBlob;
 	try {
-		// Verbeterde compressie: kleinere max dimensies en lagere kwaliteit
-		fileToUpload = await resizeImage(file, 1920, 1080, 0.7);
-		console.log(`Gecomprimeerd naar ${Math.round(fileToUpload.size / 1024)}KB (${Math.round((1 - fileToUpload.size / file.size) * 100)}% kleiner)`);
+		workingBlob = await resizeImage(file, 1920, 1080, 0.7); // Blob
+		console.log(`Eerste compressie: ${Math.round(workingBlob.size / 1024)}KB`);
 	} catch (error) {
 		console.error('Compressie error:', error);
 		throw new Error('Afbeelding kon niet worden gecomprimeerd. Probeer een kleinere afbeelding.');
 	}
 
-	// Genereer unieke bestandsnaam
+	// Stap 2: indien nodig, iteratief onder 600KB brengen
+	const ensureUnderLimit = async (blob, maxBytes = 600 * 1024) => {
+		if (blob.size <= maxBytes) return blob;
+		// lees blob in Image en verlaag kwaliteit/dimensies
+		const asFile = new File([blob], originalName, { type: 'image/jpeg' });
+		const tmpImg = new Image();
+		await new Promise((resolve, reject) => {
+			const fr = new FileReader();
+			fr.onload = (e) => { tmpImg.src = e.target.result; };
+			fr.onerror = reject;
+			tmpImg.onload = resolve;
+			tmpImg.onerror = reject;
+			fr.readAsDataURL(asFile);
+		});
+
+		let width = tmpImg.width;
+		let height = tmpImg.height;
+		let quality = 0.7;
+		const canvas = document.createElement('canvas');
+		const ctx = canvas.getContext('2d');
+		for (let i = 0; i < 10; i++) {
+			canvas.width = width;
+			canvas.height = height;
+			ctx.drawImage(tmpImg, 0, 0, width, height);
+			const out = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality));
+			if (out && out.size <= maxBytes) return out;
+			if (quality > 0.5) {
+				quality = Math.max(0.4, quality - 0.1);
+			} else {
+				width = Math.round(width * 0.85);
+				height = Math.round(height * 0.85);
+			}
+		}
+		return blob; // fallback
+	};
+
+	workingBlob = await ensureUnderLimit(workingBlob);
+	console.log(`Definitieve grootte: ${Math.round(workingBlob.size / 1024)}KB`);
+
+	// Genereer unieke bestandsnaam (veilig wanneer file.name ontbreekt)
 	const timestamp = Date.now();
-	const fileExtension = file.name.split('.').pop() || 'jpg';
-	const fileName = `images/${timestamp}-${Math.random().toString(36).substring(7)}.${fileExtension}`;
+	const ext = (originalName.includes('.') ? originalName.split('.').pop() : 'jpg') || 'jpg';
+	const fileName = `images/${timestamp}-${Math.random().toString(36).substring(7)}.${ext}`;
 
 	// Gebruik Vercel Blob SDK voor correcte API calls
 	const { put } = await import('@vercel/blob');
 	
 	try {
-		const blob = await put(fileName, fileToUpload, {
+		const blob = await put(fileName, workingBlob, {
 			access: 'public',
 			token: blobReadWriteToken
 		});
