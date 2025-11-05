@@ -161,6 +161,24 @@ const ReisDetail = () => {
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </div>
           )}
+          {trip?.sections?.reservatie?.brochureUrl && (
+            <div className="mt-4 flex flex-col items-center">
+              <a
+                href={trip.sections.reservatie.brochureUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/90 backdrop-blur-sm rounded-lg p-6 md:p-8 max-w-md text-center font-extrabold shadow-lg text-[#162b58] opacity-65 hover:opacity-100 transition-opacity duration-300"
+                onClick={(e) => {
+                  console.log(
+                    "Brochure link geklikt:",
+                    trip.sections.reservatie.brochureUrl
+                  );
+                }}
+              >
+                Download de brochure
+              </a>
+            </div>
+          )}
         </div>
       </div>
 
@@ -613,11 +631,10 @@ const ReisDetail = () => {
 
       {/** Reservatie en contact info*/}
       {trip?.sections?.reservatie &&
-        (trip.sections.reservatie.html ||
-          trip.sections.reservatie.brochureUrl) && (
+        trip.sections.reservatie.html && (
           <div className="mx-8 mt-10 lg:mx-32" id="reservatie">
             <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
-              Reservatie & Brochure
+              Reservatie
             </h2>
             {trip.sections.reservatie.html && (
               <div
@@ -626,39 +643,6 @@ const ReisDetail = () => {
                   __html: trip.sections.reservatie.html,
                 }}
               />
-            )}
-            {trip.sections.reservatie.brochureUrl && (
-              <div className="mt-6 flex flex-col items-center">
-                <a
-                  href={trip.sections.reservatie.brochureUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#162b58] hover:!bg-[#4ab0e1] text-white font-bold py-3 px-6 rounded-xl shadow-xl duration-200 flex items-center gap-2"
-                  onClick={(e) => {
-                    console.log(
-                      "Brochure link geklikt:",
-                      trip.sections.reservatie.brochureUrl
-                    );
-                    // Laat de normale link behavior gebeuren
-                  }}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                  Bekijk de brochure
-                </a>
-              </div>
             )}
           </div>
         )}
