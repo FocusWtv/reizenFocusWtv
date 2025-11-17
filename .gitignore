@@ -37,4 +37,5 @@ VERCEL_BLOB_SETUP.md
 .env
 .env.*
 .env.example
+CLOUDFLARE_R2_SETUP.md
 

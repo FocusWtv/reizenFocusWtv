@@ -1,9 +1,28 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 
 if (!admin.apps.length) {
 	admin.initializeApp();
 }
+
+// Cloudflare R2 configuratie (S3-compatible)
+const R2_ACCOUNT_ID = functions.config().r2?.account_id || process.env.R2_ACCOUNT_ID;
+const R2_ACCESS_KEY_ID = functions.config().r2?.access_key_id || process.env.R2_ACCESS_KEY_ID;
+const R2_SECRET_ACCESS_KEY = functions.config().r2?.secret_access_key || process.env.R2_SECRET_ACCESS_KEY;
+const R2_BUCKET_NAME = functions.config().r2?.bucket_name || process.env.R2_BUCKET_NAME || 'reizen';
+// Public URL kan een custom domain zijn of de R2 public URL (https://pub-ACCOUNT_ID.r2.dev)
+const R2_PUBLIC_URL = functions.config().r2?.public_url || process.env.R2_PUBLIC_URL || (R2_ACCOUNT_ID ? `https://pub-${R2_ACCOUNT_ID}.r2.dev` : null);
+
+// S3 Client voor R2
+const s3Client = new S3Client({
+	region: 'auto',
+	endpoint: `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+	credentials: {
+		accessKeyId: R2_ACCESS_KEY_ID,
+		secretAccessKey: R2_SECRET_ACCESS_KEY,
+	},
+});
 
 // Nederlandse maandnamen mapping
 const monthNames = {
@@ -281,5 +300,57 @@ exports.manualCheckExpiredInfoavonden = functions.https.onCall(async (data, cont
 	} catch (error) {
 		console.error('Error in manual check:', error);
 		throw new functions.https.HttpsError('internal', error.message);
+	}
+});
+
+/**
+ * Cloudflare R2 image upload functie
+ * Upload afbeeldingen naar Cloudflare R2 bucket via Firebase Function
+ */
+exports.uploadImageToR2 = functions.https.onCall(async (data, context) => {
+	// Alleen admins kunnen uploaden
+	if (!context.auth || context.auth.token?.admin !== true) {
+		throw new functions.https.HttpsError('permission-denied', 'Admin privileges required');
+	}
+
+	if (!R2_ACCOUNT_ID || !R2_ACCESS_KEY_ID || !R2_SECRET_ACCESS_KEY) {
+		throw new functions.https.HttpsError('failed-precondition', 'R2 credentials niet geconfigureerd');
+	}
+
+	try {
+		const { fileData, fileName, contentType } = data;
+
+		if (!fileData || !fileName) {
+			throw new functions.https.HttpsError('invalid-argument', 'fileData en fileName zijn verplicht');
+		}
+
+		// Converteer base64 naar buffer
+		const base64Data = fileData.replace(/^data:image\/\w+;base64,/, '');
+		const buffer = Buffer.from(base64Data, 'base64');
+
+		// Genereer unieke bestandsnaam
+		const timestamp = Date.now();
+		const ext = fileName.split('.').pop() || 'jpg';
+		const uniqueFileName = `images/${timestamp}-${Math.random().toString(36).substring(7)}.${ext}`;
+
+		// Upload naar R2
+		const command = new PutObjectCommand({
+			Bucket: R2_BUCKET_NAME,
+			Key: uniqueFileName,
+			Body: buffer,
+			ContentType: contentType || 'image/jpeg',
+			CacheControl: 'public, max-age=31536000', // 1 jaar cache
+		});
+
+		await s3Client.send(command);
+
+		// Retourneer publieke URL
+		const publicUrl = `${R2_PUBLIC_URL}/${uniqueFileName}`;
+		console.log('Image succesvol geüpload naar R2:', publicUrl);
+
+		return { url: publicUrl };
+	} catch (error) {
+		console.error('R2 upload error:', error);
+		throw new functions.https.HttpsError('internal', error.message || 'Upload mislukt');
 	}
 });

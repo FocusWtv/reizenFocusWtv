@@ -131,15 +131,10 @@ const resizeImage = (file, maxWidth = 1920, maxHeight = 1080, quality = 0.8) => 
 };
 
 /**
- * Vercel Blob image upload functie met verbeterde compressie
- * Gratis alternatief voor Cloudinary - 1GB opslag, 10GB bandwidth per maand
+ * Cloudflare R2 image upload functie via Firebase Function
+ * Upload afbeeldingen naar Cloudflare R2 bucket met compressie
  */
-export const vercelUploadImage = async (file) => {
-	const blobReadWriteToken = import.meta.env.VITE_BLOB_READ_WRITE_TOKEN;
-	if (!blobReadWriteToken) {
-		throw new Error('Vercel Blob niet geconfigureerd. Voeg VITE_BLOB_READ_WRITE_TOKEN toe aan je .env.local');
-	}
-
+export const cloudflareUploadImage = async (file) => {
 	// Zorg dat het inkomende bestand een naam heeft
 	const originalName = (file && file.name) ? file.name : 'upload.jpg';
 
@@ -149,7 +144,7 @@ export const vercelUploadImage = async (file) => {
 	// Stap 1: begin met redelijke dimensies en kwaliteit
 	let workingBlob;
 	try {
-		workingBlob = await resizeImage(file, 1920, 1080, 0.7); // Blob
+		workingBlob = await resizeImage(file, 1920, 1080, 0.7);
 		console.log(`Eerste compressie: ${Math.round(workingBlob.size / 1024)}KB`);
 	} catch (error) {
 		console.error('Compressie error:', error);
@@ -159,7 +154,6 @@ export const vercelUploadImage = async (file) => {
 	// Stap 2: indien nodig, iteratief onder 600KB brengen
 	const ensureUnderLimit = async (blob, maxBytes = 600 * 1024) => {
 		if (blob.size <= maxBytes) return blob;
-		// lees blob in Image en verlaag kwaliteit/dimensies
 		const asFile = new File([blob], originalName, { type: 'image/jpeg' });
 		const tmpImg = new Image();
 		await new Promise((resolve, reject) => {
@@ -189,31 +183,46 @@ export const vercelUploadImage = async (file) => {
 				height = Math.round(height * 0.85);
 			}
 		}
-		return blob; // fallback
+		return blob;
 	};
 
 	workingBlob = await ensureUnderLimit(workingBlob);
 	console.log(`Definitieve grootte: ${Math.round(workingBlob.size / 1024)}KB`);
 
-	// Genereer unieke bestandsnaam (veilig wanneer file.name ontbreekt)
-	const timestamp = Date.now();
-	const ext = (originalName.includes('.') ? originalName.split('.').pop() : 'jpg') || 'jpg';
-	const fileName = `images/${timestamp}-${Math.random().toString(36).substring(7)}.${ext}`;
+	// Converteer blob naar base64 voor Firebase Function
+	const base64Data = await new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onload = () => resolve(reader.result);
+		reader.onerror = reject;
+		reader.readAsDataURL(workingBlob);
+	});
 
-	// Gebruik Vercel Blob SDK voor correcte API calls
-	const { put } = await import('@vercel/blob');
-	
-	try {
-		const blob = await put(fileName, workingBlob, {
-			access: 'public',
-			token: blobReadWriteToken
-		});
+	const response = await fetch('/api/upload-to-r2', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			fileData: base64Data,
+			fileName: originalName,
+			contentType: workingBlob.type || 'image/jpeg',
+		}),
+	});
 
-		console.log('Image succesvol geüpload naar Vercel Blob:', blob.url);
-		return blob.url;
-	} catch (error) {
-		console.error('Vercel Blob upload error:', error);
-		throw new Error(error.message || 'Vercel Blob upload mislukt');
+	if (!response.ok) {
+		const errorText = await response.text();
+		console.error('R2 upload error:', errorText);
+		throw new Error(errorText || 'Cloudflare R2 upload mislukt');
 	}
+
+	const result = await response.json();
+	const url = result.url;
+	console.log('Image succesvol geüpload naar Cloudflare R2:', url);
+	return url;
 };
-// Cloudinary image upload functie is verwijderd; nieuwe uploads gaan via Vercel Blob.
+
+/**
+ * Vercel Blob image upload functie (DEPRECATED - gebruik cloudflareUploadImage)
+ * @deprecated Gebruik cloudflareUploadImage in plaats van deze functie
+ */
+export const vercelUploadImage = cloudflareUploadImage;
