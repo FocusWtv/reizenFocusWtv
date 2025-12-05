@@ -210,9 +210,16 @@ export const cloudflareUploadImage = async (file) => {
 	});
 
 	if (!response.ok) {
-		const errorText = await response.text();
-		console.error('R2 upload error:', errorText);
-		throw new Error(errorText || 'Cloudflare R2 upload mislukt');
+		let errorMessage = 'Cloudflare R2 upload mislukt';
+		try {
+			const errorData = await response.json();
+			errorMessage = errorData.error || errorMessage;
+		} catch (_e) {
+			const errorText = await response.text();
+			errorMessage = errorText || errorMessage;
+		}
+		console.error('R2 upload error:', errorMessage, 'Status:', response.status);
+		throw new Error(errorMessage);
 	}
 
 	const result = await response.json();

@@ -222,11 +222,11 @@ const AdminHomepage = () => {
         compressedFile = new File([compressedFile], desiredName, { type: 'image/jpeg' });
       }
 
-      // Gebruik Vercel Blob in plaats van directe Cloudinary API call
+      // Upload naar Cloudflare R2 via Vercel API route
       const { vercelUploadImage } = await import('../../lib/apiClient');
       const url = await vercelUploadImage(compressedFile);
       setForm(prev => ({ ...prev, imageUrl: url }));
-      setUploadMsg('Afbeelding succesvol geüpload naar Vercel Blob!');
+      setUploadMsg('Afbeelding succesvol geüpload naar Cloudflare R2!');
       return;
       
       // Oude Cloudinary code (behouden voor referentie)

@@ -15,6 +15,17 @@ export default async function handler(req, res) {
     return;
   }
 
+  // Check environment variables
+  if (!process.env.R2_ACCOUNT_ID || !process.env.R2_ACCESS_KEY_ID || !process.env.R2_SECRET_ACCESS_KEY) {
+    console.error('R2 credentials ontbreken:', {
+      hasAccountId: !!process.env.R2_ACCOUNT_ID,
+      hasAccessKey: !!process.env.R2_ACCESS_KEY_ID,
+      hasSecretKey: !!process.env.R2_SECRET_ACCESS_KEY,
+    });
+    res.status(500).json({ error: 'R2 credentials niet geconfigureerd. Controleer Vercel environment variables.' });
+    return;
+  }
+
   try {
     const { fileData, fileName, contentType } = req.body;
 
@@ -45,6 +56,12 @@ export default async function handler(req, res) {
     res.status(200).json({ url: publicUrl });
   } catch (error) {
     console.error('Upload error:', error);
-    res.status(500).json({ error: error.message || 'Upload mislukt' });
+    const errorMessage = error.message || error.toString() || 'Onbekende fout';
+    console.error('Error details:', {
+      message: errorMessage,
+      stack: error.stack,
+      name: error.name,
+    });
+    res.status(500).json({ error: errorMessage });
   }
 }
