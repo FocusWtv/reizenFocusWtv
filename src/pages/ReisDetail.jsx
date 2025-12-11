@@ -412,7 +412,7 @@ const ReisDetail = () => {
               {trip.sections.reportage.map((vid, idx) => (
                 <div
                   key={`${vid.accountId}-${vid.itemId}-${idx}`}
-                  className="relative sm:mx-8 md:mx-16 lg:mx-32 xl:mx-48 aspect-video bg-gray-100 rounded-lg overflow-hidden shadow-xl"
+                  className="relative sm:mx-12 md:mx-16 lg:mx-32 xl:mx-48 aspect-video bg-gray-500 rounded-xl overflow-hidden shadow-2xl"
                 >
                   <iframe
                     src={`https://player.clevercast.com/?account_id=${encodeURIComponent(
