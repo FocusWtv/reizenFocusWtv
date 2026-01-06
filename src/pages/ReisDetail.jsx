@@ -167,7 +167,7 @@ const ReisDetail = () => {
                 href={trip.sections.reservatie.brochureUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/90 backdrop-blur-sm rounded-lg p-6 md:p-8 max-w-md text-center font-extrabold shadow-lg text-[#162b58] opacity-65 hover:opacity-100 transition-opacity duration-300"
+                className="bg-white/90 backdrop-blur-sm rounded-lg p-6 max-w-md text-center font-extrabold shadow-lg text-[#162b58] opacity-65 hover:opacity-100 transition-opacity duration-300"
                 onClick={(e) => {
                   console.log(
                     "Brochure link geklikt:",
