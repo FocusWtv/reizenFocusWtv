@@ -218,6 +218,9 @@ const ReisDetail = () => {
                   className="mx-auto p-1 text-center font-semibold"
                   onClick={() => setMenuOpen(false)}
                 >
+                  <Nav.Link href="/" className="mx-2 text-white">
+                    {"<-"} Terug
+                  </Nav.Link>
                   <Nav.Link href="#home" className="mx-2 text-white">
                     Home
                   </Nav.Link>

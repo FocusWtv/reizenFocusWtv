@@ -65,7 +65,7 @@ const ReisSections = ({
     setRouteDays(next)
   }
   const addReportItem = () => {
-    setReportage([...(reportage || []), { accountId: '', itemId: '' }])
+    setReportage([...(reportage || []), { accountId: 'VzaPKg', itemId: '' }])
   }
   const updateReportItem = (idx, key, val) => {
     const next = [...(reportage || [])]
@@ -302,7 +302,7 @@ const ReisSections = ({
             <div key={idx} className="border rounded p-3 grid grid-cols-1 md:grid-cols-2 gap-3 items-start">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Account ID</label>
-                <input type="text" value={v.accountId || ''} onChange={e=>updateReportItem(idx,'accountId',e.target.value)} className="w-full border rounded px-3 py-2" placeholder="account_id" />
+                <input type="text" value={v.accountId || 'VzaPKg'} readOnly className="w-full border rounded px-3 py-2 bg-gray-100" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Item ID</label>

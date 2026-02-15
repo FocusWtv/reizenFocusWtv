@@ -116,7 +116,7 @@ const AdminReisForm = () => {
             setRouteImageUrl(t.sections?.route?.imageUrl || '');
             setRouteDays(Array.isArray(t.sections?.route?.days) ? t.sections.route.days : []);
             // Reportage
-            setReportage(Array.isArray(t.sections?.reportage) ? t.sections.reportage : []);
+            setReportage(Array.isArray(t.sections?.reportage) ? t.sections.reportage.map(v => ({ ...v, accountId: v.accountId || 'VzaPKg' })) : []);
             // Verblijfsinfo
             setStayMainImageUrl(t.sections?.verblijf?.mainImageUrl || '');
             setStayOverlayTitle(t.sections?.verblijf?.overlayTitle || '');
@@ -176,7 +176,7 @@ const AdminReisForm = () => {
           imageUrl: routeImageUrl || '',
           days: Array.isArray(routeDays) ? routeDays : [],
         },
-        reportage: Array.isArray(reportage) ? reportage : [],
+        reportage: Array.isArray(reportage) ? reportage.map(v => ({ ...v, accountId: v.accountId || 'VzaPKg' })) : [],
         verblijf: {
           mainImageUrl: stayMainImageUrl || '',
           overlayTitle: stayOverlayTitle || '',

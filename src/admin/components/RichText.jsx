@@ -64,6 +64,46 @@ const RichText = ({ value, onChange, placeholder = "Enter some rich text…" }) 
     }, 0);
   };
 
+  const insertEmailLink = () => {
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const linkText = selectedText.trim() || prompt('Weergavetekst voor de link:', 'Stuur een e-mail');
+    if (linkText === null) return;
+    const email = prompt('E-mailadres:', '');
+    if (email === null || !email.trim()) return;
+    const anchor = `<a href="mailto:${email.trim()}">${linkText}</a>`;
+    const newContent = textarea.value.substring(0, start) + anchor + textarea.value.substring(end);
+    handleContentChange(newContent);
+    const caretPos = start + anchor.length;
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(caretPos, caretPos);
+    }, 0);
+  };
+
+  const insertWebsiteLink = () => {
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const linkText = selectedText.trim() || prompt('Weergavetekst voor de link:', 'Klik hier');
+    if (linkText === null) return;
+    let url = prompt('Website-URL (bijv. https://www.voorbeeld.be):', 'https://');
+    if (url === null) return;
+    if (!url.trim()) url = 'https://';
+    else if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    const anchor = `<a href="${url.trim()}" rel="noopener noreferrer">${linkText}</a>`;
+    const newContent = textarea.value.substring(0, start) + anchor + textarea.value.substring(end);
+    handleContentChange(newContent);
+    const caretPos = start + anchor.length;
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(caretPos, caretPos);
+    }, 0);
+  };
+
   return (
     <div className="border rounded">
       {/* Toolbar */}
@@ -99,6 +139,22 @@ const RichText = ({ value, onChange, placeholder = "Enter some rich text…" }) 
           title="Bullet List"
         >
           •
+        </button>
+        <button
+          type="button"
+          onClick={insertWebsiteLink}
+          className="px-3 py-1 text-sm border rounded hover:bg-gray-200"
+          title="Website link toevoegen"
+        >
+          🔗
+        </button>
+        <button
+          type="button"
+          onClick={insertEmailLink}
+          className="px-3 py-1 text-sm border rounded hover:bg-gray-200"
+          title="E-mail link toevoegen"
+        >
+          ✉
         </button>
       </div>
       
