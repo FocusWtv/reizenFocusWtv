@@ -222,7 +222,7 @@ const ReisDetail = () => {
                     {"<-"} Terug
                   </Nav.Link>
                   <Nav.Link href="#home" className="mx-2 text-white">
-                    Home
+                    Intro
                   </Nav.Link>
                   {hasInfoavond && (
                     <Nav.Link href="#infoavond" className="mx-2 text-white">
