@@ -97,7 +97,7 @@ const Home = () => {
           Geplande reizen
         </h1>
         <p className="text-center text-lg font-semibold text-[#162b58] mt-2 mx-8">
-          Welkom bij <a href="https://focus-wtv.be/reizen" className="text-[#4ab0e1] hover:text-[#162b58] font-semibold underline">Focus & WTV reizen</a>! Klik op een kaart en vind alle info over de reis van uw keuze
+          Welkom bij <a href="https://focus-wtv.be/reizen" className="text-[#4ab0e1] hover:text-[#162b58] font-semibold underline">Focus-WTV reizen</a>! Klik op een kaart en vind alle info over de reis van uw keuze
         </p>
       </div> 
 
@@ -140,7 +140,7 @@ const Home = () => {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Terugblik vorige reizen
+            Terug naar hoofdpagina van Focus-WTV reizen
           </a>
         </div>
       </div> 
