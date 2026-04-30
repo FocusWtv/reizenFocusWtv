@@ -524,7 +524,7 @@ const ReisDetail = () => {
                           <tr className="border-b border-gray-300">
                             <th className="text-left p-3 font-medium text-gray-600 w-1/2"></th>
                             <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                              Prijs
+                              Prijs enkel
                             </th>
                           </tr>
                         </thead>
