@@ -1,4 +1,4 @@
-import { auth } from '../config/firebase';
+﻿import { auth } from '../config/firebase';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -209,21 +209,26 @@ export const cloudflareUploadImage = async (file) => {
 		}),
 	});
 
+	// Body maar één keer lezen: na mislukte .json() faalt .text() (stream verbruikt).
+	const raw = await response.text();
+	let result;
+	try {
+		result = raw ? JSON.parse(raw) : {};
+	} catch {
+		const hint = raw ? raw.slice(0, 240) : response.statusText;
+		throw new Error(
+			`Upload-antwoord is geen geldige JSON (${response.status}): ${hint}`,
+		);
+	}
+
 	if (!response.ok) {
-		let errorMessage = 'Cloudflare R2 upload mislukt';
-		try {
-			const errorData = await response.json();
-			errorMessage = errorData.error || errorMessage;
-		} catch (_e) {
-			const errorText = await response.text();
-			errorMessage = errorText || errorMessage;
-		}
+		const errorMessage = result?.error || raw || 'Cloudflare R2 upload mislukt';
 		console.error('R2 upload error:', errorMessage, 'Status:', response.status);
 		throw new Error(errorMessage);
 	}
 
-	const result = await response.json();
-	const url = result.url;
+	const url = result?.url;
+	if (!url) throw new Error('Geen URL in upload-antwoord');
 	console.log('Image succesvol geüpload naar Cloudflare R2:', url);
 	return url;
 };

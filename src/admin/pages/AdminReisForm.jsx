@@ -51,6 +51,7 @@ const AdminReisForm = () => {
 
   // Reservatie sectie
   const [reservationHtml, setReservationHtml] = useState('');
+  const [reservationLogoUrl, setReservationLogoUrl] = useState('');
   const [reservationBrochureUrl, setReservationBrochureUrl] = useState('');
 
   // Infoavond sectie
@@ -131,6 +132,7 @@ const AdminReisForm = () => {
             setGallery(Array.isArray(t.sections?.gallery) ? t.sections.gallery : []);
             // Reservatie
             setReservationHtml(t.sections?.reservatie?.html || '');
+            setReservationLogoUrl(t.sections?.reservatie?.logoUrl || '');
             setReservationBrochureUrl(t.sections?.reservatie?.brochureUrl || '');
             // Infoavond
             setInfoavondSlug(t.sections?.infoavond?.slug || '');
@@ -189,6 +191,7 @@ const AdminReisForm = () => {
         gallery: Array.isArray(gallery) ? gallery : [],
         reservatie: {
           html: reservationHtml || '',
+          logoUrl: reservationLogoUrl || '',
           brochureUrl: reservationBrochureUrl || '',
         },
       };
@@ -294,6 +297,8 @@ const AdminReisForm = () => {
               setGallery={setGallery}
               reservationHtml={reservationHtml}
               setReservationHtml={setReservationHtml}
+              reservationLogoUrl={reservationLogoUrl}
+              setReservationLogoUrl={setReservationLogoUrl}
               reservationBrochureUrl={reservationBrochureUrl}
               setReservationBrochureUrl={setReservationBrochureUrl}
               events={events}

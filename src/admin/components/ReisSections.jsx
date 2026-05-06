@@ -2,7 +2,7 @@ import React from 'react';
 import RichText from './RichText';
 import { useState } from 'react';
 import CollapsibleSection from './CollapsibleSection';
-import { vercelUploadImage } from '../../lib/apiClient';
+import { cloudflareUploadImage } from '../../lib/apiClient';
 
 const ReisSections = ({ 
   introTitle,
@@ -40,6 +40,8 @@ const ReisSections = ({
   // Reservatie
   reservationHtml,
   setReservationHtml,
+  reservationLogoUrl,
+  setReservationLogoUrl,
   reservationBrochureUrl,
   setReservationBrochureUrl,
   // Infoavond
@@ -95,12 +97,12 @@ const ReisSections = ({
     if (!file) return
     const next = [...(stayItems || [])]
     try {
-      const url = await vercelUploadImage(file)
+      const url = await cloudflareUploadImage(file)
       const photos = Array.isArray(next[idx].photos) ? next[idx].photos : []
       photos.push(url)
       next[idx].photos = photos
       setStayItems(next)
-    } catch (_) {
+    } catch {
       alert('Upload foto mislukt')
     }
   }
@@ -108,12 +110,12 @@ const ReisSections = ({
     if (!fileList || fileList.length === 0) return
     const files = Array.from(fileList)
     try {
-      const urls = await Promise.all(files.map(f => vercelUploadImage(f)))
+      const urls = await Promise.all(files.map(f => cloudflareUploadImage(f)))
       const next = [...(stayItems || [])]
       const photos = Array.isArray(next[idx].photos) ? next[idx].photos : []
       next[idx].photos = photos.concat(urls.filter(Boolean))
       setStayItems(next)
-    } catch (_) {
+    } catch {
       alert('Upload van één of meerdere foto\'s is mislukt')
     }
   }
@@ -189,9 +191,9 @@ const ReisSections = ({
                 if (!file) return
                 try {
                   setUploadingRouteImage(true)
-                  const url = await vercelUploadImage(file)
+                  const url = await cloudflareUploadImage(file)
                   setRouteImageUrl(url || '')
-                } catch (_) {
+                } catch {
                   alert('Upload mislukt. Probeer opnieuw of kies een andere afbeelding.')
                 } finally {
                   setUploadingRouteImage(false)
@@ -244,7 +246,7 @@ const ReisSections = ({
                       const files = Array.from(e.target.files || []);
                       if (!files.length) return;
                       try {
-                        const uploadPromises = files.map(file => vercelUploadImage(file));
+                        const uploadPromises = files.map(file => cloudflareUploadImage(file));
                         const urls = await Promise.all(uploadPromises);
                         const currentPhotos = d.photos || [];
                         updateRouteDay(idx, 'photos', [...currentPhotos, ...urls]);
@@ -330,9 +332,9 @@ const ReisSections = ({
               if (!file) return
               try {
                 setUploadingStayMain(true)
-                const url = await vercelUploadImage(file)
+                const url = await cloudflareUploadImage(file)
                 setStayMainImageUrl(url || '')
-              } catch (_) {
+              } catch {
                 alert('Upload mislukt')
               } finally {
                 setUploadingStayMain(false)
@@ -507,9 +509,9 @@ const ReisSections = ({
               const files = Array.from(e.target.files || [])
               if (!files.length) return
               try {
-                const urls = await Promise.all(files.map(f => vercelUploadImage(f)))
+                const urls = await Promise.all(files.map(f => cloudflareUploadImage(f)))
                 setGallery([...(gallery||[]), ...urls.filter(Boolean).map(u=>({ src: u }))])
-              } catch (_) {
+              } catch {
                 alert('Upload van één of meerdere foto\'s is mislukt')
               } finally {
                 e.target.value=''
@@ -537,6 +539,42 @@ const ReisSections = ({
       {/* Reservatie & contact */}
       <div className="space-y-3 border-2 border-[#002855] rounded-md p-4" id="reservatie-section">
         <h2 className="text-lg font-semibold text-gray-900">Reservatie & contact</h2>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Logo (optioneel)</label>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-sm text-gray-600">Bladeren:</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                try {
+                  const url = await cloudflareUploadImage(file);
+                  setReservationLogoUrl(url || '');
+                } catch {
+                  alert("Logo uploaden is mislukt.");
+                } finally {
+                  e.target.value = '';
+                }
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setReservationLogoUrl('')}
+              disabled={!reservationLogoUrl}
+              className="px-3 py-1 text-sm border rounded disabled:opacity-50"
+            >
+              Verwijder logo
+            </button>
+          </div>
+          {reservationLogoUrl ? (
+            <div className="flex items-center gap-3">
+              <img src={reservationLogoUrl} alt="Logo preview" className="max-h-20 max-w-[200px] object-contain border rounded p-1 bg-white" />
+              <span className="text-xs text-gray-600 break-all">{reservationLogoUrl}</span>
+            </div>
+          ) : null}
+        </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Tekst <br/>
           <p className="text-xs text-gray-500">Voor een email link : {"<"}a href="mailto:uwemail@example.com"{">"}Stuur een e-mail{"</"}a{">"}<br/>

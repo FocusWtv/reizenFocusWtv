@@ -206,7 +206,7 @@ const ReisDetail = () => {
                     &times;
                   </span>
                 ) : (
-                  <span className="text-white text-2xl leading-none">â˜°</span>
+                  <span className="text-white text-2xl leading-none">?</span>
                 )}
               </Navbar.Toggle>
 
@@ -274,7 +274,7 @@ const ReisDetail = () => {
             <div className="text-center text-[#162b58] mt-2 mx-8 lg:mx-32">
               <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
               <div
-                className="text-lg prose max-w-none inline-block text-left rt-html"
+                className="text-lg prose max-w-none inline-block text-center rt-html"
                 dangerouslySetInnerHTML={{ __html: trip.sections.intro.html }}
               />
             </div>
@@ -346,7 +346,7 @@ const ReisDetail = () => {
                 {hasDays &&
                   routeData.days.map((d, idx) => {
                     const titleParts = [d.day, d.date, d.place].filter(Boolean);
-                    const summaryText = titleParts.join(" â€“ ");
+                    const summaryText = titleParts.join(" – ");
                     return (
                       <div
                         key={`${d.day}-${d.date}-${idx}`}
@@ -485,9 +485,12 @@ const ReisDetail = () => {
                     </div>
                   )}
                   {it.photos && it.photos.length > 0 && (
-                    <div className="relative mb-10 lg:mb-16">
-                      <div className="mb-10">
-                        <PhotoAlbum photos={toAlbumPhotos(it.photos)} />
+                    <div className="relative mb-10 flex w-full flex-col items-center lg:mb-16">
+                      <div className="mb-10 w-full">
+                        <PhotoAlbum
+                          photos={toAlbumPhotos(it.photos)}
+                          centered
+                        />
                       </div>
                     </div>
                   )}
@@ -590,35 +593,79 @@ const ReisDetail = () => {
         )}
 
       {/** Inbegrepen */}
+
       {Array.isArray(trip?.sections?.inbegrepen) &&
+
         trip.sections.inbegrepen.length > 0 && (
-          <div className="mx-8 mt-10 lg:mx-32" id="inbegrepen">
+
+          <div
+
+            className="mt-10 box-border w-full pr-8 pl-4 sm:pl-6 lg:pr-32 lg:pl-8"
+
+            id="inbegrepen"
+
+          >
+
             <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
+
               Inbegrepen
-            </h2>
-            <ul className="list-disc pl-6 text-lg text-[#162b58] space-y-2 text-left">
-              {trip.sections.inbegrepen.map((item, idx) => (
-                <li key={idx}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        )}
 
+            </h2>
+
+            <div className="md:pl-[25vw]">
+
+              <ul className="list-disc pl-6 text-lg text-[#162b58] space-y-2 text-left">
+
+                {trip.sections.inbegrepen.map((item, idx) => (
+
+                  <li key={idx}>{item}</li>
+
+                ))}
+
+              </ul>
+
+            </div>
+
+          </div>
+
+        )}
       {/** Niet inbegrepen */}
-      {Array.isArray(trip?.sections?.nietInbegrepen) &&
-        trip.sections.nietInbegrepen.length > 0 && (
-          <div className="mx-8 mt-10 lg:mx-32" id="nietinbegrepen">
-            <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
-              Niet inbegrepen
-            </h2>
-            <ul className="list-disc pl-6 text-lg text-[#162b58] space-y-2 text-left">
-              {trip.sections.nietInbegrepen.map((item, idx) => (
-                <li key={idx}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        )}
 
+      {Array.isArray(trip?.sections?.nietInbegrepen) &&
+
+        trip.sections.nietInbegrepen.length > 0 && (
+
+          <div
+
+            className="mt-10 box-border w-full pr-8 pl-4 sm:pl-6 lg:pr-32 lg:pl-8"
+
+            id="nietinbegrepen"
+
+          >
+
+            <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
+
+              Niet inbegrepen
+
+            </h2>
+
+            <div className="md:pl-[25vw]">
+
+              <ul className="list-disc pl-6 text-lg text-[#162b58] space-y-2 text-left">
+
+                {trip.sections.nietInbegrepen.map((item, idx) => (
+
+                  <li key={idx}>{item}</li>
+
+                ))}
+
+              </ul>
+
+            </div>
+
+          </div>
+
+        )}
       {/** Gallerij  */}
       {Array.isArray(trip?.sections?.gallery) &&
         trip.sections.gallery.length > 0 && (
@@ -634,11 +681,20 @@ const ReisDetail = () => {
 
       {/** Reservatie en contact info*/}
       {trip?.sections?.reservatie &&
-        trip.sections.reservatie.html && (
+        (trip.sections.reservatie.html || trip.sections.reservatie.logoUrl) && (
           <div className="mx-8 mt-10 lg:mx-32" id="reservatie">
             <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
               Reservatie
             </h2>
+            {trip.sections.reservatie.logoUrl && (
+              <div className="mt-4 mb-4 flex justify-center">
+                <img
+                  src={trip.sections.reservatie.logoUrl}
+                  alt=""
+                  className="max-h-24 w-auto max-w-full object-contain"
+                />
+              </div>
+            )}
             {trip.sections.reservatie.html && (
               <div
                 className="text-lg text-[#162b58] mt-2 text-left mx-4 lg:mx-0 prose max-w-none"
@@ -677,7 +733,7 @@ const ReisDetail = () => {
             aria-label="Sluiten"
             title="Sluiten"
           >
-            Ã—
+            ×
           </button>
           <img
             src={actieveFoto}
