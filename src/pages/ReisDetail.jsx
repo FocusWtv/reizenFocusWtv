@@ -55,7 +55,7 @@ const ReisDetail = () => {
           setTitle(t?.title || "");
           setDateRange(t?.dateRange || "");
           setStatus(t?.status || "");
-          
+
           // Infoavond logica - controleer of event bestaat en niet verstreken is
           if (t?.sections?.infoavond?.slug) {
             try {
@@ -66,15 +66,15 @@ const ReisDetail = () => {
                 limit(1)
               );
               const eventSnap = await getDocs(eventQuery);
-              
+
               if (!eventSnap.empty) {
                 const eventData = eventSnap.docs[0].data();
                 setInfoavondEvent(eventData);
-                
+
                 // Controleer of datum verstreken is
                 const isExpired = isDatePassed(eventData.dateTime);
                 setHasInfoavond(!isExpired);
-                
+
                 console.log(`Infoavond "${eventData.title}" - Datum: ${eventData.dateTime}, Verstreken: ${isExpired}`);
               } else {
                 // Event niet gevonden
@@ -121,7 +121,7 @@ const ReisDetail = () => {
             setInfoavondEvent(null);
           }
         }
-      } catch (_e) {}
+      } catch (_e) { }
     };
     load();
   }, [slug]);
@@ -154,9 +154,8 @@ const ReisDetail = () => {
           {/** status label */}
           {status && (
             <div
-              className={`mt-3 ${
-                status === "volzet" ? "bg-red-500" : "bg-green-500"
-              } text-white underline font-semibold py-3 px-6 rounded-lg border-4 shadow-lg flex items-center gap-2`}
+              className={`mt-3 ${status === "volzet" ? "bg-red-500" : "bg-green-500"
+                } text-white underline font-semibold py-3 px-6 rounded-lg border-4 shadow-lg flex items-center gap-2`}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </div>
@@ -206,7 +205,14 @@ const ReisDetail = () => {
                     &times;
                   </span>
                 ) : (
-                  <span className="text-white text-2xl leading-none">?</span>
+                  <span
+                    className="flex flex-col justify-center gap-1.5 w-7"
+                    aria-hidden
+                  >
+                    <span className="block h-0.5 w-full bg-white rounded-sm" />
+                    <span className="block h-0.5 w-full bg-white rounded-sm" />
+                    <span className="block h-0.5 w-full bg-white rounded-sm" />
+                  </span>
                 )}
               </Navbar.Toggle>
 
@@ -274,7 +280,7 @@ const ReisDetail = () => {
             <div className="text-center text-[#162b58] mt-2 mx-8 lg:mx-32">
               <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
               <div
-                className="text-lg prose max-w-none inline-block text-center rt-html"
+                className="text-lg prose max-w-none inline-block text-center rt-html [&_p]:my-1 [&_p]:leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: trip.sections.intro.html }}
               />
             </div>
@@ -321,9 +327,8 @@ const ReisDetail = () => {
               Reisroute
             </h2>
             <div
-              className={`flex items-start gap-4 mx-4 mt-10 lg:mx-16 ${
-                hasImage ? "flex-col lg:flex-row" : "flex-col"
-              }`}
+              className={`flex items-start gap-4 mx-4 mt-10 lg:mx-16 ${hasImage ? "flex-col lg:flex-row" : "flex-col"
+                }`}
             >
               {/* Image container */}
               {hasImage && (
@@ -337,20 +342,19 @@ const ReisDetail = () => {
               )}
               {/* Accordion container */}
               <div
-                className={`${
-                  hasImage
+                className={`${hasImage
                     ? "w-full lg:w-1/2"
                     : "w-full lg:w-2/3 xl:w-1/2 mx-auto"
-                } flex flex-col gap-4`}
+                  } flex flex-col gap-4`}
               >
                 {hasDays &&
                   routeData.days.map((d, idx) => {
                     const titleParts = [d.day, d.date, d.place].filter(Boolean);
-                    const summaryText = titleParts.join(" – ");
+                    const summaryText = titleParts.join(" \u00b7 ");
                     return (
                       <div
                         key={`${d.day}-${d.date}-${idx}`}
-                        className="w-full text-[#162b58] space-y-4"
+                        className="w-full text-[#162b58]"
                       >
                         <details className="border rounded-lg">
                           <summary className="p-4 font-semibold cursor-pointer text-left">
@@ -359,22 +363,22 @@ const ReisDetail = () => {
                           <div className="p-4 border-t text-center">
                             {d?.html
                               ? (() => {
-                                  const html = String(d.html || "").replace(
-                                    /\r?\n/g,
-                                    "<br />"
-                                  );
-                                  return (
-                                    <div>
-                                      <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
-                                      <div
-                                        className="text-md prose max-w-none rt-html"
-                                        dangerouslySetInnerHTML={{
-                                          __html: html,
-                                        }}
-                                      />
-                                    </div>
-                                  );
-                                })()
+                                const html = String(d.html || "").replace(
+                                  /\r?\n/g,
+                                  "<br />"
+                                );
+                                return (
+                                  <div>
+                                    <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
+                                    <div
+                                      className="text-md prose max-w-none rt-html text-left [&_p]:my-1 [&_p]:leading-relaxed"
+                                      dangerouslySetInnerHTML={{
+                                        __html: html,
+                                      }}
+                                    />
+                                  </div>
+                                );
+                              })()
                               : null}
                             {/* Foto's per dag */}
                             {Array.isArray(d?.photos) && d.photos.length > 0 && (
@@ -382,9 +386,9 @@ const ReisDetail = () => {
                                 <div className="flex flex-wrap justify-center gap-3 max-w-4xl">
                                   {d.photos.map((photo, photoIdx) => (
                                     <div key={photoIdx} className="relative group">
-                                      <img 
-                                        src={photo} 
-                                        alt={`Dag ${idx + 1} foto ${photoIdx + 1}`} 
+                                      <img
+                                        src={photo}
+                                        alt={`Dag ${idx + 1} foto ${photoIdx + 1}`}
                                         className="w-56 h-56 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
                                         onClick={() => setActieveFoto(photo)}
                                       />
@@ -538,9 +542,8 @@ const ReisDetail = () => {
                               className="border-b border-gray-200"
                             >
                               <td
-                                className={`p-3 font-medium text-[#162b58] ${
-                                  row.bg || ""
-                                }`}
+                                className={`p-3 font-medium text-[#162b58] ${row.bg || ""
+                                  }`}
                               >
                                 {row.name}
                               </td>
@@ -561,9 +564,8 @@ const ReisDetail = () => {
                           className="border-b border-gray-200 last:border-b-0"
                         >
                           <div
-                            className={`p-3 font-medium ${
-                              row.bg || ""
-                            } text-gray-800 text-center`}
+                            className={`p-3 font-medium ${row.bg || ""
+                              } text-gray-800 text-center`}
                           >
                             {row.name}
                           </div>
@@ -630,41 +632,23 @@ const ReisDetail = () => {
 
         )}
       {/** Niet inbegrepen */}
-
       {Array.isArray(trip?.sections?.nietInbegrepen) &&
-
         trip.sections.nietInbegrepen.length > 0 && (
-
           <div
-
             className="mt-10 box-border w-full pr-8 pl-4 sm:pl-6 lg:pr-32 lg:pl-8"
-
             id="nietinbegrepen"
-
           >
-
             <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
-
               Niet inbegrepen
-
             </h2>
-
             <div className="md:pl-[25vw]">
-
               <ul className="list-disc pl-6 text-lg text-[#162b58] space-y-2 text-left">
-
                 {trip.sections.nietInbegrepen.map((item, idx) => (
-
                   <li key={idx}>{item}</li>
-
                 ))}
-
               </ul>
-
             </div>
-
           </div>
-
         )}
       {/** Gallerij  */}
       {Array.isArray(trip?.sections?.gallery) &&
@@ -733,7 +717,7 @@ const ReisDetail = () => {
             aria-label="Sluiten"
             title="Sluiten"
           >
-            ×
+            &times;
           </button>
           <img
             src={actieveFoto}
