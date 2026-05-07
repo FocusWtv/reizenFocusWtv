@@ -506,12 +506,12 @@ const ReisSections = ({
                     className="w-full border rounded px-3 py-2"
                   >
                     <option value="">Geen</option>
-                    <option value="bg-purple-300">Paars (licht)</option>
-                    <option value="bg-green-300">Groen (licht)</option>
-                    <option value="bg-orange-300">Oranje (licht)</option>
-                    <option value="bg-blue-300">Blauw (licht)</option>
+                    <option value="bg-indigo-400">Paars (licht)</option>
+                    <option value="bg-green-500">Groen (licht)</option>
+                    <option value="bg-amber-500">Oranje (licht)</option>
+                    <option value="bg-teal-400">Blauw (licht)</option>
                     <option value="bg-gray-300">Grijs (licht)</option>
-                    <option value="bg-yellow-300">Geel (licht)</option>
+                    <option value="bg-yellow-400">Geel (licht)</option>
                   </select>
                 </div>
                 <div className="md:col-span-3 flex items-center justify-between">
