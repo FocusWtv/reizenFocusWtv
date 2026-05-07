@@ -5,6 +5,7 @@ import CollapsibleSection from './CollapsibleSection';
 import { cloudflareUploadImage } from '../../lib/apiClient';
 
 const MAX_INTRO_PHOTOS = 2
+const MAX_PRIJS_SECTION_PHOTOS = 2
 
 const ReisSections = ({ 
   introTitle,
@@ -33,6 +34,8 @@ const ReisSections = ({
   setPrices,
   pricesNote,
   setPricesNote,
+  prijzenPhotos,
+  setPrijzenPhotos,
   // Inbegrepen
   included,
   setIncluded,
@@ -57,6 +60,7 @@ const ReisSections = ({
 }) => {
   const [uploadingRouteImage, setUploadingRouteImage] = useState(false)
   const [uploadingIntroPhotos, setUploadingIntroPhotos] = useState(false)
+  const [uploadingPrijzenPhotos, setUploadingPrijzenPhotos] = useState(false)
 
   const addRouteDay = () => {
     setRouteDays([...(routeDays || []), { day: '', date: '', place: '', html: '', photos: [] }])
@@ -482,10 +486,82 @@ const ReisSections = ({
       {/* Prijzen sectie */}
       <div className="space-y-3 border-2 border-[#002855] rounded-md p-4" id="prijzen-section">
         <h2 className="text-lg font-semibold text-gray-900">Prijzen</h2>
+        {/* Foto’s boven prijzentabel op de site (optioneel, zelfde upload als intro) */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Foto&apos;s boven prijzentabel (optioneel, max. {MAX_PRIJS_SECTION_PHOTOS})
+          </label>
+          <div className="flex flex-wrap items-center gap-3">
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              disabled={
+                (prijzenPhotos?.length || 0) >= MAX_PRIJS_SECTION_PHOTOS ||
+                uploadingPrijzenPhotos
+              }
+              onChange={async (e) => {
+                const files = Array.from(e.target.files || [])
+                if (!files.length) return
+                const remaining =
+                  MAX_PRIJS_SECTION_PHOTOS - (prijzenPhotos?.length || 0)
+                if (remaining <= 0) return
+                const toUpload = files.slice(0, remaining)
+                try {
+                  setUploadingPrijzenPhotos(true)
+                  const urls = await Promise.all(
+                    toUpload.map((file) => cloudflareUploadImage(file))
+                  )
+                  const next = [
+                    ...(prijzenPhotos || []),
+                    ...urls.filter(Boolean),
+                  ].slice(0, MAX_PRIJS_SECTION_PHOTOS)
+                  setPrijzenPhotos(next)
+                } catch {
+                  alert('Upload mislukt. Probeer opnieuw of kies een andere afbeelding.')
+                } finally {
+                  setUploadingPrijzenPhotos(false)
+                  e.target.value = ''
+                }
+              }}
+              className="block"
+            />
+            {uploadingPrijzenPhotos && (
+              <span className="text-sm text-gray-500">Uploaden…</span>
+            )}
+          </div>
+          {(prijzenPhotos || []).length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {(prijzenPhotos || []).map((u, pIdx) => (
+                <div key={`prijs-ph-${pIdx}`} className="relative">
+                  <img
+                    src={u}
+                    alt={`Prijzen sectie ${pIdx + 1}`}
+                    className="w-28 h-20 object-cover rounded"
+                  />
+                  <button
+                    type="button"
+                    className="absolute -top-2 -right-2 bg-white border rounded px-1 text-xs"
+                    onClick={() => {
+                      const next = [...(prijzenPhotos || [])]
+                      next.splice(pIdx, 1)
+                      setPrijzenPhotos(next)
+                    }}
+                  >
+                    x
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="text-sm text-gray-600">
+            {(prijzenPhotos || []).length}/{MAX_PRIJS_SECTION_PHOTOS} foto&apos;s
+          </div>
+        </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <label className="block text-sm font-medium text-gray-700">Rijen</label>
-            <button type="button" onClick={()=> setPrices([...(prices||[]), { name: '', prijs: '', color: '' }])} className="px-3 py-1 text-sm border rounded">Rij toevoegen</button>
+            <button type="button" onClick={()=> setPrices([...(prices||[]), { name: '', prijs: '', bg: '' }])} className="px-3 py-1 text-sm border rounded">Rij toevoegen</button>
           </div>
           <div className="space-y-3">
             {(prices||[]).map((row, idx)=> (

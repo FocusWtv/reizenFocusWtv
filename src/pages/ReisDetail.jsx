@@ -16,6 +16,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import PhotoAlbum from "../components/PhotoAlbum";
 import { isDatePassed } from "../lib/utils";
+import { prijsRowBgClass } from "../lib/prijsRowBg";
 
 const ReisDetail = () => {
   const { slug } = useParams();
@@ -531,8 +532,24 @@ const ReisDetail = () => {
       })()}
 
       {/** Prijs */}
-      {Array.isArray(trip?.sections?.prijzen) &&
-        trip.sections.prijzen.length > 0 && (
+      {(() => {
+        const prijzenRows = Array.isArray(trip?.sections?.prijzen)
+          ? trip.sections.prijzen
+          : [];
+        const prijzenPhotoUrls = Array.isArray(trip?.sections?.prijzenPhotos)
+          ? trip.sections.prijzenPhotos.filter(
+              (u) => typeof u === "string" && String(u).trim()
+            )
+          : [];
+        const prijzenNoteHtml = trip?.sections?.prijzenNote
+          ? String(trip.sections.prijzenNote).trim()
+          : "";
+        const showPrijsSection =
+          prijzenRows.length > 0 ||
+          prijzenPhotoUrls.length > 0 ||
+          Boolean(prijzenNoteHtml);
+        if (!showPrijsSection) return null;
+        return (
           <div
             className="text-center my-16 mx-8 mt-16 mb-10 lg:mx-32"
             id="prijs"
@@ -544,81 +561,111 @@ const ReisDetail = () => {
                 </h1>
                 <div className="max-w-4xl mx-auto p-3 sm:p-6 bg-white">
                   <div className="border-2  rounded-lg border-[#162b58] shadow-lg">
-                    <div className="bg-gray-100 p-3 sm:p-4 text-center rounded-lg border-b-2 border-[#162b58]">
-                      <h2 className="text-lg sm:text-xl font-bold">
-                        PRIJS IN EURO PER PERSOON
-                      </h2>
-                    </div>
-
-                    {/* Desktop/Tablet Table View */}
-                    <div className="hidden sm:block">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b border-gray-300">
-                            <th className="text-left p-3 font-medium text-gray-600 w-1/2"></th>
-                            <th className="text-center p-3 font-medium text-gray-400 italic w-1/4">
-                              Prijs enkel
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {trip.sections.prijzen.map((row, index) => (
-                            <tr
-                              key={index}
-                              className="border-b border-gray-200"
-                            >
-                              <td
-                                className={`p-3 font-medium text-[#162b58] ${row.bg || ""
-                                  }`}
-                              >
-                                {row.name}
-                              </td>
-                              <td className="p-3 text-center font-semibold">
-                                {row.prijs}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-
-                    {/* Mobile Card View */}
-                    <div className="sm:hidden">
-                      {trip.sections.prijzen.map((row, index) => (
-                        <div
-                          key={index}
-                          className="border-b border-gray-200 last:border-b-0"
-                        >
-                          <div
-                            className={`p-3 font-medium ${row.bg || ""
-                              } text-gray-800 text-center`}
-                          >
-                            {row.name}
-                          </div>
-                          <div className="p-3 space-y-2">
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm text-gray-600">
-                                Prijs:
-                              </span>
-                              <span className="font-semibold">{row.prijs}</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    {/* Optional aanvullende voetnoot kan later dynamisch gemaakt worden */
-                    }
-                    {trip.sections.prijzenNote && (
-                      <div className="text-left mt-6 mx-8 lg:mx-32">
-                        <div className="prose max-w-none rt-html" dangerouslySetInnerHTML={{ __html: trip.sections.prijzenNote }} />
+                    {prijzenRows.length > 0 && (
+                      <div className="bg-gray-100 p-3 sm:p-4 text-center rounded-lg border-b-2 border-[#162b58]">
+                        <h2 className="text-lg sm:text-xl font-bold">
+                          PRIJS IN € per persoon
+                        </h2>
                       </div>
                     )}
+
+                    {prijzenPhotoUrls.length > 0 && (
+                      <div
+                        className={`px-4 py-6 flex flex-wrap justify-center items-center gap-x-10 gap-y-6 sm:gap-x-14 md:gap-x-16 lg:gap-x-20 ${
+                          prijzenRows.length > 0 || prijzenNoteHtml
+                            ? "border-b border-gray-200"
+                            : ""
+                        }`}
+                      >
+                        {prijzenPhotoUrls.map((src, i) => (
+                          <img
+                            key={`prijs-section-${i}`}
+                            src={src}
+                            alt=""
+                            loading="lazy"
+                            className="rounded-lg h-auto max-h-[min(50vh,22rem)] w-[min(100%,26rem)] object-cover shadow-sm"
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {prijzenRows.length > 0 && (
+                      <>
+                        <div className="hidden sm:block">
+                          <table className="w-full">
+                            <thead>
+                              <tr className="border-b border-gray-300">
+                                <th className="text-center p-3 font-bold text-blue-800 italic w-1/2">
+                                  Verblijf
+                                </th>
+                                <th className="text-center p-3 font-bold text-blue-800 italic w-1/4">
+                                  Prijs
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {prijzenRows.map((row, index) => (
+                                <tr
+                                  key={index}
+                                  className="border-b border-gray-200"
+                                >
+                                  <td
+                                    className={`p-3 font-medium text-[#162b58] ${prijsRowBgClass(row.bg || row.color)}`}
+                                  >
+                                    {row.name}
+                                  </td>
+                                  <td className="p-3 text-center font-semibold">
+                                    {row.prijs}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+
+                        <div className="sm:hidden">
+                          {prijzenRows.map((row, index) => (
+                            <div
+                              key={index}
+                              className="border-b border-gray-200 last:border-b-0"
+                            >
+                              <div
+                                className={`p-3 font-medium ${prijsRowBgClass(row.bg || row.color)} text-gray-800 text-center`}
+                              >
+                                {row.name}
+                              </div>
+                              <div className="p-3 space-y-2">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm text-gray-600">
+                                    Prijs:
+                                  </span>
+                                  <span className="font-semibold">
+                                    {row.prijs}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+
+                    {prijzenNoteHtml ? (
+                      <div className="text-left mt-6 mx-8 lg:mx-32">
+                        <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
+                        <div
+                          className="prose max-w-none rt-html"
+                          dangerouslySetInnerHTML={{ __html: prijzenNoteHtml }}
+                        />
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        )}
+        );
+      })()}
 
       {/** Inbegrepen */}
 

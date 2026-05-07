@@ -40,8 +40,9 @@ const AdminReisForm = () => {
   const [stayItems, setStayItems] = useState([]); // [{ title, html, photos: [] }]
 
   // Prijzen sectie
-  const [prices, setPrices] = useState([]); // [{ name, prijs, color? }]
+  const [prices, setPrices] = useState([]); // [{ name, prijs, bg? }]
   const [pricesNote, setPricesNote] = useState('');
+  const [prijzenPhotos, setPrijzenPhotos] = useState([]); // string[], max 2
 
   // Inbegrepen / Niet inbegrepen
   const [included, setIncluded] = useState([]); // string[]
@@ -131,6 +132,11 @@ const AdminReisForm = () => {
             // Prijzen
             setPrices(Array.isArray(t.sections?.prijzen) ? t.sections.prijzen : []);
             setPricesNote(t.sections?.prijzenNote || '');
+            setPrijzenPhotos(
+              Array.isArray(t.sections?.prijzenPhotos)
+                ? t.sections.prijzenPhotos.filter((u) => typeof u === 'string').slice(0, 2)
+                : []
+            );
             // Inbegrepen
             setIncluded(Array.isArray(t.sections?.inbegrepen) ? t.sections.inbegrepen : []);
             setNotIncluded(Array.isArray(t.sections?.nietInbegrepen) ? t.sections.nietInbegrepen : []);
@@ -195,6 +201,9 @@ const AdminReisForm = () => {
         },
         prijzen: Array.isArray(prices) ? prices : [],
         prijzenNote: pricesNote || '',
+        prijzenPhotos: Array.isArray(prijzenPhotos)
+          ? prijzenPhotos.filter((u) => typeof u === 'string' && u).slice(0, 2)
+          : [],
         inbegrepen: Array.isArray(included) ? included : [],
         nietInbegrepen: Array.isArray(notIncluded) ? notIncluded : [],
         gallery: Array.isArray(gallery) ? gallery : [],
@@ -300,6 +309,8 @@ const AdminReisForm = () => {
               setPrices={setPrices}
               pricesNote={pricesNote}
               setPricesNote={setPricesNote}
+              prijzenPhotos={prijzenPhotos}
+              setPrijzenPhotos={setPrijzenPhotos}
               included={included}
               setIncluded={setIncluded}
               notIncluded={notIncluded}
