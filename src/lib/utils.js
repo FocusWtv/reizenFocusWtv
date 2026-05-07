@@ -97,3 +97,27 @@ export function isDatePassed(dateInput) {
 	
 	return eventDate < today;
 }
+
+/**
+ * Prijstabel-achtergrond uit Firestore (`row.bg`): dynamisch in className; Tailwind heeft
+ * deze map-literals nodig om utilities te genereren. Oude waarden mappen naar huidig palet.
+ */
+const PRIJS_BG_MAP = {
+  "bg-indigo-400": "bg-indigo-400",
+  "bg-green-500": "bg-green-500",
+  "bg-amber-500": "bg-amber-500",
+  "bg-teal-400": "bg-teal-400",
+  "bg-gray-300": "bg-gray-300",
+  "bg-yellow-400": "bg-yellow-400",
+  "bg-purple-200": "bg-indigo-400",
+  "bg-green-200": "bg-green-500",
+  "bg-orange-200": "bg-amber-500",
+  "bg-blue-200": "bg-teal-400",
+  "bg-gray-200": "bg-gray-300",
+};
+
+export function prijsRowBgClass(bg) {
+  const key = typeof bg === "string" ? bg.trim() : "";
+  if (!key) return "";
+  return PRIJS_BG_MAP[key] ?? "";
+}

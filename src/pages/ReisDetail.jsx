@@ -15,8 +15,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import PhotoAlbum from "../components/PhotoAlbum";
-import { isDatePassed } from "../lib/utils";
-import { prijsRowBgClass } from "../lib/prijsRowBg";
+import { isDatePassed, prijsRowBgClass } from "../lib/utils";
 
 const ReisDetail = () => {
   const { slug } = useParams();
