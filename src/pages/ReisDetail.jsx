@@ -17,8 +17,6 @@ import Navbar from "react-bootstrap/Navbar";
 import PhotoAlbum from "../components/PhotoAlbum";
 import { isDatePassed } from "../lib/utils";
 
-// Rest van uw component
-
 const ReisDetail = () => {
   const { slug } = useParams();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -281,74 +279,36 @@ const ReisDetail = () => {
         const hasIntroHtml = Boolean(introHtml.trim());
         const hasIntroPhotos = introPhotos.length > 0;
         if (!hasIntroTitle && !hasIntroHtml && !hasIntroPhotos) return null;
-        const showMagazine = hasIntroPhotos && hasIntroHtml;
         return (
           <div className="mb-8" id="intro">
+            {hasIntroPhotos && (
+              <div className="mt-6 mb-8 flex flex-wrap justify-center items-center gap-x-10 gap-y-6 sm:gap-x-14 md:gap-x-16 lg:gap-x-20 px-4">
+                {introPhotos.map((src, i) => (
+                  <img
+                    key={`intro-ph-${i}`}
+                    src={src}
+                    alt={hasIntroTitle && i === 0 ? intro.title : ""}
+                    loading="lazy"
+                    className="rounded-lg h-auto max-h-[min(50vh,22rem)] w-[min(100%,26rem)] object-cover shadow-sm"
+                  />
+                ))}
+              </div>
+            )}
             {hasIntroTitle && (
-              <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8 mb-8">
+              <h2
+                className={`text-3xl text-[#162b58] font-bold text-center mb-8 ${hasIntroPhotos ? "mt-0" : "mt-8"}`}
+              >
                 {intro.title}
               </h2>
             )}
-            {showMagazine ? (
-              <div className="text-[#162b58] mt-2 mx-4 sm:mx-8 lg:mx-24 xl:mx-32">
-                <style>{`
-                  .intro-magazine.rt-html ul{list-style:disc;padding-left:1.25rem}
-                  .intro-magazine.rt-html ol{list-style:decimal;padding-left:1.25rem}
-                  .intro-magazine::after{content:"";display:table;clear:both}
-                `}</style>
-                {/* Foto's eerst in DOM zodat lopende tekst eromheen wrapt (tijdschrift) */}
-                <div className="intro-magazine rt-html text-lg prose max-w-none text-left [&_p]:my-1 [&_p]:leading-relaxed">
-                  {introPhotos[0] && (
-                    <img
-                      src={introPhotos[0]}
-                      alt={hasIntroTitle ? intro.title : ""}
-                      loading="lazy"
-                      className="rounded-lg object-cover shadow-sm float-left mb-3 mr-3 sm:mr-4 w-[min(100%,20rem)] max-w-[42%]"
-                      width="480"
-                      height="360"
-                    />
-                  )}
-                  {introPhotos[1] && (
-                    <img
-                      src={introPhotos[1]}
-                      alt=""
-                      loading="lazy"
-                      className="rounded-lg object-cover shadow-sm float-right mb-3 ml-3 mt-6 w-[min(100%,20rem)] max-w-[42%] sm:mt-8 md:mt-12 lg:mt-0"
-                      width="480"
-                      height="360"
-                    />
-                  )}
-                  <div
-                    className="contents [&_*]:text-left"
-                    dangerouslySetInnerHTML={{ __html: introHtml }}
-                  />
-                </div>
+            {hasIntroHtml && (
+              <div className="text-center text-[#162b58] mt-2 mx-8 lg:mx-32">
+                <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
+                <div
+                  className="text-lg prose max-w-none inline-block text-center rt-html [&_p]:my-1 [&_p]:leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: introHtml }}
+                />
               </div>
-            ) : (
-              <>
-                {hasIntroHtml && (
-                  <div className="text-center text-[#162b58] mt-2 mx-8 lg:mx-32">
-                    <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
-                    <div
-                      className="text-lg prose max-w-none inline-block text-center rt-html [&_p]:my-1 [&_p]:leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: introHtml }}
-                    />
-                  </div>
-                )}
-                {hasIntroPhotos && !hasIntroHtml && (
-                  <div className="mt-4 mx-4 sm:mx-8 flex flex-wrap justify-center gap-4">
-                    {introPhotos.map((src, i) => (
-                      <img
-                        key={`intro-ph-${i}`}
-                        src={src}
-                        alt=""
-                        loading="lazy"
-                        className="rounded-lg w-full max-w-md h-auto object-cover shadow-sm"
-                      />
-                    ))}
-                  </div>
-                )}
-              </>
             )}
           </div>
         );
