@@ -25,6 +25,7 @@ const AdminReisForm = () => {
   // Intro sectie
   const [introTitle, setIntroTitle] = useState('');
   const [introText, setIntroText] = useState('');
+  const [introPhotos, setIntroPhotos] = useState([]); // string[] URLs, max 2 in UI
 
   // Reisroute sectie
   const [routeImageUrl, setRouteImageUrl] = useState('');
@@ -113,6 +114,11 @@ const AdminReisForm = () => {
         setHeroAlt(t.hero?.alt || '');
         setIntroTitle(t.sections?.intro?.title || '');
             setIntroText(t.sections?.intro?.html || '');
+            setIntroPhotos(
+              Array.isArray(t.sections?.intro?.photos)
+                ? t.sections.intro.photos.filter((u) => typeof u === 'string').slice(0, 2)
+                : []
+            );
             // Reisroute
             setRouteImageUrl(t.sections?.route?.imageUrl || '');
             setRouteDays(Array.isArray(t.sections?.route?.days) ? t.sections.route.days : []);
@@ -172,7 +178,10 @@ const AdminReisForm = () => {
       const sectionsPayload = {
         intro: {
           title: introTitle || '',
-          html: introText || ''
+          html: introText || '',
+          photos: Array.isArray(introPhotos)
+            ? introPhotos.filter((u) => typeof u === 'string' && u).slice(0, 2)
+            : [],
         },
         route: {
           imageUrl: routeImageUrl || '',
@@ -273,6 +282,8 @@ const AdminReisForm = () => {
               setIntroTitle={setIntroTitle}
               introText={introText}
               setIntroText={setIntroText}
+              introPhotos={introPhotos}
+              setIntroPhotos={setIntroPhotos}
               routeImageUrl={routeImageUrl}
               setRouteImageUrl={setRouteImageUrl}
               routeDays={routeDays}

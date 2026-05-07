@@ -4,11 +4,15 @@ import { useState } from 'react';
 import CollapsibleSection from './CollapsibleSection';
 import { cloudflareUploadImage } from '../../lib/apiClient';
 
+const MAX_INTRO_PHOTOS = 2
+
 const ReisSections = ({ 
   introTitle,
   setIntroTitle,
   introText, 
   setIntroText,
+  introPhotos,
+  setIntroPhotos,
   // Route props
   routeImageUrl,
   setRouteImageUrl,
@@ -52,6 +56,7 @@ const ReisSections = ({
   setInfoavondTitle,
 }) => {
   const [uploadingRouteImage, setUploadingRouteImage] = useState(false)
+  const [uploadingIntroPhotos, setUploadingIntroPhotos] = useState(false)
 
   const addRouteDay = () => {
     setRouteDays([...(routeDays || []), { day: '', date: '', place: '', html: '', photos: [] }])
@@ -145,6 +150,78 @@ const ReisSections = ({
             onChange={setIntroText}
             placeholder="Schrijf hier de intro tekst voor deze reis..."
           />
+        </div>
+
+        {/* Intro foto's — zelfde patroon als route/verblijf (max. 2) */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Intro foto&apos;s (optioneel, max. {MAX_INTRO_PHOTOS})
+          </label>
+          <div className="flex flex-wrap items-center gap-3">
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              disabled={
+                (introPhotos?.length || 0) >= MAX_INTRO_PHOTOS || uploadingIntroPhotos
+              }
+              onChange={async (e) => {
+                const files = Array.from(e.target.files || [])
+                if (!files.length) return
+                const remaining =
+                  MAX_INTRO_PHOTOS - (introPhotos?.length || 0)
+                if (remaining <= 0) return
+                const toUpload = files.slice(0, remaining)
+                try {
+                  setUploadingIntroPhotos(true)
+                  const urls = await Promise.all(
+                    toUpload.map((file) => cloudflareUploadImage(file))
+                  )
+                  const next = [
+                    ...(introPhotos || []),
+                    ...urls.filter(Boolean),
+                  ].slice(0, MAX_INTRO_PHOTOS)
+                  setIntroPhotos(next)
+                } catch {
+                  alert('Upload mislukt. Probeer opnieuw of kies een andere afbeelding.')
+                } finally {
+                  setUploadingIntroPhotos(false)
+                  e.target.value = ''
+                }
+              }}
+              className="block"
+            />
+            {uploadingIntroPhotos && (
+              <span className="text-sm text-gray-500">Uploaden…</span>
+            )}
+          </div>
+          {(introPhotos || []).length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {(introPhotos || []).map((u, pIdx) => (
+                <div key={`${u}-${pIdx}`} className="relative">
+                  <img
+                    src={u}
+                    alt={`Intro foto ${pIdx + 1}`}
+                    className="w-28 h-20 object-cover rounded"
+                  />
+                  <button
+                    type="button"
+                    className="absolute -top-2 -right-2 bg-white border rounded px-1 text-xs"
+                    onClick={() => {
+                      const next = [...(introPhotos || [])]
+                      next.splice(pIdx, 1)
+                      setIntroPhotos(next)
+                    }}
+                  >
+                    x
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="text-sm text-gray-600">
+            {(introPhotos || []).length}/{MAX_INTRO_PHOTOS} foto&apos;s
+          </div>
         </div>
       </div>
       </CollapsibleSection>
