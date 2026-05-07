@@ -558,6 +558,28 @@ const ReisDetail = () => {
                 <h1 className="text-3xl mt-10 text-[#162b58] font-bold mb-8">
                   Prijzen
                 </h1>
+
+                {prijzenPhotoUrls.length > 0 && (
+                  <div
+                    className={`grid w-full max-w-4xl mx-auto px-4 gap-6 sm:gap-10 mb-6 sm:mb-8 ${
+                      prijzenPhotoUrls.length === 1
+                        ? "grid-cols-1 justify-items-center"
+                        : "grid-cols-1 sm:grid-cols-2 justify-items-center"
+                    }`}
+                  >
+                    {prijzenPhotoUrls.map((src, i) => (
+                      <img
+                        key={`prijs-section-${i}`}
+                        src={src}
+                        alt=""
+                        loading="lazy"
+                        className="rounded-lg h-auto max-h-[min(50vh,22rem)] w-full max-w-xl object-cover shadow-sm"
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {(prijzenRows.length > 0 || prijzenNoteHtml) && (
                 <div className="max-w-4xl mx-auto p-3 sm:p-6 bg-white">
                   <div className="border-2  rounded-lg border-[#162b58] shadow-lg">
                     {prijzenRows.length > 0 && (
@@ -565,26 +587,6 @@ const ReisDetail = () => {
                         <h2 className="text-lg sm:text-xl font-bold">
                           PRIJS IN € per persoon
                         </h2>
-                      </div>
-                    )}
-
-                    {prijzenPhotoUrls.length > 0 && (
-                      <div
-                        className={`px-4 py-6 flex flex-wrap justify-center items-center gap-x-10 gap-y-6 sm:gap-x-14 md:gap-x-16 lg:gap-x-20 ${
-                          prijzenRows.length > 0 || prijzenNoteHtml
-                            ? "border-b border-gray-200"
-                            : ""
-                        }`}
-                      >
-                        {prijzenPhotoUrls.map((src, i) => (
-                          <img
-                            key={`prijs-section-${i}`}
-                            src={src}
-                            alt=""
-                            loading="lazy"
-                            className="rounded-lg h-auto max-h-[min(50vh,22rem)] w-[min(100%,26rem)] object-cover shadow-sm"
-                          />
-                        ))}
                       </div>
                     )}
 
@@ -660,6 +662,7 @@ const ReisDetail = () => {
                     ) : null}
                   </div>
                 </div>
+                )}
               </div>
             </div>
           </div>
