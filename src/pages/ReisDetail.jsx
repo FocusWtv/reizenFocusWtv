@@ -666,20 +666,20 @@ const ReisDetail = () => {
                               >
                                 {row.name}
                               </div>
-                              <div className="p-3 space-y-2">
-                                <div className="flex justify-between items-center gap-2">
-                                  <span className="text-sm text-gray-600 shrink-0">
+                              <div className="p-3 space-y-4">
+                                <div className="flex flex-col gap-1 text-center">
+                                  <span className="text-sm text-gray-600">
                                     {prijsTh1}:
                                   </span>
-                                  <span className="font-semibold text-right">
+                                  <span className="font-semibold break-words px-1">
                                     {row.prijs}
                                   </span>
                                 </div>
-                                <div className="flex justify-between items-center gap-2">
-                                  <span className="text-sm text-gray-600 shrink-0">
+                                <div className="flex flex-col gap-1 text-center">
+                                  <span className="text-sm text-gray-600">
                                     {prijsTh2}:
                                   </span>
-                                  <span className="font-semibold text-right">
+                                  <span className="font-semibold break-words px-1">
                                     {row.prijs2}
                                   </span>
                                 </div>
