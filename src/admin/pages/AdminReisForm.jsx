@@ -40,9 +40,12 @@ const AdminReisForm = () => {
   const [stayItems, setStayItems] = useState([]); // [{ title, html, photos: [] }]
 
   // Prijzen sectie
-  const [prices, setPrices] = useState([]); // [{ name, prijs, bg? }]
+  const [prices, setPrices] = useState([]); // [{ name, prijs, prijs2?, bg? }]
   const [pricesNote, setPricesNote] = useState('');
   const [prijzenPhotos, setPrijzenPhotos] = useState([]); // string[], max 2
+  /** Voor thead: «Prijs : {naam}» — alleen het deel na dubbele punt invoeren */
+  const [prijzenPrijsNaamKolom1, setPrijzenPrijsNaamKolom1] = useState('');
+  const [prijzenPrijsNaamKolom2, setPrijzenPrijsNaamKolom2] = useState('');
 
   // Inbegrepen / Niet inbegrepen
   const [included, setIncluded] = useState([]); // string[]
@@ -53,7 +56,7 @@ const AdminReisForm = () => {
 
   // Reservatie sectie
   const [reservationHtml, setReservationHtml] = useState('');
-  const [reservationLogoUrl, setReservationLogoUrl] = useState('');
+  const [reservationLogoUrls, setReservationLogoUrls] = useState([]); // string[]
   const [reservationBrochureUrl, setReservationBrochureUrl] = useState('');
 
   // Infoavond sectie
@@ -137,6 +140,8 @@ const AdminReisForm = () => {
                 ? t.sections.prijzenPhotos.filter((u) => typeof u === 'string').slice(0, 2)
                 : []
             );
+            setPrijzenPrijsNaamKolom1(t.sections?.prijzenPrijsNaamKolom1 || '');
+            setPrijzenPrijsNaamKolom2(t.sections?.prijzenPrijsNaamKolom2 || '');
             // Inbegrepen
             setIncluded(Array.isArray(t.sections?.inbegrepen) ? t.sections.inbegrepen : []);
             setNotIncluded(Array.isArray(t.sections?.nietInbegrepen) ? t.sections.nietInbegrepen : []);
@@ -144,7 +149,19 @@ const AdminReisForm = () => {
             setGallery(Array.isArray(t.sections?.gallery) ? t.sections.gallery : []);
             // Reservatie
             setReservationHtml(t.sections?.reservatie?.html || '');
-            setReservationLogoUrl(t.sections?.reservatie?.logoUrl || '');
+            {
+              const r = t.sections?.reservatie;
+              const fromArr = Array.isArray(r?.logoUrls)
+                ? r.logoUrls.filter((u) => typeof u === 'string' && String(u).trim())
+                : [];
+              if (fromArr.length > 0) {
+                setReservationLogoUrls(fromArr);
+              } else if (typeof r?.logoUrl === 'string' && r.logoUrl.trim()) {
+                setReservationLogoUrls([r.logoUrl.trim()]);
+              } else {
+                setReservationLogoUrls([]);
+              }
+            }
             setReservationBrochureUrl(t.sections?.reservatie?.brochureUrl || '');
             // Infoavond
             setInfoavondSlug(t.sections?.infoavond?.slug || '');
@@ -204,14 +221,22 @@ const AdminReisForm = () => {
         prijzenPhotos: Array.isArray(prijzenPhotos)
           ? prijzenPhotos.filter((u) => typeof u === 'string' && u).slice(0, 2)
           : [],
+        prijzenPrijsNaamKolom1: prijzenPrijsNaamKolom1 || '',
+        prijzenPrijsNaamKolom2: prijzenPrijsNaamKolom2 || '',
         inbegrepen: Array.isArray(included) ? included : [],
         nietInbegrepen: Array.isArray(notIncluded) ? notIncluded : [],
         gallery: Array.isArray(gallery) ? gallery : [],
-        reservatie: {
-          html: reservationHtml || '',
-          logoUrl: reservationLogoUrl || '',
-          brochureUrl: reservationBrochureUrl || '',
-        },
+        reservatie: (() => {
+          const logoUrls = Array.isArray(reservationLogoUrls)
+            ? reservationLogoUrls.filter((u) => typeof u === 'string' && u.trim())
+            : [];
+          return {
+            html: reservationHtml || '',
+            logoUrls,
+            logoUrl: logoUrls[0] || '',
+            brochureUrl: reservationBrochureUrl || '',
+          };
+        })(),
       };
       // Infoavond sectie - expliciet toevoegen of verwijderen
       if (infoavondSlug && infoavondSlug.trim()) {
@@ -311,6 +336,10 @@ const AdminReisForm = () => {
               setPricesNote={setPricesNote}
               prijzenPhotos={prijzenPhotos}
               setPrijzenPhotos={setPrijzenPhotos}
+              prijzenPrijsNaamKolom1={prijzenPrijsNaamKolom1}
+              setPrijzenPrijsNaamKolom1={setPrijzenPrijsNaamKolom1}
+              prijzenPrijsNaamKolom2={prijzenPrijsNaamKolom2}
+              setPrijzenPrijsNaamKolom2={setPrijzenPrijsNaamKolom2}
               included={included}
               setIncluded={setIncluded}
               notIncluded={notIncluded}
@@ -319,8 +348,8 @@ const AdminReisForm = () => {
               setGallery={setGallery}
               reservationHtml={reservationHtml}
               setReservationHtml={setReservationHtml}
-              reservationLogoUrl={reservationLogoUrl}
-              setReservationLogoUrl={setReservationLogoUrl}
+              reservationLogoUrls={reservationLogoUrls}
+              setReservationLogoUrls={setReservationLogoUrls}
               reservationBrochureUrl={reservationBrochureUrl}
               setReservationBrochureUrl={setReservationBrochureUrl}
               events={events}

@@ -17,6 +17,19 @@ import Navbar from "react-bootstrap/Navbar";
 import PhotoAlbum from "../components/PhotoAlbum";
 import { isDatePassed, prijsRowBgClass } from "../lib/utils";
 
+function reservationLogoUrlsFromSection(res) {
+  if (!res || typeof res !== "object") return [];
+  const fromArr = Array.isArray(res.logoUrls)
+    ? res.logoUrls.filter(
+        (u) => typeof u === "string" && String(u).trim(),
+      )
+    : [];
+  if (fromArr.length > 0) return fromArr;
+  const legacy =
+    typeof res.logoUrl === "string" ? String(res.logoUrl).trim() : "";
+  return legacy ? [legacy] : [];
+}
+
 const ReisDetail = () => {
   const { slug } = useParams();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -543,6 +556,18 @@ const ReisDetail = () => {
         const prijzenNoteHtml = trip?.sections?.prijzenNote
           ? String(trip.sections.prijzenNote).trim()
           : "";
+        const prijsKolom1Naam = String(
+          trip?.sections?.prijzenPrijsNaamKolom1 || ""
+        ).trim();
+        const prijsKolom2Naam = String(
+          trip?.sections?.prijzenPrijsNaamKolom2 || ""
+        ).trim();
+        const prijsTh1 = prijsKolom1Naam
+          ? `Prijs : ${prijsKolom1Naam}`
+          : "Prijs";
+        const prijsTh2 = prijsKolom2Naam
+          ? `Prijs : ${prijsKolom2Naam}`
+          : "Prijs (2)";
         const showPrijsSection =
           prijzenRows.length > 0 ||
           prijzenPhotoUrls.length > 0 ||
@@ -596,11 +621,14 @@ const ReisDetail = () => {
                           <table className="w-full">
                             <thead>
                               <tr className="border-b border-gray-300">
-                                <th className="text-center p-3 font-bold text-blue-800 italic w-1/2">
+                                <th className="text-center p-3 font-bold text-blue-800 italic w-[40%]">
                                   Verblijf
                                 </th>
-                                <th className="text-center p-3 font-bold text-blue-800 italic w-1/4">
-                                  Prijs
+                                <th className="text-center p-3 font-bold text-blue-800 italic w-[30%]">
+                                  {prijsTh1}
+                                </th>
+                                <th className="text-center p-3 font-bold text-blue-800 italic w-[30%]">
+                                  {prijsTh2}
                                 </th>
                               </tr>
                             </thead>
@@ -617,6 +645,9 @@ const ReisDetail = () => {
                                   </td>
                                   <td className="p-3 text-center font-semibold">
                                     {row.prijs}
+                                  </td>
+                                  <td className="p-3 text-center font-semibold">
+                                    {row.prijs2}
                                   </td>
                                 </tr>
                               ))}
@@ -636,12 +667,20 @@ const ReisDetail = () => {
                                 {row.name}
                               </div>
                               <div className="p-3 space-y-2">
-                                <div className="flex justify-between items-center">
-                                  <span className="text-sm text-gray-600">
-                                    Prijs:
+                                <div className="flex justify-between items-center gap-2">
+                                  <span className="text-sm text-gray-600 shrink-0">
+                                    {prijsTh1}:
                                   </span>
-                                  <span className="font-semibold">
+                                  <span className="font-semibold text-right">
                                     {row.prijs}
+                                  </span>
+                                </div>
+                                <div className="flex justify-between items-center gap-2">
+                                  <span className="text-sm text-gray-600 shrink-0">
+                                    {prijsTh2}:
+                                  </span>
+                                  <span className="font-semibold text-right">
+                                    {row.prijs2}
                                   </span>
                                 </div>
                               </div>
@@ -740,30 +779,43 @@ const ReisDetail = () => {
 
       {/** Reservatie en contact info*/}
       {trip?.sections?.reservatie &&
-        (trip.sections.reservatie.html || trip.sections.reservatie.logoUrl) && (
-          <div className="mx-8 mt-10 lg:mx-32" id="reservatie">
-            <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
-              Reservatie
-            </h2>
-            {trip.sections.reservatie.logoUrl && (
-              <div className="mt-4 mb-4 flex justify-center">
-                <img
-                  src={trip.sections.reservatie.logoUrl}
-                  alt=""
-                  className="max-h-24 w-auto max-w-full object-contain"
+        (() => {
+          const reservatieBlock = trip.sections.reservatie;
+          const resLogoUrls = reservationLogoUrlsFromSection(reservatieBlock);
+          const hasResHtml = Boolean(
+            typeof reservatieBlock.html === "string" &&
+              reservatieBlock.html.trim(),
+          );
+          if (!hasResHtml && resLogoUrls.length === 0) return null;
+          return (
+            <div className="mx-8 mt-10 lg:mx-32" id="reservatie">
+              <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
+                Reservatie
+              </h2>
+              {resLogoUrls.length > 0 && (
+                <div className="mt-4 mb-4 flex flex-col items-center gap-6 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-10 sm:gap-y-4">
+                  {resLogoUrls.map((src, i) => (
+                    <img
+                      key={`res-logo-${i}`}
+                      src={src}
+                      alt=""
+                      loading="lazy"
+                      className="max-h-24 w-auto max-w-[min(100%,16rem)] object-contain"
+                    />
+                  ))}
+                </div>
+              )}
+              {hasResHtml && (
+                <div
+                  className="text-lg text-[#162b58] mt-2 text-left mx-4 lg:mx-0 prose max-w-none"
+                  dangerouslySetInnerHTML={{
+                    __html: reservatieBlock.html,
+                  }}
                 />
-              </div>
-            )}
-            {trip.sections.reservatie.html && (
-              <div
-                className="text-lg text-[#162b58] mt-2 text-left mx-4 lg:mx-0 prose max-w-none"
-                dangerouslySetInnerHTML={{
-                  __html: trip.sections.reservatie.html,
-                }}
-              />
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          );
+        })()}
 
       {/** Back to alle reizen */}
       <div className="mx-8 mt-10 lg:mx-32">

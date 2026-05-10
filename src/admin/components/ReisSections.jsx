@@ -36,6 +36,10 @@ const ReisSections = ({
   setPricesNote,
   prijzenPhotos,
   setPrijzenPhotos,
+  prijzenPrijsNaamKolom1,
+  setPrijzenPrijsNaamKolom1,
+  prijzenPrijsNaamKolom2,
+  setPrijzenPrijsNaamKolom2,
   // Inbegrepen
   included,
   setIncluded,
@@ -47,8 +51,8 @@ const ReisSections = ({
   // Reservatie
   reservationHtml,
   setReservationHtml,
-  reservationLogoUrl,
-  setReservationLogoUrl,
+  reservationLogoUrls,
+  setReservationLogoUrls,
   reservationBrochureUrl,
   setReservationBrochureUrl,
   // Infoavond
@@ -61,6 +65,7 @@ const ReisSections = ({
   const [uploadingRouteImage, setUploadingRouteImage] = useState(false)
   const [uploadingIntroPhotos, setUploadingIntroPhotos] = useState(false)
   const [uploadingPrijzenPhotos, setUploadingPrijzenPhotos] = useState(false)
+  const [uploadingReservationLogos, setUploadingReservationLogos] = useState(false)
 
   const addRouteDay = () => {
     setRouteDays([...(routeDays || []), { day: '', date: '', place: '', html: '', photos: [] }])
@@ -558,23 +563,65 @@ const ReisSections = ({
             {(prijzenPhotos || []).length}/{MAX_PRIJS_SECTION_PHOTOS} foto&apos;s
           </div>
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-3 bg-gray-50 rounded border border-gray-200">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Kolomkop 1e prijs (na &quot;Prijs : &quot;) — optioneel
+            </label>
+            <input
+              type="text"
+              value={prijzenPrijsNaamKolom1 || ''}
+              onChange={(e) => setPrijzenPrijsNaamKolom1(e.target.value)}
+              className="w-full border rounded px-3 py-2 text-sm"
+              placeholder="bv. Enkel gebruik schip"
+            />
+            <p className="mt-1 text-xs text-gray-500">
+              Zichtbaar als: Prijs : [ uw tekst ]. Leeg = kop &quot;Prijs&quot;.
+            </p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Kolomkop 2e prijs (na &quot;Prijs : &quot;) — optioneel
+            </label>
+            <input
+              type="text"
+              value={prijzenPrijsNaamKolom2 || ''}
+              onChange={(e) => setPrijzenPrijsNaamKolom2(e.target.value)}
+              className="w-full border rounded px-3 py-2 text-sm"
+              placeholder="bv. Dubbel gebruik schip"
+            />
+            <p className="mt-1 text-xs text-gray-500">
+              Tweede kolom op de site. Leeg = kop &quot;Prijs (2)&quot;.
+            </p>
+          </div>
+        </div>
+
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <label className="block text-sm font-medium text-gray-700">Rijen</label>
-            <button type="button" onClick={()=> setPrices([...(prices||[]), { name: '', prijs: '', bg: '' }])} className="px-3 py-1 text-sm border rounded">Rij toevoegen</button>
+            <button type="button" onClick={()=> setPrices([...(prices||[]), { name: '', prijs: '', prijs2: '', bg: '' }])} className="px-3 py-1 text-sm border rounded">Rij toevoegen</button>
           </div>
           <div className="space-y-3">
             {(prices||[]).map((row, idx)=> (
-              <div key={idx} className="border rounded p-3 grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Naam</label>
+              <div key={idx} className="border rounded p-3 grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
+                <div className="lg:col-span-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Naam verblijf</label>
                   <input type="text" value={row.name || ''} onChange={e=>{ const next=[...(prices||[])]; next[idx] = { ...next[idx], name: e.target.value }; setPrices(next) }} className="w-full border rounded px-3 py-2" placeholder="bv. Standaard kajuit" />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Prijs</label>
+                <div className="lg:col-span-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Waarde eerste prijskolom
+                  </label>
                   <input type="text" value={row.prijs || ''} onChange={e=>{ const next=[...(prices||[])]; next[idx] = { ...next[idx], prijs: e.target.value }; setPrices(next) }} className="w-full border rounded px-3 py-2" placeholder="bv. € 1.299" />
                 </div>
-                <div>
+                <div className="lg:col-span-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Waarde tweede prijskolom
+                  </label>
+                  <input type="text" value={row.prijs2 || ''} onChange={e=>{ const next=[...(prices||[])]; next[idx] = { ...next[idx], prijs2: e.target.value }; setPrices(next) }} className="w-full border rounded px-3 py-2" placeholder="bv. € 1.499" />
+                </div>
+                <div className="lg:col-span-3">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Achtergrondkleur (optioneel)</label>
                   <select
                     value={row.bg || ''}
@@ -590,9 +637,9 @@ const ReisSections = ({
                     <option value="bg-yellow-400">Geel (licht)</option>
                   </select>
                 </div>
-                <div className="md:col-span-3 flex items-center justify-between">
+                <div className="lg:col-span-12 flex items-center justify-between">
                   <button type="button" onClick={()=>{ const next=[...(prices||[])]; next.splice(idx,1); setPrices(next) }} className="px-3 py-1 text-sm border rounded text-red-600 border-red-300">Verwijderen</button>
-                  <button type="button" onClick={()=> setPrices([...(prices||[]), { name: '', prijs: '', bg: '' }])} className="px-3 py-1 text-sm border rounded">Rij toevoegen</button>
+                  <button type="button" onClick={()=> setPrices([...(prices||[]), { name: '', prijs: '', prijs2: '', bg: '' }])} className="px-3 py-1 text-sm border rounded">Rij toevoegen</button>
                 </div>
               </div>
             ))}
@@ -694,40 +741,73 @@ const ReisSections = ({
       <div className="space-y-3 border-2 border-[#002855] rounded-md p-4" id="reservatie-section">
         <h2 className="text-lg font-semibold text-gray-900">Reservatie & contact</h2>
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Logo (optioneel)</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Logo&apos;s (optioneel, meerdere mogelijk)
+          </label>
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-sm text-gray-600">Bladeren:</span>
             <input
               type="file"
               accept="image/*"
+              multiple
+              disabled={uploadingReservationLogos}
               onChange={async (e) => {
-                const file = e.target.files && e.target.files[0];
-                if (!file) return;
+                const files = Array.from(e.target.files || [])
+                if (!files.length) return
                 try {
-                  const url = await cloudflareUploadImage(file);
-                  setReservationLogoUrl(url || '');
+                  setUploadingReservationLogos(true)
+                  const urls = await Promise.all(
+                    files.map((file) => cloudflareUploadImage(file))
+                  )
+                  const next = [
+                    ...(reservationLogoUrls || []),
+                    ...urls.filter(Boolean),
+                  ]
+                  setReservationLogoUrls(next)
                 } catch {
-                  alert("Logo uploaden is mislukt.");
+                  alert("Logo uploaden is mislukt.")
                 } finally {
-                  e.target.value = '';
+                  setUploadingReservationLogos(false)
+                  e.target.value = ''
                 }
               }}
+              className="block"
             />
+            {uploadingReservationLogos && (
+              <span className="text-sm text-gray-500">Uploaden…</span>
+            )}
             <button
               type="button"
-              onClick={() => setReservationLogoUrl('')}
-              disabled={!reservationLogoUrl}
+              onClick={() => setReservationLogoUrls([])}
+              disabled={!(reservationLogoUrls || []).length}
               className="px-3 py-1 text-sm border rounded disabled:opacity-50"
             >
-              Verwijder logo
+              Alle logo&apos;s verwijderen
             </button>
           </div>
-          {reservationLogoUrl ? (
-            <div className="flex items-center gap-3">
-              <img src={reservationLogoUrl} alt="Logo preview" className="max-h-20 max-w-[200px] object-contain border rounded p-1 bg-white" />
-              <span className="text-xs text-gray-600 break-all">{reservationLogoUrl}</span>
+          {(reservationLogoUrls || []).length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {(reservationLogoUrls || []).map((u, idx) => (
+                <div key={`res-logo-${idx}`} className="relative">
+                  <img
+                    src={u}
+                    alt={`Logo ${idx + 1}`}
+                    className="max-h-20 max-w-[180px] object-contain border rounded p-1 bg-white"
+                  />
+                  <button
+                    type="button"
+                    className="absolute -top-2 -right-2 bg-white border rounded px-1 text-xs"
+                    onClick={() => {
+                      const next = [...(reservationLogoUrls || [])]
+                      next.splice(idx, 1)
+                      setReservationLogoUrls(next)
+                    }}
+                  >
+                    x
+                  </button>
+                </div>
+              ))}
             </div>
-          ) : null}
+          )}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Tekst <br/>
