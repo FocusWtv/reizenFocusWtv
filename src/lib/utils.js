@@ -109,6 +109,7 @@ const PRIJS_BG_MAP = {
   "bg-teal-400": "bg-teal-400",
   "bg-gray-300": "bg-gray-300",
   "bg-yellow-400": "bg-yellow-400",
+  "bg-pink-600": "bg-pink-600",
   "bg-purple-200": "bg-indigo-400",
   "bg-green-200": "bg-green-500",
   "bg-orange-200": "bg-amber-500",
