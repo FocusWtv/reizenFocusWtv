@@ -635,6 +635,7 @@ const ReisSections = ({
                     <option value="bg-teal-400">Blauw (licht)</option>
                     <option value="bg-gray-300">Grijs (licht)</option>
                     <option value="bg-yellow-400">Geel (licht)</option>
+                    <option value="bg-pink-600">Roze (Fel)</option>
                   </select>
                 </div>
                 <div className="lg:col-span-12 flex items-center justify-between">
