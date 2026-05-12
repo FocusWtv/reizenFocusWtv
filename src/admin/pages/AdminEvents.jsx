@@ -52,6 +52,7 @@ const AdminEvents = () => {
     title: '',
     slug: '',
     date: '',
+    timeSlots: [],
     imageUrl: '',
     relatedCardSlug: '',
     locationName: '',
@@ -96,6 +97,9 @@ const AdminEvents = () => {
           title: newEvent.title,
           slug: newEvent.slug.toLowerCase(),
           dateTime: newEvent.date,
+          timeSlots: Array.isArray(newEvent.timeSlots)
+            ? newEvent.timeSlots.map((s) => String(s || '').trim()).filter(Boolean)
+            : [],
           heroUrl: newEvent.imageUrl || '',
           relatedCardSlug: newEvent.relatedCardSlug || '',
           locationName: newEvent.locationName || '',
@@ -114,6 +118,9 @@ const AdminEvents = () => {
           title: newEvent.title,
           slug: newEvent.slug.toLowerCase(),
           dateTime: newEvent.date,
+          timeSlots: Array.isArray(newEvent.timeSlots)
+            ? newEvent.timeSlots.map((s) => String(s || '').trim()).filter(Boolean)
+            : [],
           heroUrl: newEvent.imageUrl || '',
           relatedCardSlug: newEvent.relatedCardSlug || '',
           locationName: newEvent.locationName || '',
@@ -130,7 +137,7 @@ const AdminEvents = () => {
           updatedAt: serverTimestamp()
         });
       }
-      setNewEvent({ title: '', slug: '', date: '', imageUrl: '', relatedCardSlug: '', locationName: '', address: '', description: '', contactPhoneLabel: '', contactPhone: '', contactEmailLabel: '', contactEmail: '', contactText: '' });
+      setNewEvent({ title: '', slug: '', date: '', timeSlots: [], imageUrl: '', relatedCardSlug: '', locationName: '', address: '', description: '', contactPhoneLabel: '', contactPhone: '', contactEmailLabel: '', contactEmail: '', contactText: '' });
       setSelectedCardId('');
       setEditingId(null);
       setSlugTouched(false);
@@ -153,6 +160,9 @@ const AdminEvents = () => {
       title: ev.title || '',
       slug: ev.slug || '',
       date: ev.dateTime || '',
+      timeSlots: Array.isArray(ev.timeSlots)
+        ? ev.timeSlots.map((s) => String(s || '').trim()).filter(Boolean)
+        : [],
       imageUrl: cleanHeroUrl,
       relatedCardSlug: ev.relatedCardSlug || '',
       locationName: ev.locationName || '',
@@ -241,6 +251,7 @@ const AdminEvents = () => {
             title: '', 
             slug: '', 
             date: '', 
+            timeSlots: [], 
             imageUrl: '', 
             relatedCardSlug: '', 
             locationName: '', 
@@ -284,6 +295,50 @@ const AdminEvents = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Datum</label>
                   <input type="text" value={newEvent.date} onChange={(e) => setNewEvent(v => ({ ...v, date: e.target.value }))} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="bv. woensdag 3 december 2025" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Uren / tijdstippen (optioneel)</label>
+                  <p className="text-xs text-gray-500 mb-2">Één of meerdere mogelijk. Bezoekers kiezen bij inschrijving verplicht één tijdstip zolang hier minstens één uur staat.</p>
+                  <div className="space-y-2">
+                    {(newEvent.timeSlots || []).map((slot, idx) => (
+                      <div key={idx} className="flex gap-2 items-center">
+                        <input
+                          type="text"
+                          value={slot}
+                          onChange={(e) => {
+                            const next = [...(newEvent.timeSlots || [])];
+                            next[idx] = e.target.value;
+                            setNewEvent(v => ({ ...v, timeSlots: next }));
+                          }}
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="bv. 19:00 of 19u30"
+                        />
+                        <button
+                          type="button"
+                          className="px-2 py-1 text-sm border rounded hover:bg-gray-50 shrink-0"
+                          onClick={() => {
+                            const next = [...(newEvent.timeSlots || [])];
+                            next.splice(idx, 1);
+                            setNewEvent(v => ({ ...v, timeSlots: next }));
+                          }}
+                        >
+                          Verwijder
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      className="text-sm px-3 py-1 border rounded hover:bg-gray-50"
+                      onClick={() =>
+                        setNewEvent(v => ({
+                          ...v,
+                          timeSlots: [...(v.timeSlots || []), ''],
+                        }))
+                      }
+                    >
+                      Uur toevoegen
+                    </button>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Locatie</label>
@@ -377,6 +432,7 @@ const AdminEvents = () => {
                         title: '', 
                         slug: '', 
                         date: '', 
+                        timeSlots: [], 
                         imageUrl: '', 
                         relatedCardSlug: '', 
                         locationName: '', 
@@ -428,7 +484,25 @@ const AdminEvents = () => {
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-1">{event.title}</h3>
-                  {event.dateTime && <p className="text-gray-600 mb-3">{event.dateTime}</p>}
+                  {(event.dateTime ||
+                    (Array.isArray(event.timeSlots) &&
+                      event.timeSlots.some((s) => String(s || '').trim()))) && (
+                    <div className="mb-3">
+                      {event.dateTime && (
+                        <p className="text-gray-600 mb-1">{event.dateTime}</p>
+                      )}
+                      {Array.isArray(event.timeSlots) &&
+                        event.timeSlots.some((s) => String(s || '').trim()) && (
+                          <p className="text-xs text-gray-500">
+                            Tijdstippen:{' '}
+                            {event.timeSlots
+                              .map((s) => String(s || '').trim())
+                              .filter(Boolean)
+                              .join(' · ')}
+                          </p>
+                        )}
+                    </div>
+                  )}
                   <div className="mt-3 border-t pt-3">
                     <div className="text-xs text-gray-500 mb-2">{event.published ? 'gepubliceerd' : 'concept'}</div>
                     <div className="flex flex-col gap-2">

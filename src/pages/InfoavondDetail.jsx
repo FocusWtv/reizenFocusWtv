@@ -11,6 +11,12 @@ const Icon = ({ children }) => (
   </span>
 );
 
+/** Tijdstippen uit Firestore (`event.timeSlots`) — vrije tekst per slot. */
+const eventTimeSlotOptions = (ev) =>
+  Array.isArray(ev?.timeSlots)
+    ? ev.timeSlots.map((s) => String(s || "").trim()).filter(Boolean)
+    : [];
+
 const InfoavondDetail = () => {
   const { slug } = useParams();
   const [event, setEvent] = useState(null);
@@ -80,6 +86,14 @@ const InfoavondDetail = () => {
       const personen = valueOf("Aantal personen") || valueOf("Personen");
       const opmerkingen =
         valueOf("Vragen of opmerkingen") || valueOf("opmerkingen");
+      const tijdslotOpties = eventTimeSlotOptions(event);
+      const tijdstip = tijdslotOpties.length
+        ? valueOf("Tijdstip").trim()
+        : "";
+      if (tijdslotOpties.length && !tijdstip) {
+        setIsSubmitting(false);
+        return;
+      }
       const infoavondTitel = event?.title || slug;
 
       // 1) Probeer FormSubmit (server-side redirect kan falen; we forceren client redirect op success)
@@ -95,6 +109,7 @@ const InfoavondDetail = () => {
         params.set("Telefoonnummer", telefoon);
         params.set("Aantal personen", personen || "1");
         params.set("Vragen of opmerkingen", opmerkingen);
+        params.set("Tijdstip", tijdstip);
 
         const res = await postWithTimeout(
           formActionUrl,
@@ -125,6 +140,7 @@ const InfoavondDetail = () => {
           fd.set("Telefoonnummer", telefoon);
           fd.set("Aantal personen", personen || "1");
           fd.set("Vragen of opmerkingen", opmerkingen);
+          fd.set("Tijdstip", tijdstip);
 
           const res2 = await fetch("https://api.web3forms.com/submit", {
             method: "POST",
@@ -144,6 +160,7 @@ const InfoavondDetail = () => {
       // 3) Laatste redmiddel: open mailto met prefilled body en redirect
       const lijnen = [
         `Infoavond: ${infoavondTitel}`,
+        ...(tijdstip ? [`Gekozen uur: ${tijdstip}`] : []),
         `Naam: ${naam}`,
         `Voornaam: ${voornaam}`,
         `Email: ${email}`,
@@ -204,6 +221,8 @@ const InfoavondDetail = () => {
     return <div className="text-center py-12 text-red-600">{error}</div>;
   if (!event) return null;
 
+  const tijdslotOpties = eventTimeSlotOptions(event);
+
   return (
     <div className="mx-4 lg:mx-32 py-8">
       {event.heroUrl && (
@@ -217,6 +236,12 @@ const InfoavondDetail = () => {
       )}
       <h1 className="text-3xl font-bold text-[#162b58] mb-2">{event.title}</h1>
       {event.dateTime && <p className="text-gray-700 mb-3">{event.dateTime}</p>}
+      {tijdslotOpties.length > 0 && (
+        <p className="text-gray-700 mb-3 text-sm">
+          Beschikbare uren voor inschrijving:{" "}
+          <span className="font-medium">{tijdslotOpties.join(" · ")}</span>
+        </p>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div>
@@ -266,6 +291,32 @@ const InfoavondDetail = () => {
             <input type="text" name="_honey" tabIndex="-1" autoComplete="off" />
           </div>
           <input type="hidden" name="Infoavond" value={event?.title || ""} />
+          {tijdslotOpties.length > 0 && (
+            <div className="md:col-span-2">
+              <label
+                htmlFor="infoavond-tijdstip"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Gekozen uur *
+              </label>
+              <select
+                id="infoavond-tijdstip"
+                name="Tijdstip"
+                required
+                defaultValue=""
+                className="w-full px-3 py-2 border-4 rounded bg-white"
+              >
+                <option value="" disabled>
+                  — Kies een uur —
+                </option>
+                {tijdslotOpties.map((opt, i) => (
+                  <option key={`${i}-${opt}`} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Naam *
