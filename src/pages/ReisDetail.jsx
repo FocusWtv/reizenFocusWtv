@@ -807,7 +807,7 @@ const ReisDetail = () => {
               )}
               {hasResHtml && (
                 <div
-                  className="text-lg text-[#162b58] mt-2 text-left mx-4 lg:mx-0 prose max-w-none"
+                  className="text-lg text-[#162b58] mt-2 text-center mx-4 lg:mx-0 prose max-w-none"
                   dangerouslySetInnerHTML={{
                     __html: reservatieBlock.html,
                   }}
