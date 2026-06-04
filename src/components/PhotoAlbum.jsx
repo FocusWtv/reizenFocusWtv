@@ -1,13 +1,16 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 import { ColumnsPhotoAlbum } from "react-photo-album";
 import "react-photo-album/columns.css";
+import GalleryLightbox from "./GalleryLightbox";
 
 export default function PhotoAlbum({
   photos = [],
   padding = 20,
   centered = false,
+  enableLightbox = false,
 }) {
   const [resolvedPhotos, setResolvedPhotos] = useState([]);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
 
   const normalized = useMemo(() => {
     return photos.map((p) => {
@@ -49,6 +52,21 @@ export default function PhotoAlbum({
     };
   }, [normalized]);
 
+  const componentsProps = {
+    ...(enableLightbox
+      ? {
+          button: { className: "cursor-pointer" },
+          image: { className: "cursor-pointer" },
+        }
+      : {}),
+    ...(centered
+      ? {
+          container: { className: "mx-auto w-full max-w-6xl" },
+          track: { style: { justifyContent: "center" } },
+        }
+      : {}),
+  };
+
   const album = (
     <ColumnsPhotoAlbum
       photos={resolvedPhotos}
@@ -68,24 +86,40 @@ export default function PhotoAlbum({
           { viewport: "(min-width: 1201px)", size: "calc(25vw - 25px)" },
         ],
       }}
-      {...(centered
-        ? {
-            componentsProps: {
-              container: { className: "mx-auto w-full max-w-6xl" },
-              track: { style: { justifyContent: "center" } },
-            },
-          }
+      {...(enableLightbox
+        ? { onClick: ({ index }) => setLightboxIndex(index) }
+        : {})}
+      {...(Object.keys(componentsProps).length
+        ? { componentsProps }
         : {})}
     />
   );
 
+  const lightbox =
+    enableLightbox && lightboxIndex != null ? (
+      <GalleryLightbox
+        photos={resolvedPhotos.length ? resolvedPhotos : normalized}
+        index={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onIndexChange={setLightboxIndex}
+      />
+    ) : null;
+
   if (centered) {
     return (
-      <div className="flex w-full justify-center" style={{ padding }}>
-        <div className="w-full max-w-6xl">{album}</div>
-      </div>
+      <>
+        <div className="flex w-full justify-center" style={{ padding }}>
+          <div className="w-full max-w-6xl">{album}</div>
+        </div>
+        {lightbox}
+      </>
     );
   }
 
-  return <div style={{ padding }}>{album}</div>;
+  return (
+    <>
+      <div style={{ padding }}>{album}</div>
+      {lightbox}
+    </>
+  );
 }

@@ -96,9 +96,22 @@ const Home = () => {
         <h1 className="text-2xl md:text-3xl lg:text-5xl text-[#162b58] font-extrabold text-center">
           Geplande reizen
         </h1>
-        <p className="text-center text-lg font-semibold text-[#162b58] mt-2 mx-8">
-          Welkom bij <a href="https://focus-wtv.be/reizen" className="text-[#4ab0e1] hover:text-[#162b58] font-semibold underline">Focus-WTV reizen</a>! Klik op een kaart en vind alle info over de reis van uw keuze
-        </p>
+        <div className="mt-4 mx-auto max-w-3xl space-y-3 text-[#162b58]">
+          <p className="text-base md:text-lg font-semibold leading-relaxed">
+            Hier vindt u alle reizen die we momenteel aanbieden. Klik op een kaart
+            voor alle informatie over de reis van uw keuze.
+          </p>
+          <p className="text-base md:text-lg leading-relaxed">
+            Verderop op deze pagina staan ook onze{" "}
+            <a
+              href="#infoavonden"
+              className="text-[#4ab0e1] hover:text-[#162b58] font-semibold underline"
+            >
+              geplande infoavonden
+            </a>
+            . Schrijf u desgewenst meteen in door op de infoavond te klikken en het formulier in te vullen.
+          </p>
+        </div>
       </div> 
 
       {loading ? (
@@ -112,13 +125,13 @@ const Home = () => {
       )}
 
       {/* Info avonden */}
-      <div className="mt-12 mx-2 lg:mx-16">
+      <div id="infoavonden" className="mt-12 mx-2 lg:mx-16 scroll-mt-8">
         <h2 className="text-3xl lg:text-5xl text-[#162b58] font-bold text-center mt-8">
           Infoavonden
         </h2>
         <p className="text-center text-[#162b58] text-md lg:text-lg font-semibold mt-2 mx-8">
-          Kom naar onze infoavonden om meer te weten te komen over de reis van uw keuze!<br/>
-          Daar worden al uw vragen beantwoord en kunnen we u graag inschrijven voor deze reis!
+          Schrijf je in voor onze infoavonden om meer te weten te komen over de reis van uw keuze!<br/>
+          Al uw vragen zullen daar beantwoord worden en krijg je alle info over de reis van uw keuze!
         </p>
         {/* Info cards */}
         {loading ? (
@@ -130,6 +143,21 @@ const Home = () => {
             <div className="text-center text-[#162b58] mx-8 lg:mx-32 py-8">Nog geen infoavonden beschikbaar.</div>
           )
         )}
+
+        <h2 className="text-3xl lg:text-5xl text-[#162b58] font-bold text-center mt-12">
+          Terugblikken
+        </h2>
+        <p className="text-center text-base md:text-lg text-[#162b58] leading-relaxed mt-4 mx-auto max-w-3xl px-8">
+          Terugblikken op reizen die we al maakten, vindt u{" "}
+          <a
+            href="https://focus-wtv.be/reizen"
+            className="text-[#4ab0e1] hover:text-[#162b58] font-semibold underline"
+          >
+            HIER
+          </a>
+          {" "}
+          terug.
+        </p>
         
         {/* Terug naar officiële site knop */}
         <div className="text-center mt-8 mb-8">

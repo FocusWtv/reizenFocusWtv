@@ -15,6 +15,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import PhotoAlbum from "../components/PhotoAlbum";
+import GalleryLightbox from "../components/GalleryLightbox";
 import { isDatePassed, prijsRowBgClass } from "../lib/utils";
 
 function reservationLogoUrlsFromSection(res) {
@@ -42,7 +43,7 @@ const ReisDetail = () => {
   const [dateRange, setDateRange] = useState("");
   const [status, setStatus] = useState("");
   const [hasInfoavond, setHasInfoavond] = useState(false);
-  const [actieveFoto, setActieveFoto] = useState(null);
+  const [routeLightbox, setRouteLightbox] = useState(null);
   const [infoavondEvent, setInfoavondEvent] = useState(null);
 
   useEffect(() => {
@@ -375,7 +376,13 @@ const ReisDetail = () => {
                   <img
                     src={routeData.imageUrl}
                     alt="Reisroute"
-                    className="w-full h-auto rounded-lg"
+                    className="w-full h-auto rounded-lg cursor-pointer hover:opacity-95 transition-opacity"
+                    onClick={() =>
+                      setRouteLightbox({
+                        photos: [routeData.imageUrl],
+                        index: 0,
+                      })
+                    }
                   />
                 </div>
               )}
@@ -429,7 +436,12 @@ const ReisDetail = () => {
                                         src={photo}
                                         alt={`Dag ${idx + 1} foto ${photoIdx + 1}`}
                                         className="w-56 h-56 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
-                                        onClick={() => setActieveFoto(photo)}
+                                        onClick={() =>
+                                          setRouteLightbox({
+                                            photos: d.photos,
+                                            index: photoIdx,
+                                          })
+                                        }
                                       />
                                     </div>
                                   ))}
@@ -533,6 +545,7 @@ const ReisDetail = () => {
                         <PhotoAlbum
                           photos={toAlbumPhotos(it.photos)}
                           centered
+                          enableLightbox
                         />
                       </div>
                     </div>
@@ -772,7 +785,7 @@ const ReisDetail = () => {
               Foto's
             </h2>
             <div className="mt-8 mx-4 sm:mx-8 md:mx-16 lg:mx-32 xl:mx-48">
-              <PhotoAlbum photos={trip.sections.gallery} />
+              <PhotoAlbum photos={trip.sections.gallery} enableLightbox />
             </div>
           </div>
         )}
@@ -830,29 +843,15 @@ const ReisDetail = () => {
         </Link>
       </div>
 
-      {actieveFoto && (
-        <div
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-          onClick={() => setActieveFoto(null)}
-        >
-          <button
-            className="absolute top-4 right-4 text-white text-3xl leading-none px-3 py-1 rounded hover:bg-white/10"
-            onClick={(e) => {
-              e.stopPropagation();
-              setActieveFoto(null);
-            }}
-            aria-label="Sluiten"
-            title="Sluiten"
-          >
-            &times;
-          </button>
-          <img
-            src={actieveFoto}
-            alt="Foto"
-            className="max-h-[90vh] max-w-[90vw] object-contain shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
+      {routeLightbox && (
+        <GalleryLightbox
+          photos={routeLightbox.photos.map((src) => ({ src }))}
+          index={routeLightbox.index}
+          onClose={() => setRouteLightbox(null)}
+          onIndexChange={(i) =>
+            setRouteLightbox((prev) => (prev ? { ...prev, index: i } : null))
+          }
+        />
       )}
     </section>
   );
