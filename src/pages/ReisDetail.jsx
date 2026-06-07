@@ -18,12 +18,13 @@ import PhotoAlbum from "../components/PhotoAlbum";
 import GalleryLightbox from "../components/GalleryLightbox";
 import { isDatePassed, prijsRowBgClass } from "../lib/utils";
 
+const SECTION_WIDTH = "mx-auto w-full max-w-6xl px-8 lg:px-0";
+const NARROW_WIDTH = "mx-auto w-full max-w-5xl px-8 lg:px-0";
+
 function reservationLogoUrlsFromSection(res) {
   if (!res || typeof res !== "object") return [];
   const fromArr = Array.isArray(res.logoUrls)
-    ? res.logoUrls.filter(
-        (u) => typeof u === "string" && String(u).trim(),
-      )
+    ? res.logoUrls.filter((u) => typeof u === "string" && String(u).trim())
     : [];
   if (fromArr.length > 0) return fromArr;
   const legacy =
@@ -75,7 +76,7 @@ const ReisDetail = () => {
               const eventQuery = fq(
                 collection(db, "events"),
                 where("slug", "==", t.sections.infoavond.slug),
-                limit(1)
+                limit(1),
               );
               const eventSnap = await getDocs(eventQuery);
 
@@ -87,12 +88,16 @@ const ReisDetail = () => {
                 const isExpired = isDatePassed(eventData.dateTime);
                 setHasInfoavond(!isExpired);
 
-                console.log(`Infoavond "${eventData.title}" - Datum: ${eventData.dateTime}, Verstreken: ${isExpired}`);
+                console.log(
+                  `Infoavond "${eventData.title}" - Datum: ${eventData.dateTime}, Verstreken: ${isExpired}`,
+                );
               } else {
                 // Event niet gevonden
                 setHasInfoavond(false);
                 setInfoavondEvent(null);
-                console.warn(`Infoavond event met slug "${t.sections.infoavond.slug}" niet gevonden`);
+                console.warn(
+                  `Infoavond event met slug "${t.sections.infoavond.slug}" niet gevonden`,
+                );
               }
             } catch (error) {
               console.error("Fout bij ophalen infoavond event:", error);
@@ -108,7 +113,7 @@ const ReisDetail = () => {
           if (t?.sections?.reservatie) {
             console.log(
               "Brochure URL geladen:",
-              t.sections.reservatie.brochureUrl
+              t.sections.reservatie.brochureUrl,
             );
             // console.log("Reservatie HTML geladen:", t.sections.reservatie.html);
             // console.log("Volledige reservatie object:", t.sections.reservatie);
@@ -118,7 +123,7 @@ const ReisDetail = () => {
           const q = fq(
             collection(db, "homepage_cards"),
             where("slug", "==", slug),
-            limit(1)
+            limit(1),
           );
           const snap = await getDocs(q);
           if (!snap.empty) {
@@ -133,7 +138,7 @@ const ReisDetail = () => {
             setInfoavondEvent(null);
           }
         }
-      } catch (_e) { }
+      } catch (_e) {}
     };
     load();
   }, [slug]);
@@ -166,8 +171,9 @@ const ReisDetail = () => {
           {/** status label */}
           {status && (
             <div
-              className={`mt-3 ${status === "volzet" ? "bg-red-500" : "bg-green-500"
-                } text-white underline font-semibold py-3 px-6 rounded-lg border-4 shadow-lg flex items-center gap-2`}
+              className={`mt-3 ${
+                status === "volzet" ? "bg-red-500" : "bg-green-500"
+              } text-white underline font-semibold py-3 px-6 rounded-lg border-4 shadow-lg flex items-center gap-2`}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </div>
@@ -182,7 +188,7 @@ const ReisDetail = () => {
                 onClick={(e) => {
                   console.log(
                     "Brochure link geklikt:",
-                    trip.sections.reservatie.brochureUrl
+                    trip.sections.reservatie.brochureUrl,
                   );
                 }}
               >
@@ -285,7 +291,7 @@ const ReisDetail = () => {
         const intro = trip?.sections?.intro;
         const introPhotos = Array.isArray(intro?.photos)
           ? intro.photos.filter(
-              (u) => typeof u === "string" && String(u).trim()
+              (u) => typeof u === "string" && String(u).trim(),
             )
           : [];
         const introHtml = intro?.html ? String(intro.html) : "";
@@ -316,7 +322,7 @@ const ReisDetail = () => {
               </h2>
             )}
             {hasIntroHtml && (
-              <div className="text-center text-[#162b58] mt-2 mx-8 lg:mx-32">
+              <div className={`text-center text-[#162b58] mt-2 ${NARROW_WIDTH}`}>
                 <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
                 <div
                   className="text-lg prose max-w-none inline-block text-center rt-html [&_p]:my-1 [&_p]:leading-relaxed"
@@ -334,12 +340,16 @@ const ReisDetail = () => {
           <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8 mb-8">
             Infoavond
           </h2>
-          <div className="text-center text-[#162b58] mt-2 mx-8 lg:mx-32">
+          <div className={`text-center text-[#162b58] mt-2 ${NARROW_WIDTH}`}>
             {(trip.sections.infoavond.title || infoavondEvent.title) && (
-              <p className="text-lg">{trip.sections.infoavond.title || infoavondEvent.title}</p>
+              <p className="text-lg">
+                {trip.sections.infoavond.title || infoavondEvent.title}
+              </p>
             )}
             {infoavondEvent.dateTime && (
-              <p className="text-md text-gray-600 mb-4">{infoavondEvent.dateTime}</p>
+              <p className="text-md text-gray-600 mb-4">
+                {infoavondEvent.dateTime}
+              </p>
             )}
             <a
               className="group mt-10 relative inline-block text-sm font-medium text-[#162b58] focus:ring-3 focus:outline-hidden"
@@ -367,8 +377,9 @@ const ReisDetail = () => {
               Reisroute
             </h2>
             <div
-              className={`flex items-start gap-4 mx-4 mt-10 lg:mx-16 ${hasImage ? "flex-col lg:flex-row" : "flex-col"
-                }`}
+              className={`mt-10 flex items-start gap-6 ${SECTION_WIDTH} ${
+                hasImage ? "flex-col lg:flex-row" : "flex-col"
+              }`}
             >
               {/* Image container */}
               {hasImage && (
@@ -388,10 +399,11 @@ const ReisDetail = () => {
               )}
               {/* Accordion container */}
               <div
-                className={`${hasImage
+                className={`${
+                  hasImage
                     ? "w-full lg:w-1/2"
                     : "w-full lg:w-2/3 xl:w-1/2 mx-auto"
-                  } flex flex-col gap-4`}
+                } flex flex-col gap-4`}
               >
                 {hasDays &&
                   routeData.days.map((d, idx) => {
@@ -409,45 +421,49 @@ const ReisDetail = () => {
                           <div className="p-4 border-t text-center">
                             {d?.html
                               ? (() => {
-                                const html = String(d.html || "").replace(
-                                  /\r?\n/g,
-                                  "<br />"
-                                );
-                                return (
-                                  <div>
-                                    <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
-                                    <div
-                                      className="text-md prose max-w-none rt-html text-left [&_p]:my-1 [&_p]:leading-relaxed"
-                                      dangerouslySetInnerHTML={{
-                                        __html: html,
-                                      }}
-                                    />
-                                  </div>
-                                );
-                              })()
-                              : null}
-                            {/* Foto's per dag */}
-                            {Array.isArray(d?.photos) && d.photos.length > 0 && (
-                              <div className="mt-4 flex justify-center">
-                                <div className="flex flex-wrap justify-center gap-3 max-w-4xl">
-                                  {d.photos.map((photo, photoIdx) => (
-                                    <div key={photoIdx} className="relative group">
-                                      <img
-                                        src={photo}
-                                        alt={`Dag ${idx + 1} foto ${photoIdx + 1}`}
-                                        className="w-56 h-56 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
-                                        onClick={() =>
-                                          setRouteLightbox({
-                                            photos: d.photos,
-                                            index: photoIdx,
-                                          })
-                                        }
+                                  const html = String(d.html || "").replace(
+                                    /\r?\n/g,
+                                    "<br />",
+                                  );
+                                  return (
+                                    <div>
+                                      <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
+                                      <div
+                                        className="text-md prose max-w-none rt-html text-left [&_p]:my-1 [&_p]:leading-relaxed"
+                                        dangerouslySetInnerHTML={{
+                                          __html: html,
+                                        }}
                                       />
                                     </div>
-                                  ))}
+                                  );
+                                })()
+                              : null}
+                            {/* Foto's per dag */}
+                            {Array.isArray(d?.photos) &&
+                              d.photos.length > 0 && (
+                                <div className="mt-4 flex justify-center">
+                                  <div className="flex flex-wrap justify-center gap-3 max-w-4xl">
+                                    {d.photos.map((photo, photoIdx) => (
+                                      <div
+                                        key={photoIdx}
+                                        className="relative group"
+                                      >
+                                        <img
+                                          src={photo}
+                                          alt={`Dag ${idx + 1} foto ${photoIdx + 1}`}
+                                          className="w-56 h-56 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                                          onClick={() =>
+                                            setRouteLightbox({
+                                              photos: d.photos,
+                                              index: photoIdx,
+                                            })
+                                          }
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
                           </div>
                         </details>
                       </div>
@@ -466,20 +482,20 @@ const ReisDetail = () => {
             <h2 className="text-3xl text-[#162b58] font-bold text-center mt-8">
               Reportage
             </h2>
+
             <div className="mt-8 space-y-10">
               {trip.sections.reportage.map((vid, idx) => (
-                <div
-                  key={`${vid.accountId}-${vid.itemId}-${idx}`}
-                  className="relative sm:mx-12 md:mx-16 lg:mx-32 xl:mx-48 aspect-video bg-gray-500 rounded-xl overflow-hidden shadow-2xl"
-                >
-                  <iframe
-                    src={`https://player.clevercast.com/?account_id=${encodeURIComponent(
-                      vid.accountId
-                    )}&item_id=${encodeURIComponent(vid.itemId)}`}
-                    className="absolute inset-0 w-full h-full"
-                    allow="autoplay; fullscreen"
-                    title={`Reportage Video ${idx + 1}`}
-                  ></iframe>
+                <div key={`${vid.accountId}-${vid.itemId}-${idx}`} className={SECTION_WIDTH}>
+                  <div className="relative aspect-video bg-gray-500 rounded-xl overflow-hidden shadow-2xl">
+                    <iframe
+                      src={`https://player.clevercast.com/?account_id=${encodeURIComponent(
+                        vid.accountId,
+                      )}&item_id=${encodeURIComponent(vid.itemId)}`}
+                      className="absolute inset-0 w-full h-full"
+                      allow="autoplay; fullscreen"
+                      title={`Reportage Video ${idx + 1}`}
+                    ></iframe>
+                  </div>
                 </div>
               ))}
             </div>
@@ -497,7 +513,7 @@ const ReisDetail = () => {
         const toAlbumPhotos = (urls = []) =>
           urls.map((u) => ({ src: u, width: 1600, height: 900 }));
         return (
-          <div className="text-center my-16 mx-8 mb-10 lg:mx-32" id="verblijf">
+          <div className={`text-center my-16 mb-10 ${SECTION_WIDTH}`} id="verblijf">
             <h1 className="text-3xl text-[#162b58] font-bold mb-8">
               Verblijfsinfo
             </h1>
@@ -531,7 +547,7 @@ const ReisDetail = () => {
                     </h2>
                   )}
                   {it.html && (
-                    <div className="text-lg text-[#162b58] mt-4 text-left mx-auto max-w-5xl">
+                    <div className={`text-lg text-[#162b58] mt-4 text-left ${NARROW_WIDTH}`}>
                       <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
                       <div
                         className="prose max-w-none rt-html"
@@ -563,17 +579,17 @@ const ReisDetail = () => {
           : [];
         const prijzenPhotoUrls = Array.isArray(trip?.sections?.prijzenPhotos)
           ? trip.sections.prijzenPhotos.filter(
-              (u) => typeof u === "string" && String(u).trim()
+              (u) => typeof u === "string" && String(u).trim(),
             )
           : [];
         const prijzenNoteHtml = trip?.sections?.prijzenNote
           ? String(trip.sections.prijzenNote).trim()
           : "";
         const prijsKolom1Naam = String(
-          trip?.sections?.prijzenPrijsNaamKolom1 || ""
+          trip?.sections?.prijzenPrijsNaamKolom1 || "",
         ).trim();
         const prijsKolom2Naam = String(
-          trip?.sections?.prijzenPrijsNaamKolom2 || ""
+          trip?.sections?.prijzenPrijsNaamKolom2 || "",
         ).trim();
         const prijsTh1 = prijsKolom1Naam
           ? `Prijs : ${prijsKolom1Naam}`
@@ -588,10 +604,10 @@ const ReisDetail = () => {
         if (!showPrijsSection) return null;
         return (
           <div
-            className="text-center my-16 mx-8 mt-16 mb-10 lg:mx-32"
+            className={`text-center my-16 mt-16 mb-10 ${SECTION_WIDTH}`}
             id="prijs"
           >
-            <div className="flex flex-col mx-8 mt-10 lg:mx-32">
+            
               <div className="mb-10">
                 <h1 className="text-3xl mt-10 text-[#162b58] font-bold mb-8">
                   Prijzen
@@ -599,7 +615,7 @@ const ReisDetail = () => {
 
                 {prijzenPhotoUrls.length > 0 && (
                   <div
-                    className={`grid w-full max-w-4xl mx-auto px-4 gap-6 sm:gap-10 mb-6 sm:mb-8 ${
+                    className={`grid w-full max-w-5xl mx-auto gap-6 sm:gap-10 mb-6 sm:mb-8 ${
                       prijzenPhotoUrls.length === 1
                         ? "grid-cols-1 justify-items-center"
                         : "grid-cols-1 sm:grid-cols-2 justify-items-center"
@@ -618,157 +634,142 @@ const ReisDetail = () => {
                 )}
 
                 {(prijzenRows.length > 0 || prijzenNoteHtml) && (
-                <div className="max-w-4xl mx-auto p-3 sm:p-6 bg-white">
-                  <div className="border-2  rounded-lg border-[#162b58] shadow-lg">
-                    {prijzenRows.length > 0 && (
-                      <div className="bg-gray-100 p-3 sm:p-4 text-center rounded-lg border-b-2 border-[#162b58]">
-                        <h2 className="text-lg sm:text-xl font-bold">
-                          PRIJS IN € per persoon
-                        </h2>
-                      </div>
-                    )}
+                  <div className="w-full mx-auto p-3 sm:p-6 bg-white">
+                    <div className="border-2  rounded-lg border-[#162b58] shadow-lg">
+                      {prijzenRows.length > 0 && (
+                        <div className="bg-gray-100 p-3 sm:p-4 text-center rounded-lg border-b-2 border-[#162b58]">
+                          <h2 className="text-lg sm:text-xl font-bold">
+                            PRIJS IN € per persoon
+                          </h2>
+                        </div>
+                      )}
 
-                    {prijzenRows.length > 0 && (
-                      <>
-                        <div className="hidden sm:block">
-                          <table className="w-full">
-                            <thead>
-                              <tr className="border-b border-gray-300">
-                                <th className="text-center p-3 font-bold text-blue-800 italic w-[40%]">
-                                  Verblijf
-                                </th>
-                                <th className="text-center p-3 font-bold text-blue-800 italic w-[30%]">
-                                  {prijsTh1}
-                                </th>
-                                <th className="text-center p-3 font-bold text-blue-800 italic w-[30%]">
-                                  {prijsTh2}
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {prijzenRows.map((row, index) => (
-                                <tr
-                                  key={index}
-                                  className="border-b border-gray-200"
-                                >
-                                  <td
-                                    className={`p-3 font-medium text-[#162b58] ${prijsRowBgClass(row.bg || row.color)}`}
-                                  >
-                                    {row.name}
-                                  </td>
-                                  <td className="p-3 text-center font-semibold">
-                                    {row.prijs}
-                                  </td>
-                                  <td className="p-3 text-center font-semibold">
-                                    {row.prijs2}
-                                  </td>
+                      {prijzenRows.length > 0 && (
+                        <>
+                          <div className="hidden sm:block">
+                            <table className="w-full">
+                              <thead>
+                                <tr className="border-b border-gray-300">
+                                  <th className="text-center p-3 font-bold text-blue-800 italic w-[40%]">
+                                    Verblijf
+                                  </th>
+                                  <th className="text-center p-3 font-bold text-blue-800 italic w-[30%]">
+                                    {prijsTh1}
+                                  </th>
+                                  <th className="text-center p-3 font-bold text-blue-800 italic w-[30%]">
+                                    {prijsTh2}
+                                  </th>
                                 </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
+                              </thead>
+                              <tbody>
+                                {prijzenRows.map((row, index) => (
+                                  <tr
+                                    key={index}
+                                    className="border-b border-gray-200"
+                                  >
+                                    <td
+                                      className={`p-3 font-medium text-[#162b58] ${prijsRowBgClass(row.bg || row.color)}`}
+                                    >
+                                      {row.name}
+                                    </td>
+                                    <td className="p-3 text-center font-semibold">
+                                      {row.prijs}
+                                    </td>
+                                    <td className="p-3 text-center font-semibold">
+                                      {row.prijs2}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
 
-                        <div className="sm:hidden">
-                          {prijzenRows.map((row, index) => (
-                            <div
-                              key={index}
-                              className="border-b border-gray-200 last:border-b-0"
-                            >
+                          <div className="sm:hidden">
+                            {prijzenRows.map((row, index) => (
                               <div
-                                className={`p-3 font-medium ${prijsRowBgClass(row.bg || row.color)} text-gray-800 text-center`}
+                                key={index}
+                                className="border-b border-gray-200 last:border-b-0"
                               >
-                                {row.name}
-                              </div>
-                              <div className="p-3 space-y-4">
-                                <div className="flex flex-col gap-1 text-center">
-                                  <span className="text-sm text-gray-600">
-                                    {prijsTh1}:
-                                  </span>
-                                  <span className="font-semibold break-words px-1">
-                                    {row.prijs}
-                                  </span>
+                                <div
+                                  className={`p-3 font-medium ${prijsRowBgClass(row.bg || row.color)} text-gray-800 text-center`}
+                                >
+                                  {row.name}
                                 </div>
-                                <div className="flex flex-col gap-1 text-center">
-                                  <span className="text-sm text-gray-600">
-                                    {prijsTh2}:
-                                  </span>
-                                  <span className="font-semibold break-words px-1">
-                                    {row.prijs2}
-                                  </span>
+                                <div className="p-3 space-y-4">
+                                  <div className="flex flex-col gap-1 text-center">
+                                    <span className="text-sm text-gray-600">
+                                      {prijsTh1}:
+                                    </span>
+                                    <span className="font-semibold break-words px-1">
+                                      {row.prijs}
+                                    </span>
+                                  </div>
+                                  <div className="flex flex-col gap-1 text-center">
+                                    <span className="text-sm text-gray-600">
+                                      {prijsTh2}:
+                                    </span>
+                                    <span className="font-semibold break-words px-1">
+                                      {row.prijs2}
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
-                        </div>
-                      </>
-                    )}
+                            ))}
+                          </div>
+                        </>
+                      )}
 
-                    {prijzenNoteHtml ? (
-                      <div className="text-left mt-6 mx-8 lg:mx-32">
-                        <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
-                        <div
-                          className="prose max-w-none rt-html"
-                          dangerouslySetInnerHTML={{ __html: prijzenNoteHtml }}
-                        />
-                      </div>
-                    ) : null}
+                      {prijzenNoteHtml ? (
+                        <div className="text-left mt-6 px-4 sm:px-6 lg:px-8">
+                          <style>{`.rt-html ul{list-style:disc;padding-left:1.25rem} .rt-html ol{list-style:decimal;padding-left:1.25rem}`}</style>
+                          <div
+                            className="prose max-w-none rt-html"
+                            dangerouslySetInnerHTML={{
+                              __html: prijzenNoteHtml,
+                            }}
+                          />
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
                 )}
               </div>
             </div>
-          </div>
         );
       })()}
 
       {/** Inbegrepen */}
 
       {Array.isArray(trip?.sections?.inbegrepen) &&
-
         trip.sections.inbegrepen.length > 0 && (
-
           <div
-
-            className="mt-10 box-border w-full pr-8 pl-4 sm:pl-6 lg:pr-32 lg:pl-8"
-
+            className={`mt-10 ${NARROW_WIDTH}`}
             id="inbegrepen"
-
           >
-
             <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
-
               Inbegrepen
-
             </h2>
 
-            <div className="md:pl-[25vw]">
-
+            <div className="mx-auto max-w-3xl">
               <ul className="list-disc pl-6 text-lg text-[#162b58] space-y-2 text-left">
-
                 {trip.sections.inbegrepen.map((item, idx) => (
-
                   <li key={idx}>{item}</li>
-
                 ))}
-
               </ul>
-
             </div>
-
           </div>
-
         )}
       {/** Niet inbegrepen */}
       {Array.isArray(trip?.sections?.nietInbegrepen) &&
         trip.sections.nietInbegrepen.length > 0 && (
           <div
-            className="mt-10 box-border w-full pr-8 pl-4 sm:pl-6 lg:pr-32 lg:pl-8"
+            className={`mt-10 ${NARROW_WIDTH}`}
             id="nietinbegrepen"
           >
             <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
               Niet inbegrepen
             </h2>
-            <div className="md:pl-[25vw]">
+            <div className="mx-auto max-w-3xl">
               <ul className="list-disc pl-6 text-lg text-[#162b58] space-y-2 text-left">
                 {trip.sections.nietInbegrepen.map((item, idx) => (
                   <li key={idx}>{item}</li>
@@ -780,11 +781,11 @@ const ReisDetail = () => {
       {/** Gallerij  */}
       {Array.isArray(trip?.sections?.gallery) &&
         trip.sections.gallery.length > 0 && (
-          <div className="mx-8 mt-10 lg:mx-32" id="fotos">
+          <div className={`mt-10 ${SECTION_WIDTH}`} id="fotos">
             <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
               Foto's
             </h2>
-            <div className="mt-8 mx-4 sm:mx-8 md:mx-16 lg:mx-32 xl:mx-48">
+            <div className="mt-8">
               <PhotoAlbum photos={trip.sections.gallery} enableLightbox />
             </div>
           </div>
@@ -797,11 +798,11 @@ const ReisDetail = () => {
           const resLogoUrls = reservationLogoUrlsFromSection(reservatieBlock);
           const hasResHtml = Boolean(
             typeof reservatieBlock.html === "string" &&
-              reservatieBlock.html.trim(),
+            reservatieBlock.html.trim(),
           );
           if (!hasResHtml && resLogoUrls.length === 0) return null;
           return (
-            <div className="mx-8 mt-10 lg:mx-32" id="reservatie">
+            <div className={`mt-10 ${SECTION_WIDTH}`} id="reservatie">
               <h2 className="text-3xl text-[#162b58] text-center font-bold mb-4">
                 Reservatie
               </h2>
@@ -831,13 +832,24 @@ const ReisDetail = () => {
         })()}
 
       {/** Back to alle reizen */}
-      <div className="mx-8 mt-10 lg:mx-32">
+      <div className={`mt-10 ${SECTION_WIDTH}`}>
         <Link
           to="/"
           className="mx-auto mb-10 inline-flex items-center justify-center gap-2 bg-[#162b58] hover:!bg-[#4ab0e1] text-white font-semibold px-5 py-2.5 rounded-full shadow-md duration-200"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           <span>Terug naar alle reizen</span>
         </Link>
