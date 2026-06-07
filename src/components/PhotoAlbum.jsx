@@ -42,7 +42,7 @@ export default function PhotoAlbum({
           } catch (_) {
             return { ...p, width: 1600, height: 900 };
           }
-        })
+        }),
       );
       if (!isCancelled) setResolvedPhotos(results);
     };
@@ -67,7 +67,26 @@ export default function PhotoAlbum({
       : {}),
   };
 
-  const album = (
+  const isSmallSet = resolvedPhotos.length <= 3;
+
+  const album = isSmallSet ? (
+    <div className="flex justify-center gap-2 flex-wrap">
+      {resolvedPhotos.map((photo, index) => (
+        <button
+          key={photo.src || index}
+          type="button"
+          onClick={() => enableLightbox && setLightboxIndex(index)}
+          className={enableLightbox ? "cursor-pointer" : ""}
+        >
+          <img
+            src={photo.src}
+            alt={photo.alt || ""}
+            className="w-[300px] h-[170px] object-cover rounded-md"
+          />
+        </button>
+      ))}
+    </div>
+  ) : (
     <ColumnsPhotoAlbum
       photos={resolvedPhotos}
       columns={(containerWidth) => {
@@ -89,9 +108,7 @@ export default function PhotoAlbum({
       {...(enableLightbox
         ? { onClick: ({ index }) => setLightboxIndex(index) }
         : {})}
-      {...(Object.keys(componentsProps).length
-        ? { componentsProps }
-        : {})}
+      {...(Object.keys(componentsProps).length ? { componentsProps } : {})}
     />
   );
 
