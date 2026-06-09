@@ -6,6 +6,7 @@ import CardFront from "../components/CardFront";
 import CardBack from "../components/CardBack";
 
 import { Link } from "react-router-dom";
+import bannerLogo from "../assets/banner.png";
 
 // Firebase imports
 import { db } from "../config/firebase";
@@ -91,12 +92,24 @@ const Home = () => {
 
   return (
     <div className="bg-white min-h-screen" style={{backgroundColor: 'white'}}>
-      {/* Onze reizen: gebruik dit indien nodig voor titel en tekst */}
+      <header className="w-full bg-[#162b58] shadow-md">
+        <div className="relative flex items-center px-6 py-3 sm:px-10 sm:py-4 lg:px-16">
+          <Link to="/" className="relative z-10 inline-flex shrink-0">
+            <img
+              src={bannerLogo}
+              alt="Focus-WTV reizen"
+              className="h-7 w-auto max-w-[min(100%,160px)] object-contain object-left sm:h-12 sm:max-w-[280px] md:h-14"
+            />
+          </Link>
+          <h1 className="pointer-events-none absolute inset-x-0 text-center text-base font-extrabold text-white sm:text-2xl md:text-3xl lg:text-4xl">
+            Onze kijkersreizen
+          </h1>
+        </div>
+      </header>
+
+      {/* Intro */}
        <div className="text-center mt-8 mb-8 mx-8 lg:mx-32">
-        <h1 className="text-2xl md:text-3xl lg:text-5xl text-[#162b58] font-extrabold text-center">
-          Geplande reizen
-        </h1>
-        <div className="mt-4 mx-auto max-w-3xl space-y-3 text-[#162b58]">
+        <div className="mx-auto max-w-3xl space-y-3 text-[#162b58]">
           <p className="text-base md:text-lg font-semibold leading-relaxed">
             Hier vindt u alle reizen die we momenteel aanbieden. Klik op een kaart
             voor alle informatie over de reis van uw keuze.
