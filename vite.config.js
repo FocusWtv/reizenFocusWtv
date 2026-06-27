@@ -14,6 +14,10 @@ export default defineConfig(({ mode }) => {
           target: r2UploadTarget,
           changeOrigin: true,
         },
+        '/api/upload-pdf-to-github': {
+          target: r2UploadTarget,
+          changeOrigin: true,
+        },
       },
     },
   }

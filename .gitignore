@@ -27,7 +27,8 @@ firebase-adminsdk-*.json
 *.sln
 *.sw?
 
-# Local docs (not for repo)
+# Local docs (not for public repo)
+README.local.md
 PRD.md
 TODO.md
 GITHUB_PDF_SETUP.md

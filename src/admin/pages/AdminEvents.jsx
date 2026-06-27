@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from '../../config/firebase';
 import { collection, addDoc, serverTimestamp, getDocs, query, orderBy, updateDoc, doc, deleteDoc } from 'firebase/firestore';
-import { vercelUploadImage } from '../../lib/apiClient';
+import { cloudflareUploadImage } from '../../lib/apiClient';
 import RichText from '../components/RichText';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 
@@ -354,7 +354,7 @@ const AdminEvents = () => {
                       if (file) {
                         try {
                           setUploadingImage(true);
-                          const url = await vercelUploadImage(file);
+                          const url = await cloudflareUploadImage(file);
                           setNewEvent(v => ({ ...v, imageUrl: url }));
                         } catch (error) {
                           alert('Image upload mislukt: ' + error.message);

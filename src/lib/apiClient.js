@@ -36,68 +36,32 @@ export async function apiFetch(path, options = {}) {
 }
 
 /**
- * GitHub PDF upload functie - gratis en onbeperkt
- * Upload PDF naar GitHub repository en retourneer de raw.githubusercontent.com URL
+ * GitHub PDF upload via serverless API (token blijft server-side).
  */
 export const githubUploadPdf = async (file) => {
-	const githubToken = import.meta.env.VITE_GITHUB_TOKEN;
-	const githubOwner = import.meta.env.VITE_GITHUB_OWNER; // Username of organisatie
-	const githubRepo = import.meta.env.VITE_GITHUB_REPO; // Repository naam
-	const githubBranch = import.meta.env.VITE_GITHUB_BRANCH || 'main'; // Default: main
-	
-	if (!githubToken || !githubOwner || !githubRepo) {
-		throw new Error('GitHub configuratie ontbreekt. Controleer je .env variabelen (VITE_GITHUB_TOKEN, VITE_GITHUB_OWNER, VITE_GITHUB_REPO)');
-	}
+	const originalName = file?.name ? file.name : 'brochure.pdf';
 
-	// Genereer een unieke bestandsnaam met timestamp om overschrijving te voorkomen
-	const timestamp = Date.now();
-	const safeFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-	const fileName = `brochures/${timestamp}-${safeFileName}`;
-
-	// Converteer file naar base64 (GitHub API vereist base64)
-	const base64Content = await new Promise((resolve, reject) => {
+	const fileData = await new Promise((resolve, reject) => {
 		const reader = new FileReader();
-		reader.onload = () => {
-			const base64 = reader.result.split(',')[1]; // Verwijder data:application/pdf;base64, prefix
-			resolve(base64);
-		};
+		reader.onload = () => resolve(reader.result);
 		reader.onerror = reject;
 		reader.readAsDataURL(file);
 	});
 
-	// Upload naar GitHub via Contents API
-	const apiUrl = `https://api.github.com/repos/${githubOwner}/${githubRepo}/contents/${fileName}`;
-	
-	const response = await fetch(apiUrl, {
-		method: 'PUT',
-		headers: {
-			'Authorization': `Bearer ${githubToken}`,
-			'Content-Type': 'application/json',
-			'Accept': 'application/vnd.github.v3+json'
-		},
+	const response = await apiFetch('/api/upload-pdf-to-github', {
+		method: 'POST',
 		body: JSON.stringify({
-			message: `Upload brochure: ${safeFileName}`,
-			content: base64Content,
-			branch: githubBranch
-		})
+			fileData,
+			fileName: originalName,
+		}),
 	});
 
-	if (!response.ok) {
-		const errorData = await response.json().catch(() => ({}));
-		console.error('GitHub upload error:', errorData);
-		throw new Error(errorData.message || `GitHub upload mislukt (${response.status})`);
-	}
-
-	const data = await response.json();
-	
-	// Retourneer de raw.githubusercontent.com URL (gratis CDN)
-	const rawUrl = `https://raw.githubusercontent.com/${githubOwner}/${githubRepo}/${githubBranch}/${fileName}`;
-	
-	console.log('PDF succesvol geupload naar GitHub:', rawUrl);
-	return rawUrl;
+	const result = await response.json();
+	const url = result?.url;
+	if (!url) throw new Error('Geen URL in upload-antwoord');
+	console.log('PDF succesvol geupload naar GitHub:', url);
+	return url;
 };
-
-// Cloudinary PDF upload functie was deprecated en is verwijderd.
 
 /**
  * Resize image to fit within max dimensions while maintaining aspect ratio
@@ -197,11 +161,8 @@ export const cloudflareUploadImage = async (file) => {
 		reader.readAsDataURL(workingBlob);
 	});
 
-	const response = await fetch('/api/upload-to-r2', {
+	const response = await apiFetch('/api/upload-to-r2', {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
 		body: JSON.stringify({
 			fileData: base64Data,
 			fileName: originalName,
@@ -232,9 +193,3 @@ export const cloudflareUploadImage = async (file) => {
 	console.log('Image succesvol geüpload naar Cloudflare R2:', url);
 	return url;
 };
-
-/**
- * Vercel Blob image upload functie (DEPRECATED - gebruik cloudflareUploadImage)
- * @deprecated Gebruik cloudflareUploadImage in plaats van deze functie
- */
-export const vercelUploadImage = cloudflareUploadImage;

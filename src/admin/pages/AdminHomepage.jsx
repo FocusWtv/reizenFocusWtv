@@ -6,8 +6,6 @@ import CardBack from '../../components/CardBack';
 
 const STATUS_OPTIONS = ['open', 'volzet', 'beperkt'];
 
-// Cloudinary upload configuratie niet langer in gebruik; bestaande beelden blijven via URL werken.
-
 // Compress image in-browser and ensure <= maxBytes (default 600KB)
 async function compressImageToLimit(file, maxWidth = 2560, initialQuality = 0.8, outputType = 'image/jpeg', maxBytes = 600 * 1024) {
   const img = await new Promise((resolve, reject) => {
@@ -222,26 +220,11 @@ const AdminHomepage = () => {
         compressedFile = new File([compressedFile], desiredName, { type: 'image/jpeg' });
       }
 
-      // Upload naar Cloudflare R2 via Vercel API route
-      const { vercelUploadImage } = await import('../../lib/apiClient');
-      const url = await vercelUploadImage(compressedFile);
+      // Upload naar Cloudflare R2
+      const { cloudflareUploadImage } = await import('../../lib/apiClient');
+      const url = await cloudflareUploadImage(compressedFile);
       setForm(prev => ({ ...prev, imageUrl: url }));
       setUploadMsg('Afbeelding succesvol geüpload naar Cloudflare R2!');
-      return;
-      
-      // Oude Cloudinary code (behouden voor referentie)
-      /* Cloudinary upload code verwijderd (Vercel Blob wordt gebruikt)
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-        method: 'POST',
-        body: formData,
-      });
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText || 'Cloudinary upload mislukt');
-      }
-      /*const data = await res.json();
-      setForm(f => ({ ...f, imageUrl: data.secure_url || data.url || '' }));
-      setUploadMsg('Afbeelding geüpload.');*/
     } catch (err) {
       console.error('Upload mislukt:', err);
       alert('Upload mislukt');
