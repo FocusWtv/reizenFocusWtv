@@ -1,5 +1,5 @@
-const { authAdmin } = require('../../_lib/firebaseAdmin');
-const { withAdminAuth } = require('../../_lib/withAdminAuth');
+import { getFirebaseAdmin } from '../../_lib/firebaseAdmin.js';
+import { withAdminAuth } from '../../_lib/withAdminAuth.js';
 
 async function handler(req, res) {
 	if (req.method !== 'POST') {
@@ -14,6 +14,7 @@ async function handler(req, res) {
 			return res.status(400).json({ error: 'email en password zijn verplicht' });
 		}
 
+		const { authAdmin } = getFirebaseAdmin();
 		const userRecord = await authAdmin.createUser({ email, password, emailVerified: true, disabled: false });
 
 		await authAdmin.setCustomUserClaims(userRecord.uid, { admin: true });
@@ -24,4 +25,4 @@ async function handler(req, res) {
 	}
 }
 
-module.exports = withAdminAuth(handler);
+export default withAdminAuth(handler);

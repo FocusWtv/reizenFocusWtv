@@ -1,5 +1,5 @@
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
-const { withAdminAuth } = require('./_lib/withAdminAuth');
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { withAdminAuth } from './_lib/withAdminAuth.js';
 
 const s3 = new S3Client({
 	region: 'auto',
@@ -62,4 +62,4 @@ async function handler(req, res) {
 	}
 }
 
-module.exports = withAdminAuth(handler);
+export default withAdminAuth(handler);

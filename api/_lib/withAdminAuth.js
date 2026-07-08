@@ -1,11 +1,21 @@
-const { authAdmin } = require('./firebaseAdmin');
+import { getFirebaseAdmin } from './firebaseAdmin.js';
 
 /**
  * Wrap een handler met Firebase ID token verificatie en admin-claim check.
  * Verwacht een Authorization header: "Bearer <idToken>".
  */
-function withAdminAuth(handler) {
+export function withAdminAuth(handler) {
 	return async (req, res) => {
+		let authAdmin;
+		try {
+			({ authAdmin } = getFirebaseAdmin());
+		} catch (err) {
+			return res.status(500).json({
+				error: 'Serverconfiguratie onvolledig',
+				details: err?.message || String(err),
+			});
+		}
+
 		try {
 			const authHeader = req.headers.authorization || '';
 			const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
@@ -25,5 +35,3 @@ function withAdminAuth(handler) {
 		}
 	};
 }
-
-module.exports = { withAdminAuth };

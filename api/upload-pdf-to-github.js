@@ -1,4 +1,4 @@
-const { withAdminAuth } = require('./_lib/withAdminAuth');
+import { withAdminAuth } from './_lib/withAdminAuth.js';
 
 async function handler(req, res) {
 	if (req.method !== 'POST') {
@@ -61,4 +61,4 @@ async function handler(req, res) {
 	}
 }
 
-module.exports = withAdminAuth(handler);
+export default withAdminAuth(handler);

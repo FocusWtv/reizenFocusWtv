@@ -6,16 +6,14 @@ import http from 'http';
 import { config } from 'dotenv';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { createRequire } from 'module';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const require = createRequire(import.meta.url);
 config({ path: resolve(__dirname, '../.env') });
 config({ path: resolve(__dirname, '../.env.local'), override: true });
 
 const routes = {
-	'/api/upload-to-r2': require('../api/upload-to-r2.js'),
-	'/api/upload-pdf-to-github': require('../api/upload-pdf-to-github.js'),
+	'/api/upload-to-r2': (await import('../api/upload-to-r2.js')).default,
+	'/api/upload-pdf-to-github': (await import('../api/upload-pdf-to-github.js')).default,
 };
 
 function attachResHelpers(nodeRes) {
