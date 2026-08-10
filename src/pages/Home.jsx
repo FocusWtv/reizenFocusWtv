@@ -11,6 +11,7 @@ import bannerLogo from "../assets/banner.png";
 // Firebase imports
 import { db } from "../config/firebase";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
+import { compareHomepageCardsByDate } from "../lib/utils";
 
 // Rest van uw component
 
@@ -52,17 +53,45 @@ const Home = () => {
     load();
   }, []);
 
-  const renderCards = (cards) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-6 p-6 mx-6 lg:mx-32">
-      {cards.map((card) => (
-        <TravelCard
-          key={card.id}
-          front={<CardFront image={card.imageUrl} title={card.title} text={card.text} status={card.status} />}
-          back={<CardBack text={card.backText} link={`/reizen/${card.slug}`} status={card.status} />}
-        />
-      ))}
-    </div>
+  const renderCards = (cards) => {
+    const rows = [];
+    for (let i = 0; i < cards.length; i += 2) {
+      rows.push(cards.slice(i, i + 2));
+    }
+
+    return (
+      <div className="flex flex-col gap-4 md:gap-6 p-6 mx-6 lg:mx-32">
+        {rows.map((row) => (
+          <div
+            key={row.map((c) => c.id).join('-')}
+            className="flex flex-col md:flex-row gap-4 md:gap-6"
+          >
+            {row.map((card) => (
+              <div key={card.id} className="flex-1 min-w-0">
+                <TravelCard
+                  front={<CardFront image={card.imageUrl} title={card.title} text={card.text} status={card.status} />}
+                  back={<CardBack text={card.backText} link={`/reizen/${card.slug}`} status={card.status} />}
+                />
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderCardSection = (title, cards) => (
+    <section>
+      <h2 className="text-3xl lg:text-5xl text-[#162b58] font-bold text-center mt-8">
+        {title}
+      </h2>
+      {renderCards(cards)}
+    </section>
   );
+
+  const isVolzet = (card) => (card.status || '').toLowerCase() === 'volzet';
+  const beschikbareCards = dynamicCards.filter((c) => !isVolzet(c)).sort(compareHomepageCardsByDate);
+  const aankomendeCards = dynamicCards.filter(isVolzet).sort(compareHomepageCardsByDate);
 
   const renderInfoCards = (events) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 mx-6 lg:mx-32">
@@ -131,7 +160,10 @@ const Home = () => {
         <div className="text-center text-[#162b58]">Laden...</div>
       ) : (
         dynamicCards.length > 0 ? (
-          renderCards(dynamicCards)
+          <>
+            {beschikbareCards.length > 0 && renderCardSection('Beschikbare reizen', beschikbareCards)}
+            {aankomendeCards.length > 0 && renderCardSection('Aankomende reizen', aankomendeCards)}
+          </>
         ) : (
           <div className="text-center text-[#162b58] mx-8 lg:mx-32 py-8">Nog geen reizen beschikbaar.</div>
         )
