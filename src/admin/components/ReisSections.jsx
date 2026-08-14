@@ -819,7 +819,7 @@ const ReisSections = ({
         </div>
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">Brochure (PDF)</label>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <input type="file" accept="application/pdf" onChange={async (e)=>{
               const file = e.target.files && e.target.files[0]
               if (!file) return
@@ -835,8 +835,25 @@ const ReisSections = ({
             }} />
             <button type="button" onClick={()=> setReservationBrochureUrl('')} disabled={!reservationBrochureUrl} className="px-3 py-1 text-sm border rounded disabled:opacity-50">Verwijder</button>
           </div>
+          <div>
+            <label className="block text-xs text-gray-600 mb-1">
+              Of plak een PDF-URL (bv. raw.githubusercontent.com … — voor grote bestanden &gt; ~3 MB)
+            </label>
+            <input
+              type="url"
+              value={reservationBrochureUrl || ''}
+              onChange={(e) => setReservationBrochureUrl(e.target.value.trim())}
+              placeholder="https://raw.githubusercontent.com/FocusWtv/focuswtv-brochures/main/brochures/bestand.pdf"
+              className="w-full rounded border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400"
+            />
+          </div>
           {reservationBrochureUrl && (
-            <div className="text-xs text-gray-600 break-all">Geselecteerd: {reservationBrochureUrl}</div>
+            <div className="text-xs text-gray-600 break-all">
+              Geselecteerd:{' '}
+              <a href={reservationBrochureUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+                {reservationBrochureUrl}
+              </a>
+            </div>
           )}
         </div>
       </div>
