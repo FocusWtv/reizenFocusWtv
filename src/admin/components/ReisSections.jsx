@@ -818,7 +818,7 @@ const ReisSections = ({
           <RichText value={reservationHtml || ''} onChange={setReservationHtml} placeholder="Reservatie en contact informatie..." />
         </div>
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Brochure (PDF)</label>
+          <label className="block text-sm font-medium text-gray-700">Brochure (PDF) Indien upload failt={'>'} pdf te groot, ga naar ilovepdf.com en compress de pdf. Upload daarna de compressed pdf</label>
           <div className="flex flex-wrap items-center gap-3">
             <input type="file" accept="application/pdf" onChange={async (e)=>{
               const file = e.target.files && e.target.files[0]
