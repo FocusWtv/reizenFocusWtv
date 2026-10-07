@@ -4,7 +4,7 @@ export const REISUPDATES_TOASTS = {
   success: {
     variant: 'success',
     message:
-      'U bent ingeschreven! U ontvangt als eerste nieuws over onze nieuwe reizen.',
+      'Dankjewel voor je interesse! Bij nieuwe reizen sturen we je steeds als eerste een mailtje. ',
   },
   already: {
     variant: 'info',

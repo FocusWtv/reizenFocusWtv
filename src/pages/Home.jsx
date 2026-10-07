@@ -155,14 +155,14 @@ const Home = () => {
             . Schrijf u desgewenst meteen in door op de infoavond te klikken en het formulier in te vullen.
           </p>
           <p className="text-base md:text-lg leading-relaxed">
-            Wilt u op de hoogte blijven van onze nieuwste reizen?{" "}
+            Wil je graag als eerste op de hoogte gebracht worden bij een nieuwe reis? Bezorg ons{" "}
             <a
               href="#reisupdates"
               className="text-[#4ab0e1] hover:text-[#162b58] font-semibold underline"
             >
-              Schrijf u hier in voor onze reisupdates
+              hier
             </a>
-            .
+             {" "}je mailadres.
           </p>
         </div>
       </div> 
