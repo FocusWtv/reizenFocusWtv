@@ -12,6 +12,7 @@ import bannerLogo from "../assets/banner.png";
 import { db } from "../config/firebase";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
 import { compareHomepageCardsByDate } from "../lib/utils";
+import HomeReisupdatesSignup from "../components/HomeReisupdatesSignup";
 
 // Rest van uw component
 
@@ -153,6 +154,16 @@ const Home = () => {
             </a>
             . Schrijf u desgewenst meteen in door op de infoavond te klikken en het formulier in te vullen.
           </p>
+          <p className="text-base md:text-lg leading-relaxed">
+            Wilt u op de hoogte blijven van onze nieuwste reizen?{" "}
+            <a
+              href="#reisupdates"
+              className="text-[#4ab0e1] hover:text-[#162b58] font-semibold underline"
+            >
+              Schrijf u hier in voor onze reisupdates
+            </a>
+            .
+          </p>
         </div>
       </div> 
 
@@ -189,6 +200,8 @@ const Home = () => {
           )
         )}
 
+        <HomeReisupdatesSignup />
+
         <h2 className="text-3xl lg:text-5xl text-[#162b58] font-bold text-center mt-12">
           Terugblikken
         </h2>
@@ -216,7 +229,7 @@ const Home = () => {
             Terug naar hoofdpagina van Focus-WTV reizen
           </a>
         </div>
-      </div> 
+      </div>
     </div>
   );
 };

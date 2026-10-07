@@ -14,6 +14,7 @@ config({ path: resolve(__dirname, '../.env.local'), override: true });
 const routes = {
 	'/api/upload-to-r2': (await import('../api/upload-to-r2.js')).default,
 	'/api/upload-pdf-to-github': (await import('../api/upload-pdf-to-github.js')).default,
+	'/api/subscribe-reisupdates': (await import('../api/subscribe-reisupdates.js')).default,
 };
 
 function attachResHelpers(nodeRes) {
@@ -91,4 +92,5 @@ server.listen(PORT, '127.0.0.1', () => {
 	console.log(`[dev:api] http://127.0.0.1:${PORT}`);
 	console.log('  POST /api/upload-to-r2');
 	console.log('  POST /api/upload-pdf-to-github');
+	console.log('  POST /api/subscribe-reisupdates');
 });

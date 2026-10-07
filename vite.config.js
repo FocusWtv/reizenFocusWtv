@@ -18,6 +18,10 @@ export default defineConfig(({ mode }) => {
           target: r2UploadTarget,
           changeOrigin: true,
         },
+        '/api/subscribe-reisupdates': {
+          target: r2UploadTarget,
+          changeOrigin: true,
+        },
       },
     },
   }
