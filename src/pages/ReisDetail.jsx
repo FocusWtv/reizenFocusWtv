@@ -201,18 +201,17 @@ const ReisDetail = () => {
 
       {/** Navigation */}
       <div className="sticky top-[0.2px] z-40 bg-[#4ab0e1] shadow-md">
-        <div className="mx-auto flex justify-center items-center">
-          <Navbar
-            expand="lg"
-            expanded={menuOpen}
-            onToggle={(val) => setMenuOpen(val)}
-            className="flex justify-center text-lg text-white items-center p-[8px]"
-          >
-            <Container>
+        <Navbar
+          expand="lg"
+          expanded={menuOpen}
+          onToggle={(val) => setMenuOpen(val)}
+          className="w-full text-lg text-white items-center p-[8px]"
+        >
+          <Container className="relative flex justify-center lg:block">
               {/* Add the toggle button for mobile/tablet */}
               <Navbar.Toggle
                 aria-controls="basic-navbar-nav"
-                className="lg:hidden border-0 shadow-none"
+                className="lg:hidden border-0 shadow-none mx-auto"
                 style={{
                   backgroundImage: "none",
                   color: "white",
@@ -236,7 +235,7 @@ const ReisDetail = () => {
 
               <Navbar.Collapse
                 id="basic-navbar-nav"
-                className="bg-[#4ab0e1] lg:bg-transparent"
+                className="bg-[#4ab0e1] lg:bg-transparent max-lg:absolute max-lg:inset-x-0 max-lg:top-full max-lg:w-full max-lg:z-50 shadow-md lg:shadow-none"
               >
                 <Nav
                   className="mx-auto p-1 text-center font-semibold"
@@ -281,9 +280,8 @@ const ReisDetail = () => {
                   </Nav.Link>
                 </Nav>
               </Navbar.Collapse>
-            </Container>
-          </Navbar>
-        </div>
+          </Container>
+        </Navbar>
       </div>
 
       {/* Intro dynamisch */}

@@ -19,3 +19,14 @@ export const REISUPDATES_TOASTS = {
     message: 'Inschrijven lukt momenteel niet. Probeer het straks opnieuw.',
   },
 };
+
+export const SUGGESTIE_TOASTS = {
+  success: {
+    variant: 'success',
+    message: 'Dankjewel! We hebben je suggestie goed ontvangen.',
+  },
+  error: {
+    variant: 'error',
+    message: 'Je suggestie versturen lukt momenteel niet. Probeer het straks opnieuw.',
+  },
+};

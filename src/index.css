@@ -20,22 +20,16 @@ html, body {
   background-color: white !important;
 }
 
+/* Hash-ankers: kleine offset i.p.v. 650px/580px (die landden ver boven het doel).
+   4.5rem dekt de sticky reisdetail-nav; homepage-ankers hieronder kleiner. */
 [id] {
-  scroll-margin-top: 650px; /* Default for small screens */
+  scroll-margin-top: 4.5rem;
 }
 
-/* Medium screens and up */
-@media (min-width: 768px) {
-  [id] {
-    scroll-margin-top: 580px;
-  }
-}
-
-/* Large screens and up */
-@media (min-width: 1024px) {
-  [id] {
-    scroll-margin-top: 140px;
-  }
+#infoavonden,
+#reisupdates,
+#suggesties {
+  scroll-margin-top: 2rem;
 }
 
 /* Override specific Bootstrap font weights */
