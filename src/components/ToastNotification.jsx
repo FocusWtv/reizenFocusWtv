@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 const VARIANT_STYLES = {
-  success: 'border-[#162b58] bg-white text-[#162b58]',
+  success: 'border-green-600 bg-green-50 text-green-950',
   info: 'border-[#4ab0e1] bg-white text-[#162b58]',
   warning: 'border-orange-400 bg-white text-[#162b58]',
   error: 'border-red-500 bg-white text-[#162b58]',
