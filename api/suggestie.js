@@ -3,6 +3,7 @@ import {
 	normalizeSuggestiePayload,
 	sendSuggestieMail,
 } from './_lib/suggestieMail.js';
+import { saveSuggestie } from './_lib/suggestieStore.js';
 
 async function handler(req, res) {
 	if (req.method !== 'POST') {
@@ -17,8 +18,21 @@ async function handler(req, res) {
 			return res.status(400).json({ ok: false });
 		}
 
-		const sent = await sendSuggestieMail(payload);
-		if (!sent) {
+		let saved = false;
+		try {
+			saved = await saveSuggestie(payload);
+		} catch (err) {
+			console.error('suggestie save:', err?.message || 'failed');
+		}
+
+		let mailed = false;
+		try {
+			mailed = await sendSuggestieMail(payload);
+		} catch (err) {
+			console.error('suggestie mail:', err?.message || 'failed');
+		}
+
+		if (!saved && !mailed) {
 			return res.status(502).json({ ok: false });
 		}
 

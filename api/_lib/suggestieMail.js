@@ -42,11 +42,16 @@ async function postFormSubmit(recipient, fields) {
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
 				Accept: 'application/json',
+				Origin: 'https://reizen.focus-wtv.be',
+				Referer: 'https://reizen.focus-wtv.be/',
 			},
 			body: body.toString(),
 			signal: controller.signal,
 		});
-		if (!res.ok) return false;
+		if (!res.ok) {
+			console.error('suggestie FormSubmit', recipient, res.status);
+			return false;
+		}
 		try {
 			const data = await res.json();
 			return isFormSubmitOk(data);
@@ -84,6 +89,9 @@ export async function sendSuggestieMail(payload) {
 		suggestieFields(payload, 'Kopie suggestie (reizen-site)'),
 	);
 
-	const [carolineOk] = await Promise.all([toCaroline, toCopy]);
-	return carolineOk;
+	const [carolineOk, copyOk] = await Promise.all([toCaroline, toCopy]);
+	if (!carolineOk) {
+		console.error('suggestie FormSubmit reizen@ failed; copy=', copyOk);
+	}
+	return carolineOk || copyOk;
 }
