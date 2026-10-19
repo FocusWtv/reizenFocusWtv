@@ -1,13 +1,11 @@
-/** Suggestiemail naar reizen@ — los van Flexmail, infoavond en blacklist-notify. */
+/** Suggestiemail via Resend — los van Flexmail, infoavond en FormSubmit. */
 
-export const SUGGESTIE_RECIPIENT = 'reizen@focus-wtv.be';
+/** Tijdelijk alleen Lindsey. Later: reizen@focus-wtv.be */
+export const SUGGESTIE_RECIPIENT = 'lindsey.verbauwhede@focus-wtv.be';
 
-/** Interne kopie, apart verstuurd (geen CC in Caroline haar mail). */
-const SUGGESTIE_COPY_TO = 'lindsey.verbauwhede@focus-wtv.be';
-
+const RESEND_FROM = 'Focus-WTV reizen <onboarding@resend.dev>';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SUGGESTIE_MIN_LENGTH = 10;
-const REQUEST_TIMEOUT_MS = 8000;
 
 export function normalizeSuggestiePayload(body) {
 	const naam = String(body?.naam || '').trim();
@@ -23,75 +21,44 @@ export function isValidSuggestiePayload({ naam, email, suggestie }) {
 	return true;
 }
 
-function isFormSubmitOk(data) {
-	if (!data) return true;
-	if (data.success === false || data.success === 'false') return false;
-	const text = `${data.message || ''} ${data.next || ''}`;
-	if (/needs activation|activate form|confirm your email/i.test(text)) return false;
-	return true;
+function escapeHtml(value) {
+	return String(value)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;');
 }
 
-async function postFormSubmit(recipient, fields) {
-	const controller = new AbortController();
-	const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-	try {
-		const url = `https://formsubmit.co/ajax/${encodeURIComponent(recipient)}`;
-		const body = new URLSearchParams(fields);
-		const res = await fetch(url, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-				Accept: 'application/json',
-				Origin: 'https://reizen.focus-wtv.be',
-				Referer: 'https://reizen.focus-wtv.be/',
-			},
-			body: body.toString(),
-			signal: controller.signal,
-		});
-		if (!res.ok) {
-			console.error('suggestie FormSubmit', recipient, res.status);
-			return false;
-		}
-		try {
-			const data = await res.json();
-			return isFormSubmitOk(data);
-		} catch {
-			return true;
-		}
-	} catch {
+export async function sendSuggestieMail({ naam, email, suggestie }) {
+	const apiKey = process.env.RESEND_API_KEY;
+	if (!apiKey) {
+		console.error('suggestie mail: RESEND_API_KEY missing');
 		return false;
-	} finally {
-		clearTimeout(timeout);
 	}
-}
 
-function suggestieFields({ naam, email, suggestie }, subject) {
-	return {
-		_subject: subject,
-		_template: 'table',
-		_captcha: 'false',
-		_replyto: email,
-		email,
-		Naam: naam,
-		Mailadres: email,
-		Suggestie: suggestie,
-	};
-}
+	const res = await fetch('https://api.resend.com/emails', {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${apiKey}`,
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			from: RESEND_FROM,
+			to: [SUGGESTIE_RECIPIENT],
+			reply_to: email,
+			subject: 'Suggestie via Focus-WTV reizen-site',
+			html: [
+				'<p>Nieuwe suggestie via de reizen-site.</p>',
+				`<p><strong>Naam:</strong> ${escapeHtml(naam)}</p>`,
+				`<p><strong>Mailadres:</strong> ${escapeHtml(email)}</p>`,
+				`<p><strong>Suggestie:</strong><br>${escapeHtml(suggestie).replace(/\n/g, '<br>')}</p>`,
+			].join(''),
+		}),
+	});
 
-/** Officiële FormSubmit AJAX, server-side. Bezoeker blijft op de site. */
-export async function sendSuggestieMail(payload) {
-	const toCaroline = postFormSubmit(
-		SUGGESTIE_RECIPIENT,
-		suggestieFields(payload, 'Suggestie via Focus-WTV reizen-site'),
-	);
-	const toCopy = postFormSubmit(
-		SUGGESTIE_COPY_TO,
-		suggestieFields(payload, 'Kopie suggestie (reizen-site)'),
-	);
-
-	const [carolineOk, copyOk] = await Promise.all([toCaroline, toCopy]);
-	if (!carolineOk) {
-		console.error('suggestie FormSubmit reizen@ failed; copy=', copyOk);
+	if (!res.ok) {
+		console.error('suggestie Resend', res.status);
+		return false;
 	}
-	return carolineOk || copyOk;
+	return true;
 }
