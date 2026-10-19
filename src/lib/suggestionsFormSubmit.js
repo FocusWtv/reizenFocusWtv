@@ -1,13 +1,16 @@
 /** Publiek suggestieformulier → FormSubmit AJAX (los van Flexmail en infoavond-flow). */
 
-/** FormSubmit-hash i.p.v. naakt e-mailadres (minder activatie-mails + e-mail niet in de bundle). */
-export const SUGGESTIE_FORMSUBMIT_ID = 'b6d28924f173a361f695be9360ee7276';
+/** Geactiveerd FormSubmit-doel (reizen.focus-wtv.be + dit adres). */
+export const SUGGESTIE_RECIPIENT = 'reizen@focus-wtv.be';
 
 const REQUEST_TIMEOUT_MS = 8000;
 
-function isActivationPendingMessage(data) {
-	const text = `${data?.message || ''} ${data?.next || ''}`.toLowerCase();
-	return /activat|confirm your email|check your email/i.test(text);
+function isFormSubmitOk(data) {
+	if (!data) return true;
+	if (data.success === false || data.success === 'false') return false;
+	const text = `${data.message || ''} ${data.next || ''}`;
+	if (/needs activation|activate form|confirm your email/i.test(text)) return false;
+	return true;
 }
 
 /**
@@ -18,7 +21,7 @@ export async function submitSuggestion({ naam, email, suggestie }) {
 	const controller = new AbortController();
 	const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 	try {
-		const url = `https://formsubmit.co/ajax/${encodeURIComponent(SUGGESTIE_FORMSUBMIT_ID)}`;
+		const url = `https://formsubmit.co/ajax/${encodeURIComponent(SUGGESTIE_RECIPIENT)}`;
 		const res = await fetch(url, {
 			method: 'POST',
 			headers: {
@@ -29,6 +32,7 @@ export async function submitSuggestion({ naam, email, suggestie }) {
 				_subject: 'Suggestie via Focus-WTV reizen-site',
 				_captcha: 'false',
 				_template: 'table',
+				email,
 				Naam: naam,
 				Mailadres: email,
 				Suggestie: suggestie,
@@ -38,12 +42,10 @@ export async function submitSuggestion({ naam, email, suggestie }) {
 		if (!res.ok) return false;
 		try {
 			const data = await res.json();
-			if (data && data.success === false) return false;
-			if (isActivationPendingMessage(data)) return false;
+			return isFormSubmitOk(data);
 		} catch {
-			// FormSubmit kan ok zijn zonder parsebare JSON
+			return true;
 		}
-		return true;
 	} catch {
 		return false;
 	} finally {
