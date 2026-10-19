@@ -2,8 +2,8 @@
 
 export const SUGGESTIE_RECIPIENT = 'reizen@focus-wtv.be';
 
-/** Kopie voor controle zolang reizen@ niet bereikbaar is. Hoofdontvanger blijft reizen@. */
-const SUGGESTIE_CC = 'lindsey.verbauwhede@focus-wtv.be';
+/** Interne kopie, apart verstuurd (geen CC in Caroline haar mail). */
+const SUGGESTIE_COPY_TO = 'lindsey.verbauwhede@focus-wtv.be';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SUGGESTIE_MIN_LENGTH = 10;
@@ -31,23 +31,12 @@ function isFormSubmitOk(data) {
 	return true;
 }
 
-/** Officiële FormSubmit AJAX, server-side (geen CORS, gebruiker blijft op de site). */
-export async function sendSuggestieMail({ naam, email, suggestie }) {
+async function postFormSubmit(recipient, fields) {
 	const controller = new AbortController();
 	const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 	try {
-		const url = `https://formsubmit.co/ajax/${encodeURIComponent(SUGGESTIE_RECIPIENT)}`;
-		const body = new URLSearchParams();
-		body.set('_subject', 'Suggestie via Focus-WTV reizen-site');
-		body.set('_template', 'table');
-		body.set('_captcha', 'false');
-		body.set('_cc', SUGGESTIE_CC);
-		body.set('_replyto', email);
-		body.set('email', email);
-		body.set('Naam', naam);
-		body.set('Mailadres', email);
-		body.set('Suggestie', suggestie);
-
+		const url = `https://formsubmit.co/ajax/${encodeURIComponent(recipient)}`;
+		const body = new URLSearchParams(fields);
 		const res = await fetch(url, {
 			method: 'POST',
 			headers: {
@@ -69,4 +58,32 @@ export async function sendSuggestieMail({ naam, email, suggestie }) {
 	} finally {
 		clearTimeout(timeout);
 	}
+}
+
+function suggestieFields({ naam, email, suggestie }, subject) {
+	return {
+		_subject: subject,
+		_template: 'table',
+		_captcha: 'false',
+		_replyto: email,
+		email,
+		Naam: naam,
+		Mailadres: email,
+		Suggestie: suggestie,
+	};
+}
+
+/** Officiële FormSubmit AJAX, server-side. Bezoeker blijft op de site. */
+export async function sendSuggestieMail(payload) {
+	const toCaroline = postFormSubmit(
+		SUGGESTIE_RECIPIENT,
+		suggestieFields(payload, 'Suggestie via Focus-WTV reizen-site'),
+	);
+	const toCopy = postFormSubmit(
+		SUGGESTIE_COPY_TO,
+		suggestieFields(payload, 'Kopie suggestie (reizen-site)'),
+	);
+
+	const [carolineOk] = await Promise.all([toCaroline, toCopy]);
+	return carolineOk;
 }
