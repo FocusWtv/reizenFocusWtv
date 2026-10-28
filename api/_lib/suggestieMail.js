@@ -1,7 +1,7 @@
 /** Suggestiemail via Resend — los van Flexmail, infoavond en FormSubmit. */
 
 /** Tijdelijk alleen Lindsey. Later: reizen@focus-wtv.be */
-export const SUGGESTIE_RECIPIENT = 'lindsey.verbauwhede@focus-wtv.be';
+export const SUGGESTIE_RECIPIENT = 'reizen@focus-wtv.be';
 
 const RESEND_FROM = 'Focus-WTV reizen <onboarding@resend.dev>';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
